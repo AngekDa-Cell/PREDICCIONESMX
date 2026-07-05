@@ -1,0 +1,93 @@
+{
+  "fixture_id": 19709119,
+  "match_id": "19709119",
+  "context": {
+    "home_team": "Pumas UNAM",
+    "away_team": "Cruz Azul",
+    "date": "2026-05-25 01:00:00.000000",
+    "venue": "Estadio Olímpico de Universitario",
+    "result": "away_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19709119",
+      "probs": {
+        "home_win": 0.3652,
+        "draw": 0.2657,
+        "away_win": 0.3691
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.682,
+      "components": {
+        "xg": null,
+        "elo_diff": 52.9,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 36.5% home, 26.6% draw, 36.9% away (conf=0.68)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19709119",
+      "team_favored": "Pumas UNAM",
+      "win_probability_estimate": 0.4152,
+      "ensemble_prob_home": 0.3652,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en Estadio Olímpico de Universitario: ventaja tradicional",
+        "Ensemble da 36.5% al local — base cuantitativa",
+        "Estadio con capacidad 72,000"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Cruz Azul) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local PUM tiene ventaja de localía. Ensemble da 36.5%. Bull refuerza a 41.5% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19709119",
+      "team_favored": "Cruz Azul",
+      "win_probability_estimate": 0.4491,
+      "ensemble_prob_away": 0.3691,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Cruz Azul) puede capitalizar errores locales",
+        "Ensemble da 36.9% al visitante — base cuantitativa",
+        "Local PUM viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local PUM tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante CAZ tiene oportunidad. Ensemble da 36.9%. Bear refuerza a 44.9%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19709119",
+    "final_prediction": {
+      "home_win": 0.35510575,
+      "draw": 0.27968525,
+      "away_win": 0.365209
+    },
+    "predicted_outcome": "away_win",
+    "confidence": 0.6424,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Pumas UNAM, Bear favorece Cruz Azul (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.415",
+      "bear_visitante home_win=0.248",
+      "numerico home_win=0.365"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:22.337853"
+}

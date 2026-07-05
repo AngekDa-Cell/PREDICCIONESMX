@@ -1,0 +1,74 @@
+[
+  {
+    "id": 19425897,
+    "home": "Tigres UANL",
+    "away": "Puebla",
+    "date": "2025-08-09",
+    "result": "home_win",
+    "category": "home_fav"
+  },
+  {
+    "id": 19345880,
+    "home": "Querétaro",
+    "away": "América",
+    "date": "2025-01-11",
+    "result": "away_win",
+    "category": "away_fav"
+  },
+  {
+    "id": 19425995,
+    "home": "Pumas UNAM",
+    "away": "Atlético San Luis",
+    "date": "2025-10-23",
+    "result": "away_win",
+    "category": "random"
+  },
+  {
+    "id": 19425914,
+    "home": "Monterrey",
+    "away": "Mazatlán",
+    "date": "2025-08-18",
+    "result": "home_win",
+    "category": "random"
+  },
+  {
+    "id": 19425918,
+    "home": "Mazatlán",
+    "away": "Tigres UANL",
+    "date": "2025-08-24",
+    "result": "draw",
+    "category": "random"
+  },
+  {
+    "id": 19425984,
+    "home": "Monterrey",
+    "away": "Pumas UNAM",
+    "date": "2025-10-19",
+    "result": "draw",
+    "category": "random"
+  },
+  {
+    "id": 19425924,
+    "home": "Atlético San Luis",
+    "away": "Toluca",
+    "date": "2025-08-30",
+    "result": "away_win",
+    "category": "random"
+  },
+  {
+    "id": 19425974,
+    "home": "Tigres UANL",
+    "away": "Cruz Azul",
+    "date": "2025-10-05",
+    "result": "draw",
+    "category": "random"
+  },
+  {
+    "id": 19425902,
+    "home": "Santos Laguna",
+    "away": "Guadalajara",
+    "date": "2025-08-11",
+    "result": "home_win",
+    "category": "random"
+  }
+]

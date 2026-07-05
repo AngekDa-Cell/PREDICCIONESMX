@@ -1,0 +1,95 @@
+{
+  "fixture_id": 19425921,
+  "match_id": "19425921",
+  "context": {
+    "home_team": "Cruz Azul",
+    "away_team": "Toluca",
+    "date": "2025-08-24 03:05:00.000000",
+    "venue": "Mexico City Stadium",
+    "result": "home_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19425921",
+      "probs": {
+        "home_win": 0.4741,
+        "draw": 0.2368,
+        "away_win": 0.2891
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.718,
+      "components": {
+        "xg": null,
+        "elo_diff": 112.8,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 47.4% home, 23.7% draw, 28.9% away (conf=0.72)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19425921",
+      "team_favored": "Cruz Azul",
+      "win_probability_estimate": 0.5541,
+      "ensemble_prob_home": 0.4741,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en Mexico City Stadium: ventaja tradicional",
+        "Ensemble da 47.4% al local — base cuantitativa",
+        "Altitud 2240m favorece al local aclimatado",
+        "Estadio con capacidad 87,523"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Toluca) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local CAZ tiene ventaja de localía. Ensemble da 47.4%. Bull refuerza a 55.4% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19425921",
+      "team_favored": "Toluca",
+      "win_probability_estimate": 0.3391,
+      "ensemble_prob_away": 0.2891,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Visitante (Toluca) puede capitalizar errores locales",
+        "Ensemble da 28.9% al visitante — base cuantitativa",
+        "Local CAZ viene con presión de resultado",
+        "Visitantes aclimatados a altitud alta = ventaja"
+      ],
+      "risks_acknowledged": [
+        "Local CAZ tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante TOL tiene oportunidad. Ensemble da 28.9%. Bear refuerza a 33.9%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19425921",
+    "final_prediction": {
+      "home_win": 0.45959575,
+      "draw": 0.257071,
+      "away_win": 0.28333325
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.6676,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Cruz Azul, Bear favorece Toluca (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.554",
+      "bear_visitante home_win=0.297",
+      "numerico home_win=0.474"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:49.276319"
+}

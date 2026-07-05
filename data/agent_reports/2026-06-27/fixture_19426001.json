@@ -1,0 +1,94 @@
+{
+  "fixture_id": 19426001,
+  "match_id": "19426001",
+  "context": {
+    "home_team": "Guadalajara",
+    "away_team": "Atlas",
+    "date": "2025-10-26 01:07:00.000000",
+    "venue": "Guadalajara Stadium",
+    "result": "home_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19426001",
+      "probs": {
+        "home_win": 0.4545,
+        "draw": 0.2839,
+        "away_win": 0.2616
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.506,
+      "components": {
+        "xg": null,
+        "elo_diff": 146.7,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 45.5% home, 28.4% draw, 26.2% away (conf=0.51)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19426001",
+      "team_favored": "Guadalajara",
+      "win_probability_estimate": 0.5345,
+      "ensemble_prob_home": 0.4545,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en Guadalajara Stadium: ventaja tradicional",
+        "Ensemble da 45.5% al local — base cuantitativa",
+        "Altitud 1566m favorece al local aclimatado",
+        "Estadio con capacidad 45,664"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Atlas) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local GUA tiene ventaja de localía. Ensemble da 45.5%. Bull refuerza a 53.4% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19426001",
+      "team_favored": "Atlas",
+      "win_probability_estimate": 0.3116,
+      "ensemble_prob_away": 0.2616,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Visitante (Atlas) puede capitalizar errores locales",
+        "Ensemble da 26.2% al visitante — base cuantitativa",
+        "Local GUA viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local GUA tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante ATS tiene oportunidad. Ensemble da 26.2%. Bear refuerza a 31.2%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19426001",
+    "final_prediction": {
+      "home_win": 0.44479199999999997,
+      "draw": 0.29392675,
+      "away_win": 0.26128124999999996
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.5192,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Guadalajara, Bear favorece Atlas (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.534",
+      "bear_visitante home_win=0.310",
+      "numerico home_win=0.455"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:32:03.603998"
+}

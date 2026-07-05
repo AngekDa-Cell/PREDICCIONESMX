@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "description": "Narrativas manuales para Predictions_MX. Edita este archivo para agregar contexto narrativo que el modelo no puede inferir.",
+  "instructions": "Si quieres agregar contexto, crea narratives_2025_2026.json con la misma estructura, sobreescribiendo los valores que quieras.",
+  "narratives": [
+    {
+      "team": "América",
+      "weight": 0.6,
+      "direction": "favor_home",
+      "description": "Equipo con mayor plantilla de la liga. Profundidad para competir en múltiples frentes.",
+      "active": false
+    },
+    {
+      "team": "Chivas",
+      "weight": 0.5,
+      "direction": "unknown",
+      "description": "Sistema deportivo único. Sin refuerzos extranjeros en ciertas posiciones.",
+      "active": false
+    },
+    {
+      "team": "Cruz Azul",
+      "weight": 0.55,
+      "direction": "favor_home",
+      "description": "La Máquina tiene identidad clara:控制和 possession. En casa desarrolla su juego.",
+      "active": false
+    },
+    {
+      "team": "Tigres UANL",
+      "weight": 0.6,
+      "direction": "favor_home",
+      "description": "Plantilla de jerarquía internacional. Away form ha mejorado los últimos 2 torneos.",
+      "active": false
+    },
+    {
+      "team": "Rayados",
+      "weight": 0.55,
+      "direction": "neutral",
+      "description": "Históricamente irregulares en torneos cortos. Sometimes decepcionan con plantilla fuerte.",
+      "active": false
+    },
+    {
+      "team": "Pumas UNAM",
+      "weight": 0.45,
+      "direction": "favor_home",
+      "description": "En el Estadio Olímpico Universitario son peligrosos. Away pueden ser inconsistentes.",
+      "active": false
+    },
+    {
+      "team": "Pachuca",
+      "weight": 0.6,
+      "direction": "favor_home",
+      "description": "La altitud del Estadio Hidalgo (2400m) es ventaja real. Visitantes sufren el primer tiempo.",
+      "active": false
+    },
+    {
+      "team": "Toluca",
+      "weight": 0.6,
+      "direction": "favor_home",
+      "description": "Estadio Nemesio Díez (2680m) — el más alto de México. Ventaja significativa en pretemporada.",
+      "active": false
+    },
+    {
+      "team": "León",
+      "weight": 0.5,
+      "direction": "neutral",
+      "description": "Físico y intensities. Pueden competir contra cualquiera en su día.",
+      "active": false
+    },
+    {
+      "team": "Santos Laguna",
+      "weight": 0.45,
+      "direction": "favor_home",
+      "description": "Nivel del mar (20m). Cuando viajan a CDMX o Toluca pierden ~30% de su fútbol.",
+      "active": false
+    }
+  ],
+  "derbies": [
+    {
+      "name": "Clásico Nacional",
+      "teams": ["América", "Guadalajara"],
+      "weight": 1.0,
+      "description": "El partido más importante del fútbol mexicano. Las stats importan menos que la rivalidad."
+    },
+    {
+      "name": "Clásico Regio",
+      "teams": ["Rayados", "Tigres UANL"],
+      "weight": 0.95,
+      "description": "Derby de Nuevo León. Todo se exagera — local advantage sube 15%."
+    },
+    {
+      "name": "Clásico capitalino",
+      "teams": ["América", "Pumas UNAM"],
+      "weight": 0.9,
+      "description": "Los dos grandes de la CDMX. Ambiente único en Estadio Azteca o Olímpico."
+    }
+  ],
+  "warnings": [
+    {
+      "type": "altitude",
+      "threshold_m": 2400,
+      "description": "Partidos en CDMX/Toluca/Pachuca con visitante de Tijuana o Santos → ajustar local advantage +10-15%."
+    },
+    {
+      "type": "separation_days",
+      "threshold": 10,
+      "description": "Si un equipo juega 3 partidos en 10 días → reducir attack strength en 10% por fatiga."
+    }
+  ],
+  "season_notes": {
+    "2025/2026": {
+      "Liga_MX_Apertura": {
+        "started": "2025-07-01",
+        "note": "Datos de pretemporada y partidos amistosos pueden no estar en la BD."
+      }
+    }
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "start": "2025-01-01",
+  "end": "2025-12-31",
+  "without_attendance": {
+    "total_matches": 340,
+    "dc": {
+      "accuracy": 45.0,
+      "brier_score": 0.646,
+      "log_loss": 1.0702
+    },
+    "elo": {
+      "accuracy": 50.88,
+      "brier_score": 0.5942,
+      "log_loss": 0.9955
+    },
+    "heuristic": {
+      "accuracy": 44.71,
+      "brier_score": 0.6431,
+      "log_loss": 1.0654
+    },
+    "ensemble": {
+      "accuracy": 53.53,
+      "brier_score": 0.6004,
+      "log_loss": 1.0057
+    },
+    "by_confidence": {
+      "Very high (>=70%)": {
+        "n": 63,
+        "accuracy": 53.97
+      },
+      "High (60-70%)": {
+        "n": 177,
+        "accuracy": 51.41
+      },
+      "Medium (50-60%)": {
+        "n": 89,
+        "accuracy": 53.93
+      },
+      "Low (<50%)": {
+        "n": 11,
+        "accuracy": 81.82
+      }
+    },
+    "derby_vs_non": {
+      "derby": {
+        "n": 14,
+        "accuracy": 57.14
+      },
+      "non_derby": {
+        "n": 326,
+        "accuracy": 53.37
+      }
+    },
+    "calibration": [
+      {
+        "predicted": 0.3,
+        "n": 79,
+        "actual_rate": 0.253,
+        "delta": -0.047
+      },
+      {
+        "predicted": 0.4,
+        "n": 210,
+        "actual_rate": 0.41,
+        "delta": 0.01
+      },
+      {
+        "predicted": 0.5,
+        "n": 144,
+        "actual_rate": 0.653,
+        "delta": 0.153
+      },
+      {
+        "predicted": 0.6,
+        "n": 41,
+        "actual_rate": 0.756,
+        "delta": 0.156
+      }
+    ]
+  },
+  "with_attendance": {
+    "total_matches": 340,
+    "dc": {
+      "accuracy": 45.0,
+      "brier_score": 0.646,
+      "log_loss": 1.0702
+    },
+    "elo": {
+      "accuracy": 50.88,
+      "brier_score": 0.5942,
+      "log_loss": 0.9955
+    },
+    "heuristic": {
+      "accuracy": 44.71,
+      "brier_score": 0.6435,
+      "log_loss": 1.0661
+    },
+    "ensemble": {
+      "accuracy": 53.82,
+      "brier_score": 0.6005,
+      "log_loss": 1.0058
+    },
+    "by_confidence": {
+      "Very high (>=70%)": {
+        "n": 57,
+        "accuracy": 56.14
+      },
+      "High (60-70%)": {
+        "n": 177,
+        "accuracy": 51.41
+      },
+      "Medium (50-60%)": {
+        "n": 87,
+        "accuracy": 55.17
+      },
+      "Low (<50%)": {
+        "n": 19,
+        "accuracy": 63.16
+      }
+    },
+    "derby_vs_non": {
+      "derby": {
+        "n": 14,
+        "accuracy": 57.14
+      },
+      "non_derby": {
+        "n": 326,
+        "accuracy": 53.68
+      }
+    },
+    "calibration": [
+      {
+        "predicted": 0.3,
+        "n": 80,
+        "actual_rate": 0.25,
+        "delta": -0.05
+      },
+      {
+        "predicted": 0.4,
+        "n": 210,
+        "actual_rate": 0.41,
+        "delta": 0.01
+      },
+      {
+        "predicted": 0.5,
+        "n": 144,
+        "actual_rate": 0.653,
+        "delta": 0.153
+      },
+      {
+        "predicted": 0.6,
+        "n": 41,
+        "actual_rate": 0.756,
+        "delta": 0.156
+      }
+    ]
+  },
+  "delta": {
+    "accuracy_pp": 29.0,
+    "brier_delta": 0.0001
+  }
+}

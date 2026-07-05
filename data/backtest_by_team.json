@@ -1,0 +1,207 @@
+{
+  "generated_at": "2026-06-27T02:04:18.813122",
+  "config": {
+    "start": "2024-01-01",
+    "end": "2025-12-31"
+  },
+  "team_metrics": [
+    {
+      "team_id": 247689,
+      "team": "Mazatlán",
+      "n_matches": 19,
+      "n_home": 9,
+      "n_away": 10,
+      "accuracy": 0.6842,
+      "brier": 0.5692,
+      "accuracy_home": 0.5556,
+      "accuracy_away": 0.8
+    },
+    {
+      "team_id": 2844,
+      "team": "Santos Laguna",
+      "n_matches": 18,
+      "n_home": 9,
+      "n_away": 9,
+      "accuracy": 0.6111,
+      "brier": 0.5607,
+      "accuracy_home": 0.4444,
+      "accuracy_away": 0.7778
+    },
+    {
+      "team_id": 10036,
+      "team": "Pachuca",
+      "n_matches": 25,
+      "n_home": 13,
+      "n_away": 12,
+      "accuracy": 0.6,
+      "brier": 0.6028,
+      "accuracy_home": 0.6923,
+      "accuracy_away": 0.5
+    },
+    {
+      "team_id": 10836,
+      "team": "León",
+      "n_matches": 19,
+      "n_home": 9,
+      "n_away": 10,
+      "accuracy": 0.5789,
+      "brier": 0.5833,
+      "accuracy_home": 0.4444,
+      "accuracy_away": 0.7
+    },
+    {
+      "team_id": 2662,
+      "team": "Monterrey",
+      "n_matches": 23,
+      "n_home": 12,
+      "n_away": 11,
+      "accuracy": 0.5652,
+      "brier": 0.6133,
+      "accuracy_home": 0.4167,
+      "accuracy_away": 0.7273
+    },
+    {
+      "team_id": 427,
+      "team": "Guadalajara",
+      "n_matches": 25,
+      "n_home": 12,
+      "n_away": 13,
+      "accuracy": 0.56,
+      "brier": 0.5629,
+      "accuracy_home": 0.6667,
+      "accuracy_away": 0.4615
+    },
+    {
+      "team_id": 609,
+      "team": "Tigres UANL",
+      "n_matches": 27,
+      "n_home": 13,
+      "n_away": 14,
+      "accuracy": 0.5185,
+      "brier": 0.607,
+      "accuracy_home": 0.6154,
+      "accuracy_away": 0.4286
+    },
+    {
+      "team_id": 967,
+      "team": "Toluca",
+      "n_matches": 27,
+      "n_home": 13,
+      "n_away": 14,
+      "accuracy": 0.4815,
+      "brier": 0.6098,
+      "accuracy_home": 0.6154,
+      "accuracy_away": 0.3571
+    },
+    {
+      "team_id": 2687,
+      "team": "América",
+      "n_matches": 23,
+      "n_home": 12,
+      "n_away": 11,
+      "accuracy": 0.4783,
+      "brier": 0.6314,
+      "accuracy_home": 0.5,
+      "accuracy_away": 0.4545
+    },
+    {
+      "team_id": 680,
+      "team": "Atlas",
+      "n_matches": 21,
+      "n_home": 11,
+      "n_away": 10,
+      "accuracy": 0.4762,
+      "brier": 0.6197,
+      "accuracy_home": 0.3636,
+      "accuracy_away": 0.6
+    },
+    {
+      "team_id": 3849,
+      "team": "Puebla",
+      "n_matches": 19,
+      "n_home": 10,
+      "n_away": 9,
+      "accuracy": 0.4737,
+      "brier": 0.6171,
+      "accuracy_home": 0.3,
+      "accuracy_away": 0.6667
+    },
+    {
+      "team_id": 11023,
+      "team": "Tijuana",
+      "n_matches": 22,
+      "n_home": 11,
+      "n_away": 11,
+      "accuracy": 0.4545,
+      "brier": 0.6608,
+      "accuracy_home": 0.4545,
+      "accuracy_away": 0.4545
+    },
+    {
+      "team_id": 3951,
+      "team": "Necaxa",
+      "n_matches": 18,
+      "n_home": 9,
+      "n_away": 9,
+      "accuracy": 0.4444,
+      "brier": 0.6189,
+      "accuracy_home": 0.3333,
+      "accuracy_away": 0.5556
+    },
+    {
+      "team_id": 15522,
+      "team": "Atlético San Luis",
+      "n_matches": 18,
+      "n_home": 9,
+      "n_away": 9,
+      "accuracy": 0.4444,
+      "brier": 0.6751,
+      "accuracy_home": 0.3333,
+      "accuracy_away": 0.5556
+    },
+    {
+      "team_id": 6335,
+      "team": "Juárez",
+      "n_matches": 22,
+      "n_home": 11,
+      "n_away": 11,
+      "accuracy": 0.4091,
+      "brier": 0.6489,
+      "accuracy_home": 0.3636,
+      "accuracy_away": 0.4545
+    },
+    {
+      "team_id": 2989,
+      "team": "Pumas UNAM",
+      "n_matches": 26,
+      "n_home": 13,
+      "n_away": 13,
+      "accuracy": 0.3462,
+      "brier": 0.6827,
+      "accuracy_home": 0.5385,
+      "accuracy_away": 0.1538
+    },
+    {
+      "team_id": 2626,
+      "team": "Cruz Azul",
+      "n_matches": 29,
+      "n_home": 14,
+      "n_away": 15,
+      "accuracy": 0.3448,
+      "brier": 0.673,
+      "accuracy_home": 0.5714,
+      "accuracy_away": 0.1333
+    },
+    {
+      "team_id": 538,
+      "team": "Querétaro",
+      "n_matches": 19,
+      "n_home": 10,
+      "n_away": 9,
+      "accuracy": 0.3158,
+      "brier": 0.6686,
+      "accuracy_home": 0.3,
+      "accuracy_away": 0.3333
+    }
+  ]
+}

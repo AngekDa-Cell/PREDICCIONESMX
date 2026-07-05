@@ -1,0 +1,92 @@
+{
+  "fixture_id": 19346819,
+  "match_id": "19346819",
+  "context": {
+    "home_team": "Mazatlán",
+    "away_team": "Toluca",
+    "date": "2025-01-25 03:00:00.000000",
+    "venue": null,
+    "result": "home_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19346819",
+      "probs": {
+        "home_win": 0.2621,
+        "draw": 0.2485,
+        "away_win": 0.4894
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.6,
+      "components": {
+        "xg": null,
+        "elo_diff": -31.7,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 26.2% home, 24.9% draw, 48.9% away (conf=0.60)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19346819",
+      "team_favored": "Mazatlán",
+      "win_probability_estimate": 0.3121,
+      "ensemble_prob_home": 0.2621,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en None: ventaja tradicional",
+        "Ensemble da 26.2% al local — base cuantitativa"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Toluca) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local MZA tiene ventaja de localía. Ensemble da 26.2%. Bull refuerza a 31.2% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19346819",
+      "team_favored": "Toluca",
+      "win_probability_estimate": 0.5694,
+      "ensemble_prob_away": 0.4894,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Toluca) puede capitalizar errores locales",
+        "Ensemble da 48.9% al visitante — base cuantitativa",
+        "Local MZA viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local MZA tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante TOL tiene oportunidad. Ensemble da 48.9%. Bear refuerza a 56.9%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19346819",
+    "final_prediction": {
+      "home_win": 0.2593505,
+      "draw": 0.26622625,
+      "away_win": 0.47442324999999996
+    },
+    "predicted_outcome": "away_win",
+    "confidence": 0.585,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Mazatlán, Bear favorece Toluca (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.312",
+      "bear_visitante home_win=0.194",
+      "numerico home_win=0.262"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:59.012360"
+}

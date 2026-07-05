@@ -1,0 +1,93 @@
+{
+  "fixture_id": 19425998,
+  "match_id": "19425998",
+  "context": {
+    "home_team": "Tigres UANL",
+    "away_team": "Tijuana",
+    "date": "2025-10-25 23:00:00.000000",
+    "venue": null,
+    "result": "home_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19425998",
+      "probs": {
+        "home_win": 0.6247,
+        "draw": 0.2041,
+        "away_win": 0.1712
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.748,
+      "components": {
+        "xg": null,
+        "elo_diff": 186.8,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 62.5% home, 20.4% draw, 17.1% away (conf=0.75)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19425998",
+      "team_favored": "Tigres UANL",
+      "win_probability_estimate": 0.7047,
+      "ensemble_prob_home": 0.6247,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en None: ventaja tradicional",
+        "Ensemble da 62.5% al local — base cuantitativa"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Tijuana) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local TUA tiene ventaja de localía. Ensemble da 62.5%. Bull refuerza a 70.5% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19425998",
+      "team_favored": "Tijuana",
+      "win_probability_estimate": 0.2212,
+      "ensemble_prob_away": 0.1712,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Visitante (Tijuana) puede capitalizar errores locales",
+        "Ensemble da 17.1% al visitante — base cuantitativa",
+        "Local TUA viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local TUA tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante TIJ tiene oportunidad. Ensemble da 17.1%. Bear refuerza a 22.1%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19425998",
+    "final_prediction": {
+      "home_win": 0.595564,
+      "draw": 0.23148325,
+      "away_win": 0.17295275
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.6615,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Tigres UANL, Bear favorece Tijuana (opuestos) → numérico 0.50→0.70",
+      "Discrepancia alta (spread=0.35) → confianza penalizada -0.03"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.705",
+      "bear_visitante home_win=0.350",
+      "numerico home_win=0.625"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:32:01.977214"
+}

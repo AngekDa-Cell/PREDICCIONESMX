@@ -1,0 +1,95 @@
+{
+  "fixture_id": 19345880,
+  "match_id": "19345880",
+  "context": {
+    "home_team": "Querétaro",
+    "away_team": "América",
+    "date": "2025-01-11 01:00:00.000000",
+    "venue": "Estadio La Corregidora",
+    "result": "away_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19345880",
+      "probs": {
+        "home_win": 0.3066,
+        "draw": 0.2625,
+        "away_win": 0.4309
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.632,
+      "components": {
+        "xg": null,
+        "elo_diff": -78.4,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 30.7% home, 26.2% draw, 43.1% away (conf=0.63)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19345880",
+      "team_favored": "Querétaro",
+      "win_probability_estimate": 0.3566,
+      "ensemble_prob_home": 0.3066,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en Estadio La Corregidora: ventaja tradicional",
+        "Ensemble da 30.7% al local — base cuantitativa",
+        "Altitud 1820m favorece al local aclimatado",
+        "Estadio con capacidad 33,162"
+      ],
+      "risks_acknowledged": [
+        "Visitante (América) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local QUE tiene ventaja de localía. Ensemble da 30.7%. Bull refuerza a 35.7% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19345880",
+      "team_favored": "América",
+      "win_probability_estimate": 0.5109,
+      "ensemble_prob_away": 0.4309,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (América) puede capitalizar errores locales",
+        "Ensemble da 43.1% al visitante — base cuantitativa",
+        "Local QUE viene con presión de resultado",
+        "Visitantes aclimatados a altitud alta = ventaja"
+      ],
+      "risks_acknowledged": [
+        "Local QUE tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante AME tiene oportunidad. Ensemble da 43.1%. Bear refuerza a 51.1%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19345880",
+    "final_prediction": {
+      "home_win": 0.30112425,
+      "draw": 0.27718125,
+      "away_win": 0.42169449999999997
+    },
+    "predicted_outcome": "away_win",
+    "confidence": 0.6074,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Querétaro, Bear favorece América (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.357",
+      "bear_visitante home_win=0.220",
+      "numerico home_win=0.307"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:36.050398"
+}

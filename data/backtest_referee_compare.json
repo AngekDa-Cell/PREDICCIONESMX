@@ -1,0 +1,29 @@
+{
+  "config": {
+    "start": "2024-08-01",
+    "end": "2025-12-31"
+  },
+  "without_referee": {
+    "n": 828,
+    "acc": 0.4963768115942029,
+    "brier": 0.6204440289981962,
+    "nll": 1.0328238210441318,
+    "n_correct": 411,
+    "n_with_referee": 764,
+    "errors": 0
+  },
+  "with_referee": {
+    "n": 828,
+    "acc": 0.4963768115942029,
+    "brier": 0.620441655141367,
+    "nll": 1.0328208224575117,
+    "n_correct": 411,
+    "n_with_referee": 764,
+    "errors": 0
+  },
+  "deltas": {
+    "accuracy_pp": 0.0,
+    "brier": -0.0,
+    "nll": -0.0
+  }
+}

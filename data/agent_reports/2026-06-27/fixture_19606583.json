@@ -1,0 +1,95 @@
+{
+  "fixture_id": 19606583,
+  "match_id": "19606583",
+  "context": {
+    "home_team": "Cruz Azul",
+    "away_team": "Tigres UANL",
+    "date": "2025-12-04 01:00:00.000000",
+    "venue": "Mexico City Stadium",
+    "result": "draw"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19606583",
+      "probs": {
+        "home_win": 0.4216,
+        "draw": 0.2342,
+        "away_win": 0.3442
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.682,
+      "components": {
+        "xg": null,
+        "elo_diff": 123.8,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 42.2% home, 23.4% draw, 34.4% away (conf=0.68)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19606583",
+      "team_favored": "Cruz Azul",
+      "win_probability_estimate": 0.5016,
+      "ensemble_prob_home": 0.4216,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en Mexico City Stadium: ventaja tradicional",
+        "Ensemble da 42.2% al local — base cuantitativa",
+        "Altitud 2240m favorece al local aclimatado",
+        "Estadio con capacidad 87,523"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Tigres UANL) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local CAZ tiene ventaja de localía. Ensemble da 42.2%. Bull refuerza a 50.2% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19606583",
+      "team_favored": "Tigres UANL",
+      "win_probability_estimate": 0.4242,
+      "ensemble_prob_away": 0.3442,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Tigres UANL) puede capitalizar errores locales",
+        "Ensemble da 34.4% al visitante — base cuantitativa",
+        "Local CAZ viene con presión de resultado",
+        "Visitantes aclimatados a altitud alta = ventaja"
+      ],
+      "risks_acknowledged": [
+        "Local CAZ tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante TUA tiene oportunidad. Ensemble da 34.4%. Bear refuerza a 42.4%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19606583",
+    "final_prediction": {
+      "home_win": 0.4092265,
+      "draw": 0.25256150000000005,
+      "away_win": 0.338212
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.6424,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Cruz Azul, Bear favorece Tigres UANL (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.502",
+      "bear_visitante home_win=0.259",
+      "numerico home_win=0.422"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:32:01.490015"
+}

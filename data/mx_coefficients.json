@@ -1,0 +1,44 @@
+{
+  "_comment": "Coeficientes calibrados para ensemble Liga MX. El sistema carga esto en runtime; si falta, usa defaults hardcoded. Regenerar periódicamente con grid search + walk-forward.",
+  "generated_at": "2026-07-01",
+  "_sources": [
+    "Fase 8: grid_search_heur_weight.py (2024-2025)",
+    "elo_shrinkage_optimization.json (BT 2025)",
+    "team_local_shrinkage.json (2025-01-01)",
+    "mx_recalibration.json (BT 2024-2025 Platt scaling)",
+    "backtest_2025_compare.json (threshold tuning)"
+  ],
+  "xg_ensemble": {
+    "xg_weight": 0.55,
+    "elo_weight": 0.225,
+    "dc_weight": 0.135,
+    "heuristic_weight": 0.09,
+    "_note": "Pesos calibrados Fase 8 grid search sobre 680 partidos 2024-2025."
+  },
+  "elo_shrinkage": {
+    "factor": 0.8,
+    "decay": 0.999,
+    "_note": "Mejor resultado grid search: acc=55.9% vs factor=1.0 default ~50%"
+  },
+  "team_local_shrinkage": {
+    "enabled": true,
+    "_note": "Shrinkage por equipo (Querétaro=0.746 home, América=0.857 home) compensa over/underperformance histórico. Usado en get_elo_predictions."
+  },
+  "calibration": {
+    "method": "platt",
+    "applied": true,
+    "_note": "Mejora marginal (+0.4pp acc, -0.004 brier) pero gratis. Aplica Platt scaling post-ensemble."
+  },
+  "confidence_threshold": {
+    "high": 0.55,
+    "medium": 0.4,
+    "low": 0.0,
+    "high_tier_accuracy": 0.669,
+    "_note": "Filtro de tiers. Si confidence >= 0.55 → pick HIGH (acc ~67% en BT). < 0.40 → LOW (casi random). Solo mostrar pick cuando >= MEDIUM."
+  },
+  "injury_weight": 0.05,
+  "injury_weight_note": "Boost por lesiones diferenciales. Default 0.05 (conservador), tuneable con BT.",
+  "referee_weight": 0.02,
+  "referee_max_shift": 0.05,
+  "_note_referee": "Sprint 3.4 — Referee bias factor con peso 0.02, max shift ±0.05"
+}

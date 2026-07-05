@@ -1,0 +1,30 @@
+{
+  "_comment": "Mapeo ESPN team ID (soccer MX mex.1) ↔ SportMonks team ID. ESPN usa IDs por liga; SM usa IDs globales. Mazatlán FC no aparece en ESPN (probable baja/ascenso).",
+  "_source": "https://site.api.espn.com/apis/site/v2/sports/soccer/mex.1/teams",
+  "_generated": "2026-07-01",
+  "_sm_count": 17,
+  "_espn_count": 18,
+  "teams": {
+    "227":   { "sm_id": 2687,   "espn_name": "América",                "sm_name": "América" },
+    "226":   { "sm_id": 7023,   "espn_name": "Atlante",                "sm_name": "Atlante" },
+    "216":   { "sm_id": 680,    "espn_name": "Atlas",                  "sm_name": "Atlas" },
+    "15720": { "sm_id": 15522,  "espn_name": "Atlético de San Luis",   "sm_name": "Atlético San Luis" },
+    "218":   { "sm_id": 2626,   "espn_name": "Cruz Azul",              "sm_name": "Cruz Azul" },
+    "17851": { "sm_id": 6335,   "espn_name": "FC Juarez",              "sm_name": "Juárez" },
+    "219":   { "sm_id": 427,    "espn_name": "Guadalajara",            "sm_name": "Guadalajara" },
+    "228":   { "sm_id": 10836,  "espn_name": "León",                   "sm_name": "León" },
+    "220":   { "sm_id": 2662,   "espn_name": "Monterrey",              "sm_name": "Monterrey" },
+    "229":   { "sm_id": 3951,   "espn_name": "Necaxa",                 "sm_name": "Necaxa" },
+    "234":   { "sm_id": 10036,  "espn_name": "Pachuca",                "sm_name": "Pachuca" },
+    "231":   { "sm_id": 3849,   "espn_name": "Puebla",                 "sm_name": "Puebla" },
+    "233":   { "sm_id": 2989,   "espn_name": "Pumas UNAM",             "sm_name": "Pumas UNAM" },
+    "222":   { "sm_id": 538,    "espn_name": "Querétaro",              "sm_name": "Querétaro" },
+    "225":   { "sm_id": 2844,   "espn_name": "Santos",                 "sm_name": "Santos Laguna" },
+    "232":   { "sm_id": 609,    "espn_name": "Tigres UANL",            "sm_name": "Tigres UANL" },
+    "10125": { "sm_id": 11023,  "espn_name": "Tijuana",                "sm_name": "Tijuana" },
+    "223":   { "sm_id": 967,    "espn_name": "Toluca",                 "sm_name": "Toluca" }
+  },
+  "sm_only": [
+    { "sm_id": 247689, "sm_name": "Mazatlán", "reason": "No aparece en ESPN MX actual (18 equipos). Posible: recién ascendido/transferido." }
+  ]
+}

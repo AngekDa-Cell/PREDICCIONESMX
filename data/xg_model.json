@@ -1,0 +1,23 @@
+{
+  "intercept": 0.256742061076646,
+  "coefs": [
+    0.10485349124735117,
+    0.004047144941986894,
+    -0.020777167657946728,
+    -0.022942802787802575,
+    0.2679966417548961,
+    0.09521491000142882
+  ],
+  "feature_order": [
+    "shots-on-target",
+    "shots-insidebox",
+    "shots-blocked",
+    "shots-off-target",
+    "shot_quality",
+    "is_home"
+  ],
+  "method": "log_ridge",
+  "n_train": 3830,
+  "goals_mean": 1.4399477806788512,
+  "goals_std": 1.1816358079593443
+}

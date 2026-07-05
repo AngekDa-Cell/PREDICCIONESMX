@@ -1,0 +1,39 @@
+{
+  "phase": "10.1",
+  "mode": "simulate",
+  "decision": "GO_CONDITIONAL",
+  "summary": "Mecánica del debate funciona end-to-end. Algoritmo DWC-MAD estable. Para validar valor real del debate (vs baseline numérico) se requiere Fase 10.2 con sub-agentes LLM reales.",
+  "n_fixtures": 340,
+  "date_range": ["2025-01-01", "2025-12-31"],
+  "metrics": {
+    "numerico_accuracy": 0.4912,
+    "judge_accuracy": 0.4912,
+    "delta_accuracy_pp": 0.0,
+    "numerico_brier": 0.6314,
+    "judge_brier": 0.6335,
+    "delta_brier": 0.0021,
+    "issues_found": {}
+  },
+  "metadata": {
+    "weights_base": {"numerico": 0.50, "bull_local": 0.25, "bear_visitante": 0.25},
+    "judge_algorithm": "DWC-MAD (Dynamic Weighted Consensus)",
+    "execution_time_sec": 0.49,
+    "fixtures_per_sec": 693.9
+  },
+  "interpretation": {
+    "accuracy_delta_zero": "Esperado. El simulador usa sesgo heurístico ±0.08. Cuando Bull/Bear coinciden (cualitativos pesan 0.60) y numérico pesa 0.40, los cambios en probs son pequeños y pueden o no alinearse con realidad.",
+    "brier_ligero_peor": "El simulador no aporta señal nueva vs numérico. Confirma que algoritmo DWC-MAD es estable (no degrada el baseline).",
+    "execution_rapido": "0.49s para 340 debates. Backtest es viable sin costos LLM.",
+    "cero_issues": "Todos los debates completaron sin errores en JSON parsing, validación de probs, o problemas de toolsAllow."
+  },
+  "next_steps": {
+    "10_2_promote": "Si en muestra de 10-20 partidos con sub-agentes LLM reales hay mejora >+1pp accuracy vs baseline, promover a Fase 10.2 completa.",
+    "10_2_blockers": [
+      "Sub-agentes LLM vía sessions_spawn (requiere runtime OpenClaw)",
+      "Parsing robusto de JSON outputs (agentes pueden no devolver JSON limpio)",
+      "Latencia: 3-4 agentes paralelos = 2-4 min por partido",
+      "Persistencia de outputs para auditoría"
+    ],
+    "abortar_si": "Si después de 50 partidos con LLM real la accuracy NO mejora vs baseline +1pp, abortar Fase 10 (el debate multi-agente no aporta valor)."
+  }
+}

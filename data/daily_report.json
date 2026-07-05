@@ -1,0 +1,261 @@
+{
+  "timestamp": "2026-07-05T13:02:45.671730+00:00",
+  "overall_status": "ok",
+  "step_results": [
+    {
+      "name": "1/10 Ingerir lesiones ESPN",
+      "status": "ok",
+      "returncode": 0,
+      "duration_s": null,
+      "output_tail": "\n📥 ESPN devolvió 0 equipos con lesiones\n\n⚠️  Sin lesiones activas reportadas por ESPN.\n    Esto es normal en pretemporada. El script queda listo para agosto.",
+      "active_injuries": 0
+    },
+    {
+      "name": "2/10 Refrescar fixtures SportMonks",
+      "status": "ok",
+      "new_fixtures_found": 0,
+      "new_fixture_ids": []
+    },
+    {
+      "name": "3/10 Re-ingestar lineups",
+      "status": "ok",
+      "fixtures_checked": 0,
+      "errors": 0
+    },
+    {
+      "name": "4/10 Re-ingestar stats",
+      "status": "ok",
+      "fixtures_checked": 0
+    },
+    {
+      "name": "5/10 Weather ingest",
+      "status": "ok",
+      "fixtures_with_weather": 0
+    },
+    {
+      "name": "6/10 Limpiar",
+      "status": "ok",
+      "deleted": 0
+    },
+    {
+      "name": "7/10 Regenerar predicciones (60 días, 28 features + ensemble)",
+      "status": "ok",
+      "returncode": 0,
+      "duration_s": null,
+      "output_tail": "  ✅ 54 predicciones procesadas\n  📊 BD: 68 filas totales, 68 fixtures distintos\n\n🔗 Frontend mostrará la ÚLTIMA predicción por partido (MAX(created_at)).\n   Script idempotente: correr N veces = mismo resultado final.",
+      "tier_breakdown": {
+        "high": 7,
+        "low": 16,
+        "medium": 31
+      },
+      "predictions_count": 54
+    },
+    {
+      "name": "8/10 Auto backtest",
+      "status": "ok",
+      "n_matches": 30,
+      "correct": 14,
+      "accuracy": 0.4667,
+      "brier": 0.6345,
+      "log_loss": 1.0504,
+      "drift_acc": 0.0167,
+      "drift_brier": 0.0045,
+      "alerts": []
+    },
+    {
+      "name": "9/10 Drift check",
+      "status": "ok",
+      "action": "none",
+      "msg": "Modelo estable, sin recalibración necesaria"
+    },
+    {
+      "name": "C2 Reconciliación predicciones finalizadas",
+      "status": "ok",
+      "returncode": 0,
+      "duration_s": null,
+      "output_tail": "\n============================================================\n📊 ACCURACY POST-RECONCILIACIÓN (últimos 90 días)\n============================================================\n  Sin predicciones finalizadas en últimos 90 días"
+    },
+    {
+      "name": "C5 Detectar cambios de DT",
+      "status": "ok",
+      "returncode": 0,
+      "duration_s": null,
+      "output_tail": "🔍 Detectando cambios DT últimos 7 días...\n\n⚠️  1 cambios de DT detectados:\n\n📋 Monterrey                 → Matías Jesús Almeyda desde 2026-07-01 (antes: Domènec Torrent Font)",
+      "coach_changes_count": 1
+    }
+  ],
+  "backtest": {
+    "name": "8/10 Auto backtest",
+    "status": "ok",
+    "n_matches": 30,
+    "correct": 14,
+    "accuracy": 0.4667,
+    "brier": 0.6345,
+    "log_loss": 1.0504,
+    "drift_acc": 0.0167,
+    "drift_brier": 0.0045,
+    "alerts": []
+  },
+  "drift": {
+    "name": "9/10 Drift check",
+    "status": "ok",
+    "action": "none",
+    "msg": "Modelo estable, sin recalibración necesaria"
+  },
+  "injuries": {
+    "active_count": 0,
+    "teams_affected": 0,
+    "by_team": []
+  },
+  "predictions_14d": [
+    {
+      "fixture_id": 19715315,
+      "date": "2026-07-17 01:00:00",
+      "home": "Necaxa",
+      "away": "Atlante",
+      "home_win": 0.44,
+      "draw": 0.303,
+      "away_win": 0.257,
+      "confidence": 0.44,
+      "tier": "medium",
+      "tier_emoji": "🟡",
+      "most_likely_score": "1-0",
+      "pick": "home",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715314,
+      "date": "2026-07-17 03:00:00",
+      "home": "Tijuana",
+      "away": "Tigres UANL",
+      "home_win": 0.616,
+      "draw": 0.232,
+      "away_win": 0.152,
+      "confidence": 0.616,
+      "tier": "high",
+      "tier_emoji": "🟢",
+      "most_likely_score": "1-0",
+      "pick": "home",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715312,
+      "date": "2026-07-18 01:00:00",
+      "home": "León",
+      "away": "Atlas",
+      "home_win": 0.484,
+      "draw": 0.324,
+      "away_win": 0.192,
+      "confidence": 0.484,
+      "tier": "medium",
+      "tier_emoji": "🟡",
+      "most_likely_score": "1-0",
+      "pick": "home",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715313,
+      "date": "2026-07-18 01:00:00",
+      "home": "Atlético San Luis",
+      "away": "Cruz Azul",
+      "home_win": 0.522,
+      "draw": 0.272,
+      "away_win": 0.206,
+      "confidence": 0.522,
+      "tier": "medium",
+      "tier_emoji": "🟡",
+      "most_likely_score": "1-0",
+      "pick": "home",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715311,
+      "date": "2026-07-18 03:00:00",
+      "home": "Juárez",
+      "away": "Puebla",
+      "home_win": 0.344,
+      "draw": 0.39,
+      "away_win": 0.265,
+      "confidence": 0.39,
+      "tier": "low",
+      "tier_emoji": "⚪",
+      "most_likely_score": "0-0",
+      "pick": "draw",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715310,
+      "date": "2026-07-18 23:00:00",
+      "home": "Pumas UNAM",
+      "away": "Pachuca",
+      "home_win": 0.346,
+      "draw": 0.292,
+      "away_win": 0.361,
+      "confidence": 0.361,
+      "tier": "low",
+      "tier_emoji": "⚪",
+      "most_likely_score": "0-1",
+      "pick": "away",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715308,
+      "date": "2026-07-19 01:00:00",
+      "home": "Monterrey",
+      "away": "Santos Laguna",
+      "home_win": 0.359,
+      "draw": 0.307,
+      "away_win": 0.333,
+      "confidence": 0.359,
+      "tier": "low",
+      "tier_emoji": "⚪",
+      "most_likely_score": "1-0",
+      "pick": "home",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715309,
+      "date": "2026-07-19 01:00:00",
+      "home": "Guadalajara",
+      "away": "Toluca",
+      "home_win": 0.29,
+      "draw": 0.248,
+      "away_win": 0.462,
+      "confidence": 0.462,
+      "tier": "medium",
+      "tier_emoji": "🟡",
+      "most_likely_score": "0-1",
+      "pick": "away",
+      "derby": false
+    },
+    {
+      "fixture_id": 19715307,
+      "date": "2026-07-19 03:00:00",
+      "home": "Querétaro",
+      "away": "América",
+      "home_win": 0.475,
+      "draw": 0.276,
+      "away_win": 0.249,
+      "confidence": 0.475,
+      "tier": "medium",
+      "tier_emoji": "🟡",
+      "most_likely_score": "1-0",
+      "pick": "home",
+      "derby": false
+    }
+  ],
+  "predictions_tier_breakdown": {
+    "high": 1,
+    "medium": 5,
+    "low": 3
+  },
+  "coach_changes_30d": [
+    {
+      "team": "Monterrey",
+      "new_coach": "Matías Jesús Almeyda",
+      "previous": "Domènec Torrent Font",
+      "start_date": "2026-07-01"
+    }
+  ],
+  "live_accuracy_90d": null
+}

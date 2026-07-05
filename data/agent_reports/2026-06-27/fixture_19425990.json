@@ -1,0 +1,92 @@
+{
+  "fixture_id": 19425990,
+  "match_id": "19425990",
+  "context": {
+    "home_team": "Mazatlán",
+    "away_team": "Santos Laguna",
+    "date": "2025-10-22 03:00:00.000000",
+    "venue": null,
+    "result": "draw"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19425990",
+      "probs": {
+        "home_win": 0.4661,
+        "draw": 0.2847,
+        "away_win": 0.2492
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.658,
+      "components": {
+        "xg": null,
+        "elo_diff": 135.3,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 46.6% home, 28.5% draw, 24.9% away (conf=0.66)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19425990",
+      "team_favored": "Mazatlán",
+      "win_probability_estimate": 0.5461,
+      "ensemble_prob_home": 0.4661,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en None: ventaja tradicional",
+        "Ensemble da 46.6% al local — base cuantitativa"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Santos Laguna) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local MZA tiene ventaja de localía. Ensemble da 46.6%. Bull refuerza a 54.6% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19425990",
+      "team_favored": "Santos Laguna",
+      "win_probability_estimate": 0.2992,
+      "ensemble_prob_away": 0.2492,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Visitante (Santos Laguna) puede capitalizar errores locales",
+        "Ensemble da 24.9% al visitante — base cuantitativa",
+        "Local MZA viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local MZA tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante SLA tiene oportunidad. Ensemble da 24.9%. Bear refuerza a 29.9%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19425990",
+    "final_prediction": {
+      "home_win": 0.45548900000000003,
+      "draw": 0.29455275000000003,
+      "away_win": 0.24995825
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.6256,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Mazatlán, Bear favorece Santos Laguna (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.546",
+      "bear_visitante home_win=0.315",
+      "numerico home_win=0.466"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:56.895096"
+}

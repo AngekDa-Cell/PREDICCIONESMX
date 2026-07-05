@@ -1,0 +1,93 @@
+{
+  "fixture_id": 19425994,
+  "match_id": "19425994",
+  "context": {
+    "home_team": "Tijuana",
+    "away_team": "Toluca",
+    "date": "2025-10-23 03:00:00.000000",
+    "venue": "Estadio Caliente",
+    "result": "draw"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19425994",
+      "probs": {
+        "home_win": 0.2998,
+        "draw": 0.2247,
+        "away_win": 0.4754
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.711,
+      "components": {
+        "xg": null,
+        "elo_diff": -18.0,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 30.0% home, 22.5% draw, 47.5% away (conf=0.71)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19425994",
+      "team_favored": "Tijuana",
+      "win_probability_estimate": 0.3498,
+      "ensemble_prob_home": 0.2998,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en Estadio Caliente: ventaja tradicional",
+        "Ensemble da 30.0% al local — base cuantitativa",
+        "Estadio con capacidad 27,333"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Toluca) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local TIJ tiene ventaja de localía. Ensemble da 30.0%. Bull refuerza a 35.0% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19425994",
+      "team_favored": "Toluca",
+      "win_probability_estimate": 0.5554,
+      "ensemble_prob_away": 0.4754,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Toluca) puede capitalizar errores locales",
+        "Ensemble da 47.5% al visitante — base cuantitativa",
+        "Local TIJ viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local TIJ tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante TOL tiene oportunidad. Ensemble da 47.5%. Bear refuerza a 55.5%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19425994",
+    "final_prediction": {
+      "home_win": 0.2923609652675687,
+      "draw": 0.24762833398337883,
+      "away_win": 0.46001070074905237
+    },
+    "predicted_outcome": "away_win",
+    "confidence": 0.6627,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Tijuana, Bear favorece Toluca (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.350",
+      "bear_visitante home_win=0.200",
+      "numerico home_win=0.300"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:56.326163"
+}

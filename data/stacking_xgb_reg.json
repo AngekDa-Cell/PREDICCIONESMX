@@ -1,0 +1,27 @@
+{
+  "model_type": "xgb",
+  "train_range": [
+    "2024-01-01",
+    "2024-12-31"
+  ],
+  "test_range": [
+    "2025-01-01",
+    "2025-12-31"
+  ],
+  "n_train": 340,
+  "n_test": 340,
+  "baseline": {
+    "accuracy": 53.8235294117647,
+    "brier": 0.6005498927142233
+  },
+  "train_metrics": {
+    "accuracy": 56.470588235294116,
+    "brier": 0.5581156650127969
+  },
+  "test_metrics": {
+    "accuracy": 53.529411764705884,
+    "brier": 0.588882102457647
+  },
+  "delta_acc_pp": -0.29,
+  "delta_brier": -0.0117
+}

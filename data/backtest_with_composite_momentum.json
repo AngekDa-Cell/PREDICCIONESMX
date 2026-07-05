@@ -1,0 +1,182 @@
+{
+  "generated_at": "2026-06-27T03:12:33.008042",
+  "config": {
+    "start": "2025-01-01",
+    "end": "2025-12-31",
+    "min_confidence": 0.0
+  },
+  "results": {
+    "baseline": {
+      "n_samples": 100,
+      "accuracy": 0.46,
+      "brier": 0.6428,
+      "log_loss": 1.0661,
+      "calibration_table": [
+        {
+          "bucket": "0.2-0.3",
+          "predicted_prob": 0.3,
+          "n": 12,
+          "actual_rate": 0.3333,
+          "delta": 0.0333
+        },
+        {
+          "bucket": "0.3-0.4",
+          "predicted_prob": 0.4,
+          "n": 62,
+          "actual_rate": 0.4194,
+          "delta": 0.0194
+        },
+        {
+          "bucket": "0.4-0.5",
+          "predicted_prob": 0.5,
+          "n": 86,
+          "actual_rate": 0.4884,
+          "delta": -0.0116
+        },
+        {
+          "bucket": "0.5-0.6",
+          "predicted_prob": 0.6,
+          "n": 38,
+          "actual_rate": 0.5263,
+          "delta": -0.0737
+        },
+        {
+          "bucket": "0.6-0.7",
+          "predicted_prob": 0.7,
+          "n": 2,
+          "actual_rate": 0.0,
+          "delta": -0.7
+        }
+      ]
+    },
+    "with_calibration": {
+      "n_samples": 100,
+      "accuracy": 0.45,
+      "brier": 0.6423,
+      "log_loss": 1.065,
+      "calibration_table": [
+        {
+          "bucket": "0.2-0.3",
+          "predicted_prob": 0.3,
+          "n": 12,
+          "actual_rate": 0.25,
+          "delta": -0.05
+        },
+        {
+          "bucket": "0.3-0.4",
+          "predicted_prob": 0.4,
+          "n": 58,
+          "actual_rate": 0.3966,
+          "delta": -0.0034
+        },
+        {
+          "bucket": "0.4-0.5",
+          "predicted_prob": 0.5,
+          "n": 86,
+          "actual_rate": 0.4884,
+          "delta": -0.0116
+        },
+        {
+          "bucket": "0.5-0.6",
+          "predicted_prob": 0.6,
+          "n": 42,
+          "actual_rate": 0.5238,
+          "delta": -0.0762
+        },
+        {
+          "bucket": "0.6-0.7",
+          "predicted_prob": 0.7,
+          "n": 2,
+          "actual_rate": 0.0,
+          "delta": -0.7
+        }
+      ]
+    },
+    "with_threshold": {
+      "n_samples": 100,
+      "accuracy": 0.46,
+      "brier": 0.6428,
+      "log_loss": 1.0661,
+      "calibration_table": [
+        {
+          "bucket": "0.2-0.3",
+          "predicted_prob": 0.3,
+          "n": 12,
+          "actual_rate": 0.3333,
+          "delta": 0.0333
+        },
+        {
+          "bucket": "0.3-0.4",
+          "predicted_prob": 0.4,
+          "n": 62,
+          "actual_rate": 0.4194,
+          "delta": 0.0194
+        },
+        {
+          "bucket": "0.4-0.5",
+          "predicted_prob": 0.5,
+          "n": 86,
+          "actual_rate": 0.4884,
+          "delta": -0.0116
+        },
+        {
+          "bucket": "0.5-0.6",
+          "predicted_prob": 0.6,
+          "n": 38,
+          "actual_rate": 0.5263,
+          "delta": -0.0737
+        },
+        {
+          "bucket": "0.6-0.7",
+          "predicted_prob": 0.7,
+          "n": 2,
+          "actual_rate": 0.0,
+          "delta": -0.7
+        }
+      ]
+    },
+    "with_both": {
+      "n_samples": 100,
+      "accuracy": 0.45,
+      "brier": 0.6423,
+      "log_loss": 1.065,
+      "calibration_table": [
+        {
+          "bucket": "0.2-0.3",
+          "predicted_prob": 0.3,
+          "n": 12,
+          "actual_rate": 0.25,
+          "delta": -0.05
+        },
+        {
+          "bucket": "0.3-0.4",
+          "predicted_prob": 0.4,
+          "n": 58,
+          "actual_rate": 0.3966,
+          "delta": -0.0034
+        },
+        {
+          "bucket": "0.4-0.5",
+          "predicted_prob": 0.5,
+          "n": 86,
+          "actual_rate": 0.4884,
+          "delta": -0.0116
+        },
+        {
+          "bucket": "0.5-0.6",
+          "predicted_prob": 0.6,
+          "n": 42,
+          "actual_rate": 0.5238,
+          "delta": -0.0762
+        },
+        {
+          "bucket": "0.6-0.7",
+          "predicted_prob": 0.7,
+          "n": 2,
+          "actual_rate": 0.0,
+          "delta": -0.7
+        }
+      ]
+    }
+  }
+}

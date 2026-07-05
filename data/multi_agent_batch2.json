@@ -1,0 +1,36 @@
+{
+  "batch": 2,
+  "n_fixtures": 2,
+  "metrics": {
+    "numerico_accuracy": 0.5,
+    "judge_accuracy": 0.5,
+    "delta_accuracy_pp": 0.0,
+    "numerico_brier": 0.4458304,
+    "judge_brier": 0.47353942037499996,
+    "delta_brier": 0.02770902037499995
+  },
+  "fixtures": [
+    {
+      "match": "Pumas vs San Luis",
+      "real": "away_win",
+      "numerico_pick": "home_win",
+      "judge_pick": "home_win",
+      "numerico_correct": false,
+      "judge_correct": false
+    },
+    {
+      "match": "Monterrey vs Mazatlán",
+      "real": "home_win",
+      "numerico_pick": "home_win",
+      "judge_pick": "home_win",
+      "numerico_correct": true,
+      "judge_correct": true
+    }
+  ],
+  "cumulative": {
+    "total_fixtures": 4,
+    "numerico_correct": 2,
+    "judge_correct": 3,
+    "delta_accuracy_pp": 25.0
+  }
+}

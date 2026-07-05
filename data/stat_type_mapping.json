@@ -1,0 +1,222 @@
+{
+  "34": {
+    "code": "corners",
+    "name": "Corners",
+    "developer_name": "CORNERS"
+  },
+  "41": {
+    "code": "shots-off-target",
+    "name": "Shots Off Target",
+    "developer_name": "SHOTS_OFF_TARGET"
+  },
+  "42": {
+    "code": "shots-total",
+    "name": "Shots Total",
+    "developer_name": "SHOTS_TOTAL"
+  },
+  "43": {
+    "code": "attacks",
+    "name": "Attacks",
+    "developer_name": "ATTACKS"
+  },
+  "44": {
+    "code": "dangerous-attacks",
+    "name": "Dangerous Attacks",
+    "developer_name": "DANGEROUS_ATTACKS"
+  },
+  "45": {
+    "code": "ball-possession",
+    "name": "Ball Possession %",
+    "developer_name": "BALL_POSSESSION"
+  },
+  "46": {
+    "code": "ball-safe",
+    "name": "Ball Safe",
+    "developer_name": "BALL_SAFE"
+  },
+  "49": {
+    "code": "shots-insidebox",
+    "name": "Shots Insidebox",
+    "developer_name": "SHOTS_INSIDEBOX"
+  },
+  "50": {
+    "code": "shots-outsidebox",
+    "name": "Shots Outsidebox",
+    "developer_name": "SHOTS_OUTSIDEBOX"
+  },
+  "52": {
+    "code": "goals",
+    "name": "Goals",
+    "developer_name": "GOALS"
+  },
+  "53": {
+    "code": "goals-kicks",
+    "name": "Goal Kicks",
+    "developer_name": "GOAL_KICKS"
+  },
+  "54": {
+    "code": "goal-attempts",
+    "name": "Goal Attempts",
+    "developer_name": "GOAL_ATTEMPTS"
+  },
+  "55": {
+    "code": "free-kicks",
+    "name": "Free Kicks",
+    "developer_name": "FREE_KICKS"
+  },
+  "56": {
+    "code": "fouls",
+    "name": "Fouls",
+    "developer_name": "FOULS"
+  },
+  "57": {
+    "code": "saves",
+    "name": "Saves",
+    "developer_name": "SAVES"
+  },
+  "58": {
+    "code": "shots-blocked",
+    "name": "Shots Blocked",
+    "developer_name": "SHOTS_BLOCKED"
+  },
+  "59": {
+    "code": "substitutions",
+    "name": "Substitutions",
+    "developer_name": "SUBSTITUTIONS"
+  },
+  "60": {
+    "code": "throwins",
+    "name": "Throwins",
+    "developer_name": "THROWINS"
+  },
+  "62": {
+    "code": "long-passes",
+    "name": "Long Passes",
+    "developer_name": "LONG_PASSES"
+  },
+  "64": {
+    "code": "hit-woodwork",
+    "name": "Hit Woodwork",
+    "developer_name": "HIT_WOODWORK"
+  },
+  "78": {
+    "code": "tackles",
+    "name": "Tackles",
+    "developer_name": "TACKLES"
+  },
+  "79": {
+    "code": "assists",
+    "name": "Assists",
+    "developer_name": "ASSISTS"
+  },
+  "80": {
+    "code": "passes",
+    "name": "Passes",
+    "developer_name": "PASSES"
+  },
+  "81": {
+    "code": "successful-passes",
+    "name": "Successful Passes",
+    "developer_name": "SUCCESSFUL_PASSES"
+  },
+  "82": {
+    "code": "successful-passes-percentage",
+    "name": "Successful Passes Percentage",
+    "developer_name": "SUCCESSFUL_PASSES_PERCENTAGE"
+  },
+  "84": {
+    "code": "yellowcards",
+    "name": "Yellowcards",
+    "developer_name": "YELLOWCARDS"
+  },
+  "86": {
+    "code": "shots-on-target",
+    "name": "Shots On Target",
+    "developer_name": "SHOTS_ON_TARGET"
+  },
+  "87": {
+    "code": "injuries",
+    "name": "Injuries",
+    "developer_name": "INJURIES"
+  },
+  "98": {
+    "code": "total-crosses",
+    "name": "Total Crosses",
+    "developer_name": "TOTAL_CROSSES"
+  },
+  "99": {
+    "code": "accurate-crosses",
+    "name": "Accurate Crosses",
+    "developer_name": "ACCURATE_CROSSES"
+  },
+  "100": {
+    "code": "interceptions",
+    "name": "Interceptions",
+    "developer_name": "INTERCEPTIONS"
+  },
+  "108": {
+    "code": "dribble-attempts",
+    "name": "Dribble Attempts",
+    "developer_name": "DRIBBLED_ATTEMPTS"
+  },
+  "109": {
+    "code": "successful-dribbles",
+    "name": "Successful Dribbles",
+    "developer_name": "SUCCESSFUL_DRIBBLES"
+  },
+  "117": {
+    "code": "key-passes",
+    "name": "Key Passes",
+    "developer_name": "KEY_PASSES"
+  },
+  "580": {
+    "code": "big-chances-created",
+    "name": "Big Chances Created",
+    "developer_name": "BIG_CHANCES_CREATED"
+  },
+  "581": {
+    "code": "big-chances-missed",
+    "name": "Big Chances Missed",
+    "developer_name": "BIG_CHANCES_MISSED"
+  },
+  "1605": {
+    "code": "successful-dribbles-percentage",
+    "name": "Successful Dribbles Percentage",
+    "developer_name": "SUCCESSFUL_DRIBBLES_PERCENTAGE"
+  },
+  "27264": {
+    "code": "successful-long-passes",
+    "name": "Successful Long Passes",
+    "developer_name": "SUCCESSFUL_LONG_PASSES"
+  },
+  "27265": {
+    "code": "successful-long-passes-percentage",
+    "name": "Successful Long Passes Percentage",
+    "developer_name": "SUCCESSFUL_LONG_PASSES_PERCENTAGE"
+  },
+  "51": {
+    "code": "offsides",
+    "name": "Offsides",
+    "developer_name": "OFFSIDES"
+  },
+  "47": {
+    "code": "penalties",
+    "name": "Penalties",
+    "developer_name": "PENALTIES"
+  },
+  "106": {
+    "code": "duels-won",
+    "name": "Duels Won",
+    "developer_name": "DUELS_WON"
+  },
+  "83": {
+    "code": "redcards",
+    "name": "Redcards",
+    "developer_name": "REDCARDS"
+  },
+  "85": {
+    "code": "yellowred-cards",
+    "name": "Yellowred Cards",
+    "developer_name": "YELLOWRED_CARDS"
+  }
+}

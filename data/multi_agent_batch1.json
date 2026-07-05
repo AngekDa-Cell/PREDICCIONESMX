@@ -1,0 +1,32 @@
+{
+  "batch": 1,
+  "n_fixtures": 2,
+  "metrics": {
+    "numerico_accuracy": 0.5,
+    "judge_accuracy": 1.0,
+    "delta_accuracy_pp": 50.0,
+    "numerico_brier": 0.43914597999999994,
+    "judge_brier": 0.4541285763249999,
+    "delta_brier": 0.014982596324999986
+  },
+  "fixtures": [
+    {
+      "fixture_id": 19425897,
+      "match": "Tigres vs Puebla",
+      "real": "home_win",
+      "numerico_pick": "home_win",
+      "judge_pick": "home_win",
+      "numerico_correct": true,
+      "judge_correct": true
+    },
+    {
+      "fixture_id": 19345880,
+      "match": "Querétaro vs América",
+      "real": "away_win",
+      "numerico_pick": "home_win",
+      "judge_pick": "away_win",
+      "numerico_correct": false,
+      "judge_correct": true
+    }
+  ]
+}

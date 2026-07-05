@@ -1,0 +1,1624 @@
+{
+  "generated_at": "2026-07-01T03:46:29.973829+00:00",
+  "min_games_threshold": 10,
+  "referee_count": 95,
+  "stats": {
+    "3679": {
+      "name": "Oscar Mejia Garcia",
+      "games": 16,
+      "cards_per_game": 2.02,
+      "fouls_per_game": 10.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.727,
+      "home_bias": 0.267,
+      "card_strictness": "lenient"
+    },
+    "3690": {
+      "name": "Fernando Hernandez Gomez",
+      "games": 23,
+      "cards_per_game": 1.8,
+      "fouls_per_game": 17.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.429,
+      "home_bias": -0.031,
+      "card_strictness": "lenient"
+    },
+    "12010": {
+      "name": "Pablo Israel Hernández Luna",
+      "games": 61,
+      "cards_per_game": 1.29,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.65,
+      "home_bias": 0.19,
+      "card_strictness": "lenient"
+    },
+    "12213": {
+      "name": "José de Jesús Baños Caballero",
+      "games": 44,
+      "cards_per_game": 1.18,
+      "fouls_per_game": 10.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.421,
+      "home_bias": -0.039,
+      "card_strictness": "lenient"
+    },
+    "12228": {
+      "name": "José Alfredo López Cruz",
+      "games": 17,
+      "cards_per_game": 0.84,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 1.0,
+      "home_win_rate": 0.455,
+      "home_bias": -0.005,
+      "card_strictness": "lenient"
+    },
+    "12231": {
+      "name": "José Martínez",
+      "games": 137,
+      "cards_per_game": 1.56,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.541,
+      "home_bias": 0.081,
+      "card_strictness": "lenient"
+    },
+    "12689": {
+      "name": "Michel Alejandro Morales Morales",
+      "games": 109,
+      "cards_per_game": 1.6,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.639,
+      "home_bias": 0.179,
+      "card_strictness": "lenient"
+    },
+    "12691": {
+      "name": "Christian Kiabek Espinosa Zavala",
+      "games": 116,
+      "cards_per_game": 1.42,
+      "fouls_per_game": 10.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.578,
+      "home_bias": 0.118,
+      "card_strictness": "lenient"
+    },
+    "13399": {
+      "name": "M. Hernández Paredes",
+      "games": 53,
+      "cards_per_game": 1.25,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.73,
+      "home_bias": 0.27,
+      "card_strictness": "lenient"
+    },
+    "13409": {
+      "name": "A. Hernández Delgado",
+      "games": 48,
+      "cards_per_game": 1.24,
+      "fouls_per_game": 18.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.606,
+      "home_bias": 0.146,
+      "card_strictness": "lenient"
+    },
+    "14749": {
+      "name": "Jorge Isaac Rojas Castillo",
+      "games": 17,
+      "cards_per_game": 1.41,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 1.0,
+      "home_win_rate": 0.364,
+      "home_bias": -0.096,
+      "card_strictness": "lenient"
+    },
+    "14921": {
+      "name": "Óscar Macías Romo",
+      "games": 82,
+      "cards_per_game": 1.2,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.623,
+      "home_bias": 0.163,
+      "card_strictness": "lenient"
+    },
+    "14924": {
+      "name": "Jorge Antonio Pérez Durán",
+      "games": 36,
+      "cards_per_game": 1.16,
+      "fouls_per_game": 17.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.571,
+      "home_bias": 0.111,
+      "card_strictness": "lenient"
+    },
+    "14936": {
+      "name": "Fernando Hernández Gómez",
+      "games": 96,
+      "cards_per_game": 1.6,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.667,
+      "home_bias": 0.207,
+      "card_strictness": "lenient"
+    },
+    "15641": {
+      "name": "César Arturo Ramos Palazuelos",
+      "games": 129,
+      "cards_per_game": 1.57,
+      "fouls_per_game": 14.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.626,
+      "home_bias": 0.166,
+      "card_strictness": "lenient"
+    },
+    "15644": {
+      "name": "Adonai Escobedo González",
+      "games": 119,
+      "cards_per_game": 1.54,
+      "fouls_per_game": 10.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.622,
+      "home_bias": 0.162,
+      "card_strictness": "lenient"
+    },
+    "15645": {
+      "name": "Karen Janett Díaz Medina",
+      "games": 128,
+      "cards_per_game": 1.66,
+      "fouls_per_game": 8.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.561,
+      "home_bias": 0.101,
+      "card_strictness": "lenient"
+    },
+    "15646": {
+      "name": "Edgar Allan Morales Olvera",
+      "games": 56,
+      "cards_per_game": 1.29,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.628,
+      "home_bias": 0.168,
+      "card_strictness": "lenient"
+    },
+    "15916": {
+      "name": "Luis Enrique Santander Aguirre",
+      "games": 118,
+      "cards_per_game": 1.29,
+      "fouls_per_game": 10.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.627,
+      "home_bias": 0.167,
+      "card_strictness": "lenient"
+    },
+    "16047": {
+      "name": "Fernando Guerrero Ramírez",
+      "games": 92,
+      "cards_per_game": 1.09,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.529,
+      "home_bias": 0.069,
+      "card_strictness": "lenient"
+    },
+    "20835": {
+      "name": "Erick Yair Miranda Galindo",
+      "games": 35,
+      "cards_per_game": 1.28,
+      "fouls_per_game": 5.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.538,
+      "home_bias": 0.078,
+      "card_strictness": "lenient"
+    },
+    "20836": {
+      "name": "Óscar Mejía García",
+      "games": 104,
+      "cards_per_game": 1.33,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.583,
+      "home_bias": 0.123,
+      "card_strictness": "lenient"
+    },
+    "20838": {
+      "name": "Diego Montaño Robles",
+      "games": 80,
+      "cards_per_game": 1.35,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.577,
+      "home_bias": 0.117,
+      "card_strictness": "lenient"
+    },
+    "20843": {
+      "name": "Alejandro Funk Villafañe",
+      "games": 23,
+      "cards_per_game": 1.36,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.562,
+      "home_bias": 0.102,
+      "card_strictness": "lenient"
+    },
+    "20854": {
+      "name": "Mauricio Nieto Torres",
+      "games": 120,
+      "cards_per_game": 1.52,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.622,
+      "home_bias": 0.162,
+      "card_strictness": "lenient"
+    },
+    "20856": {
+      "name": "Mario Humberto Vargas Mata",
+      "games": 15,
+      "cards_per_game": 1.24,
+      "fouls_per_game": 10.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.8,
+      "home_bias": 0.34,
+      "card_strictness": "lenient"
+    },
+    "20872": {
+      "name": "Alberto Morín Méndez",
+      "games": 109,
+      "cards_per_game": 1.57,
+      "fouls_per_game": 10.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.659,
+      "home_bias": 0.199,
+      "card_strictness": "lenient"
+    },
+    "20936": {
+      "name": "César Cerritos García",
+      "games": 31,
+      "cards_per_game": 1.48,
+      "fouls_per_game": 14.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.565,
+      "home_bias": 0.105,
+      "card_strictness": "lenient"
+    },
+    "20967": {
+      "name": "Enrique Martínez Sandoval",
+      "games": 72,
+      "cards_per_game": 1.59,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.569,
+      "home_bias": 0.109,
+      "card_strictness": "lenient"
+    },
+    "20990": {
+      "name": "B. González",
+      "games": 79,
+      "cards_per_game": 1.23,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.672,
+      "home_bias": 0.212,
+      "card_strictness": "lenient"
+    },
+    "21001": {
+      "name": "Enrique Isaac Bustos Díaz",
+      "games": 102,
+      "cards_per_game": 1.59,
+      "fouls_per_game": 9.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.608,
+      "home_bias": 0.148,
+      "card_strictness": "lenient"
+    },
+    "21003": {
+      "name": "Juan Andrés Esquivel González",
+      "games": 16,
+      "cards_per_game": 1.05,
+      "fouls_per_game": 11.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.7,
+      "home_bias": 0.24,
+      "card_strictness": "lenient"
+    },
+    "21103": {
+      "name": "Edgar Magdaleno Castrejon",
+      "games": 72,
+      "cards_per_game": 1.58,
+      "fouls_per_game": 16.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.667,
+      "home_bias": 0.207,
+      "card_strictness": "lenient"
+    },
+    "21104": {
+      "name": "Jorge Antonio Sánchez Espinoza",
+      "games": 123,
+      "cards_per_game": 1.63,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.639,
+      "home_bias": 0.179,
+      "card_strictness": "lenient"
+    },
+    "21105": {
+      "name": "Víctor Alfonso Cáceres Hernández",
+      "games": 131,
+      "cards_per_game": 1.48,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.625,
+      "home_bias": 0.165,
+      "card_strictness": "lenient"
+    },
+    "21127": {
+      "name": "Michel Ricardo Espinoza Avalos",
+      "games": 105,
+      "cards_per_game": 1.59,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.618,
+      "home_bias": 0.158,
+      "card_strictness": "lenient"
+    },
+    "21155": {
+      "name": "Saúl Alfredo Silva Pineda",
+      "games": 12,
+      "cards_per_game": 1.21,
+      "fouls_per_game": 14.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.8,
+      "home_bias": 0.34,
+      "card_strictness": "lenient"
+    },
+    "21156": {
+      "name": "Enedina Caudillo Gómez",
+      "games": 92,
+      "cards_per_game": 1.67,
+      "fouls_per_game": 10.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.53,
+      "home_bias": 0.07,
+      "card_strictness": "lenient"
+    },
+    "21213": {
+      "name": "Guillermo Pacheco Larios",
+      "games": 83,
+      "cards_per_game": 1.38,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.585,
+      "home_bias": 0.125,
+      "card_strictness": "lenient"
+    },
+    "21217": {
+      "name": "Mayra Alejandra Mora Cerero",
+      "games": 10,
+      "cards_per_game": 1.88,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 1.0,
+      "home_bias": 0.54,
+      "card_strictness": "lenient"
+    },
+    "21219": {
+      "name": "Edgar Ulises Rangel Araújo",
+      "games": 50,
+      "cards_per_game": 1.32,
+      "fouls_per_game": 12.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.529,
+      "home_bias": 0.069,
+      "card_strictness": "lenient"
+    },
+    "21318": {
+      "name": "Eduardo Acosta Orea",
+      "games": 38,
+      "cards_per_game": 1.08,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 1.0,
+      "home_win_rate": 0.667,
+      "home_bias": 0.207,
+      "card_strictness": "lenient"
+    },
+    "21814": {
+      "name": "Marco Antonio Bisguerra Mendiola",
+      "games": 112,
+      "cards_per_game": 1.58,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.629,
+      "home_bias": 0.169,
+      "card_strictness": "lenient"
+    },
+    "21872": {
+      "name": "Marco Antonio Ortíz Nava",
+      "games": 134,
+      "cards_per_game": 1.55,
+      "fouls_per_game": 16.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.62,
+      "home_bias": 0.16,
+      "card_strictness": "lenient"
+    },
+    "21877": {
+      "name": "Eduardo Galván Basulto",
+      "games": 22,
+      "cards_per_game": 1.24,
+      "fouls_per_game": 18.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.333,
+      "home_bias": -0.127,
+      "card_strictness": "lenient"
+    },
+    "32420": {
+      "name": "Jesús Lorenzo Soto Dávila",
+      "games": 73,
+      "cards_per_game": 1.56,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.702,
+      "home_bias": 0.242,
+      "card_strictness": "lenient"
+    },
+    "32421": {
+      "name": "Erick Durón Martínez",
+      "games": 87,
+      "cards_per_game": 1.61,
+      "fouls_per_game": 14.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.65,
+      "home_bias": 0.19,
+      "card_strictness": "lenient"
+    },
+    "32422": {
+      "name": "Manuel Enrique Martínez Sánchez",
+      "games": 66,
+      "cards_per_game": 1.59,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.6,
+      "home_bias": 0.14,
+      "card_strictness": "lenient"
+    },
+    "32424": {
+      "name": "Jonathan Maximiliano Gómez Olmos",
+      "games": 139,
+      "cards_per_game": 1.45,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.555,
+      "home_bias": 0.095,
+      "card_strictness": "lenient"
+    },
+    "33639": {
+      "name": "Leonardo Javier Castillo Rodríguez",
+      "games": 123,
+      "cards_per_game": 1.56,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.576,
+      "home_bias": 0.116,
+      "card_strictness": "lenient"
+    },
+    "37634": {
+      "name": "Jesus Rafael Lopez Valle",
+      "games": 93,
+      "cards_per_game": 1.67,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.484,
+      "home_bias": 0.024,
+      "card_strictness": "lenient"
+    },
+    "41332": {
+      "name": "Mario Terrazas Chávez",
+      "games": 69,
+      "cards_per_game": 1.54,
+      "fouls_per_game": 5.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.679,
+      "home_bias": 0.219,
+      "card_strictness": "lenient"
+    },
+    "46314": {
+      "name": "Abraham de Jesús Quirarte Contreras",
+      "games": 61,
+      "cards_per_game": 1.81,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.696,
+      "home_bias": 0.236,
+      "card_strictness": "lenient"
+    },
+    "57025": {
+      "name": "Sandra Ramírez",
+      "games": 56,
+      "cards_per_game": 1.88,
+      "fouls_per_game": 10.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.696,
+      "home_bias": 0.236,
+      "card_strictness": "lenient"
+    },
+    "65864": {
+      "name": "Jaime Daniel González Ramírez",
+      "games": 64,
+      "cards_per_game": 1.49,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.562,
+      "home_bias": 0.102,
+      "card_strictness": "lenient"
+    },
+    "65892": {
+      "name": "Jéssica Fernanda Morales Morales",
+      "games": 74,
+      "cards_per_game": 1.53,
+      "fouls_per_game": 15.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.545,
+      "home_bias": 0.085,
+      "card_strictness": "lenient"
+    },
+    "65922": {
+      "name": "Daniel Quintero Huittrón",
+      "games": 127,
+      "cards_per_game": 1.66,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.596,
+      "home_bias": 0.136,
+      "card_strictness": "lenient"
+    },
+    "65998": {
+      "name": "?. Meza Méndez",
+      "games": 20,
+      "cards_per_game": 1.51,
+      "fouls_per_game": 14.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.5,
+      "home_bias": 0.04,
+      "card_strictness": "lenient"
+    },
+    "66029": {
+      "name": "Iván Antonio López Sánchez",
+      "games": 78,
+      "cards_per_game": 1.68,
+      "fouls_per_game": 18.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.727,
+      "home_bias": 0.267,
+      "card_strictness": "lenient"
+    },
+    "66037": {
+      "name": "Oscar Yahir Barriga Castro",
+      "games": 53,
+      "cards_per_game": 1.62,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.575,
+      "home_bias": 0.115,
+      "card_strictness": "lenient"
+    },
+    "66038": {
+      "name": "Gustavo Padilla Aguirre",
+      "games": 27,
+      "cards_per_game": 1.32,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.579,
+      "home_bias": 0.119,
+      "card_strictness": "lenient"
+    },
+    "66168": {
+      "name": "Maximiliano Quintero Hernández",
+      "games": 113,
+      "cards_per_game": 1.57,
+      "fouls_per_game": 12.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.561,
+      "home_bias": 0.101,
+      "card_strictness": "lenient"
+    },
+    "66236": {
+      "name": "Jair De Jesús Sosa García",
+      "games": 60,
+      "cards_per_game": 1.68,
+      "fouls_per_game": 14.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.585,
+      "home_bias": 0.125,
+      "card_strictness": "lenient"
+    },
+    "66356": {
+      "name": "Mario Alberto Ramirez Sanchez",
+      "games": 12,
+      "cards_per_game": 1.51,
+      "fouls_per_game": 14.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.571,
+      "home_bias": 0.111,
+      "card_strictness": "lenient"
+    },
+    "66388": {
+      "name": "Michel Caballero Galicia",
+      "games": 90,
+      "cards_per_game": 1.32,
+      "fouls_per_game": 10.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.615,
+      "home_bias": 0.155,
+      "card_strictness": "lenient"
+    },
+    "67114": {
+      "name": "Katia Itzel García",
+      "games": 37,
+      "cards_per_game": 1.8,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.714,
+      "home_bias": 0.254,
+      "card_strictness": "lenient"
+    },
+    "69283": {
+      "name": "Martín Molina Astorga",
+      "games": 65,
+      "cards_per_game": 1.54,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.56,
+      "home_bias": 0.1,
+      "card_strictness": "lenient"
+    },
+    "69284": {
+      "name": "Luis Alfredo García Rodríguez",
+      "games": 74,
+      "cards_per_game": 1.47,
+      "fouls_per_game": 14.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.534,
+      "home_bias": 0.074,
+      "card_strictness": "lenient"
+    },
+    "69380": {
+      "name": "Ismael Rosario Lopez Peñuelas",
+      "games": 100,
+      "cards_per_game": 1.59,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.603,
+      "home_bias": 0.143,
+      "card_strictness": "lenient"
+    },
+    "69429": {
+      "name": "Jorge Abraham Camacho Peregrina",
+      "games": 85,
+      "cards_per_game": 1.34,
+      "fouls_per_game": 18.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.619,
+      "home_bias": 0.159,
+      "card_strictness": "lenient"
+    },
+    "69773": {
+      "name": "Karen Hernández Andrade",
+      "games": 50,
+      "cards_per_game": 1.71,
+      "fouls_per_game": 12.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.73,
+      "home_bias": 0.27,
+      "card_strictness": "lenient"
+    },
+    "71920": {
+      "name": "Vicente Jassiel Reynoso Arce",
+      "games": 69,
+      "cards_per_game": 1.41,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.75,
+      "home_bias": 0.29,
+      "card_strictness": "lenient"
+    },
+    "72863": {
+      "name": "Rodrigo René Sansores Díaz",
+      "games": 35,
+      "cards_per_game": 1.6,
+      "fouls_per_game": 8.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.808,
+      "home_bias": 0.348,
+      "card_strictness": "lenient"
+    },
+    "72893": {
+      "name": "Jaime Adrián Villasana Carrasco",
+      "games": 39,
+      "cards_per_game": 1.78,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.567,
+      "home_bias": 0.107,
+      "card_strictness": "lenient"
+    },
+    "73009": {
+      "name": "Miguel Ángel Anaya Suárez",
+      "games": 32,
+      "cards_per_game": 1.31,
+      "fouls_per_game": 12.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.522,
+      "home_bias": 0.062,
+      "card_strictness": "lenient"
+    },
+    "73161": {
+      "name": "Jesús Aarón Gómez Ruíz",
+      "games": 19,
+      "cards_per_game": 1.75,
+      "fouls_per_game": 12.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.615,
+      "home_bias": 0.155,
+      "card_strictness": "lenient"
+    },
+    "74415": {
+      "name": "Daniel Gabriel Martínez Mendez",
+      "games": 39,
+      "cards_per_game": 1.81,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.533,
+      "home_bias": 0.073,
+      "card_strictness": "lenient"
+    },
+    "74418": {
+      "name": "Hector Salvador Solorio Arreola",
+      "games": 39,
+      "cards_per_game": 1.75,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.5,
+      "home_bias": 0.04,
+      "card_strictness": "lenient"
+    },
+    "74426": {
+      "name": "Aldo Ballesteros Barba",
+      "games": 24,
+      "cards_per_game": 1.75,
+      "fouls_per_game": 23.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.647,
+      "home_bias": 0.187,
+      "card_strictness": "lenient"
+    },
+    "74427": {
+      "name": "Eduardo Reynoso Martínez",
+      "games": 18,
+      "cards_per_game": 1.95,
+      "fouls_per_game": 13.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.533,
+      "home_bias": 0.073,
+      "card_strictness": "lenient"
+    },
+    "74430": {
+      "name": "Francisco Javier González De La Mora",
+      "games": 16,
+      "cards_per_game": 1.64,
+      "fouls_per_game": 17.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.357,
+      "home_bias": -0.103,
+      "card_strictness": "lenient"
+    },
+    "74431": {
+      "name": "Joaquín Alberto Vizcarra Armenta",
+      "games": 34,
+      "cards_per_game": 1.62,
+      "fouls_per_game": 17.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.522,
+      "home_bias": 0.062,
+      "card_strictness": "lenient"
+    },
+    "74432": {
+      "name": "Yonatan Peinado Aguirre",
+      "games": 54,
+      "cards_per_game": 1.69,
+      "fouls_per_game": 9.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.556,
+      "home_bias": 0.096,
+      "card_strictness": "lenient"
+    },
+    "74445": {
+      "name": "Salvador Pérez Villalobos",
+      "games": 38,
+      "cards_per_game": 1.41,
+      "fouls_per_game": 17.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.517,
+      "home_bias": 0.057,
+      "card_strictness": "lenient"
+    },
+    "74448": {
+      "name": "Orlando Delgadillo Franco",
+      "games": 29,
+      "cards_per_game": 1.83,
+      "fouls_per_game": 11.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.609,
+      "home_bias": 0.149,
+      "card_strictness": "lenient"
+    },
+    "75471": {
+      "name": "Jesús Enrique Herrera Armenta",
+      "games": 22,
+      "cards_per_game": 2.05,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.533,
+      "home_bias": 0.073,
+      "card_strictness": "lenient"
+    },
+    "75505": {
+      "name": "Diego Gilberto Gurrea Mendoza",
+      "games": 15,
+      "cards_per_game": 1.84,
+      "fouls_per_game": 15.0,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.583,
+      "home_bias": 0.123,
+      "card_strictness": "lenient"
+    },
+    "76093": {
+      "name": "Mauricio Eleazar López Sánchez",
+      "games": 22,
+      "cards_per_game": 1.81,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.692,
+      "home_bias": 0.232,
+      "card_strictness": "lenient"
+    },
+    "78015": {
+      "name": "Alan Cristobal Rodríguez Cancino",
+      "games": 29,
+      "cards_per_game": 2.11,
+      "fouls_per_game": 10.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.76,
+      "home_bias": 0.3,
+      "card_strictness": "lenient"
+    },
+    "78047": {
+      "name": "Enrique Augusto Ramírez Gutiérrez",
+      "games": 14,
+      "cards_per_game": 1.97,
+      "fouls_per_game": 9.0,
+      "penalties_per_game": 1.0,
+      "home_win_rate": 0.8,
+      "home_bias": 0.34,
+      "card_strictness": "lenient"
+    },
+    "839625": {
+      "name": "Fernando Alexander Cruz Garatachea",
+      "games": 25,
+      "cards_per_game": 1.93,
+      "fouls_per_game": 15.5,
+      "penalties_per_game": 0,
+      "home_win_rate": 0.632,
+      "home_bias": 0.172,
+      "card_strictness": "lenient"
+    },
+    "850791": {
+      "name": "Julio César Gil Jiménez",
+      "games": 18,
+      "cards_per_game": 2.31,
+      "fouls_per_game": 13.5,
+      "penalties_per_game": 1.0,
+      "home_win_rate": 0.533,
+      "home_bias": 0.073,
+      "card_strictness": "lenient"
+    },
+    "850848": {
+      "name": "Jorge Carlos Ortiz León",
+      "games": 15,
+      "cards_per_game": 2.05,
+      "fouls_per_game": 14.0,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.385,
+      "home_bias": -0.075,
+      "card_strictness": "lenient"
+    },
+    "850849": {
+      "name": "Jaime Orlando Montes Santos",
+      "games": 10,
+      "cards_per_game": 2.01,
+      "fouls_per_game": 10.5,
+      "penalties_per_game": 0.5,
+      "home_win_rate": 0.75,
+      "home_bias": 0.29,
+      "card_strictness": "lenient"
+    },
+    "851565": {
+      "name": "José Luis Alba",
+      "games": 15,
+      "cards_per_game": 2.41,
+      "fouls_per_game": 9.0,
+      "penalties_per_game": 1.0,
+      "home_win_rate": 0.769,
+      "home_bias": 0.309,
+      "card_strictness": "lenient"
+    }
+  },
+  "factors": {
+    "3679": {
+      "name": "Oscar Mejia Garcia",
+      "games": 16,
+      "factor": 0.665,
+      "home_win_rate": 0.727,
+      "card_strictness": "lenient"
+    },
+    "3690": {
+      "name": "Fernando Hernandez Gomez",
+      "games": 23,
+      "factor": -0.19,
+      "home_win_rate": 0.429,
+      "card_strictness": "lenient"
+    },
+    "12010": {
+      "name": "Pablo Israel Hernández Luna",
+      "games": 61,
+      "factor": 0.436,
+      "home_win_rate": 0.65,
+      "card_strictness": "lenient"
+    },
+    "12213": {
+      "name": "José de Jesús Baños Caballero",
+      "games": 44,
+      "factor": -0.27,
+      "home_win_rate": 0.421,
+      "card_strictness": "lenient"
+    },
+    "12228": {
+      "name": "José Alfredo López Cruz",
+      "games": 17,
+      "factor": -0.172,
+      "home_win_rate": 0.455,
+      "card_strictness": "lenient"
+    },
+    "12231": {
+      "name": "José Martínez",
+      "games": 137,
+      "factor": 0.101,
+      "home_win_rate": 0.541,
+      "card_strictness": "lenient"
+    },
+    "12689": {
+      "name": "Michel Alejandro Morales Morales",
+      "games": 109,
+      "factor": 0.409,
+      "home_win_rate": 0.639,
+      "card_strictness": "lenient"
+    },
+    "12691": {
+      "name": "Christian Kiabek Espinosa Zavala",
+      "games": 116,
+      "factor": 0.202,
+      "home_win_rate": 0.578,
+      "card_strictness": "lenient"
+    },
+    "13399": {
+      "name": "M. Hernández Paredes",
+      "games": 53,
+      "factor": 0.662,
+      "home_win_rate": 0.73,
+      "card_strictness": "lenient"
+    },
+    "13409": {
+      "name": "A. Hernández Delgado",
+      "games": 48,
+      "factor": 0.336,
+      "home_win_rate": 0.606,
+      "card_strictness": "lenient"
+    },
+    "14749": {
+      "name": "Jorge Isaac Rojas Castillo",
+      "games": 17,
+      "factor": -0.433,
+      "home_win_rate": 0.364,
+      "card_strictness": "lenient"
+    },
+    "14921": {
+      "name": "Óscar Macías Romo",
+      "games": 82,
+      "factor": 0.34,
+      "home_win_rate": 0.623,
+      "card_strictness": "lenient"
+    },
+    "14924": {
+      "name": "Jorge Antonio Pérez Durán",
+      "games": 36,
+      "factor": 0.223,
+      "home_win_rate": 0.571,
+      "card_strictness": "lenient"
+    },
+    "14936": {
+      "name": "Fernando Hernández Gómez",
+      "games": 96,
+      "factor": 0.493,
+      "home_win_rate": 0.667,
+      "card_strictness": "lenient"
+    },
+    "15641": {
+      "name": "César Arturo Ramos Palazuelos",
+      "games": 129,
+      "factor": 0.379,
+      "home_win_rate": 0.626,
+      "card_strictness": "lenient"
+    },
+    "15644": {
+      "name": "Adonai Escobedo González",
+      "games": 119,
+      "factor": 0.34,
+      "home_win_rate": 0.622,
+      "card_strictness": "lenient"
+    },
+    "15645": {
+      "name": "Karen Janett Díaz Medina",
+      "games": 128,
+      "factor": 0.146,
+      "home_win_rate": 0.561,
+      "card_strictness": "lenient"
+    },
+    "15646": {
+      "name": "Edgar Allan Morales Olvera",
+      "games": 56,
+      "factor": 0.383,
+      "home_win_rate": 0.628,
+      "card_strictness": "lenient"
+    },
+    "15916": {
+      "name": "Luis Enrique Santander Aguirre",
+      "games": 118,
+      "factor": 0.347,
+      "home_win_rate": 0.627,
+      "card_strictness": "lenient"
+    },
+    "16047": {
+      "name": "Fernando Guerrero Ramírez",
+      "games": 92,
+      "factor": 0.082,
+      "home_win_rate": 0.529,
+      "card_strictness": "lenient"
+    },
+    "20835": {
+      "name": "Erick Yair Miranda Galindo",
+      "games": 35,
+      "factor": 0.046,
+      "home_win_rate": 0.538,
+      "card_strictness": "lenient"
+    },
+    "20836": {
+      "name": "Óscar Mejía García",
+      "games": 104,
+      "factor": 0.229,
+      "home_win_rate": 0.583,
+      "card_strictness": "lenient"
+    },
+    "20838": {
+      "name": "Diego Montaño Robles",
+      "games": 80,
+      "factor": 0.211,
+      "home_win_rate": 0.577,
+      "card_strictness": "lenient"
+    },
+    "20843": {
+      "name": "Alejandro Funk Villafañe",
+      "games": 23,
+      "factor": 0.167,
+      "home_win_rate": 0.562,
+      "card_strictness": "lenient"
+    },
+    "20854": {
+      "name": "Mauricio Nieto Torres",
+      "games": 120,
+      "factor": 0.35,
+      "home_win_rate": 0.622,
+      "card_strictness": "lenient"
+    },
+    "20856": {
+      "name": "Mario Humberto Vargas Mata",
+      "games": 15,
+      "factor": 0.865,
+      "home_win_rate": 0.8,
+      "card_strictness": "lenient"
+    },
+    "20872": {
+      "name": "Alberto Morín Méndez",
+      "games": 109,
+      "factor": 0.448,
+      "home_win_rate": 0.659,
+      "card_strictness": "lenient"
+    },
+    "20936": {
+      "name": "César Cerritos García",
+      "games": 31,
+      "factor": 0.195,
+      "home_win_rate": 0.565,
+      "card_strictness": "lenient"
+    },
+    "20967": {
+      "name": "Enrique Martínez Sandoval",
+      "games": 72,
+      "factor": 0.192,
+      "home_win_rate": 0.569,
+      "card_strictness": "lenient"
+    },
+    "20990": {
+      "name": "B. González",
+      "games": 79,
+      "factor": 0.487,
+      "home_win_rate": 0.672,
+      "card_strictness": "lenient"
+    },
+    "21001": {
+      "name": "Enrique Isaac Bustos Díaz",
+      "games": 102,
+      "factor": 0.292,
+      "home_win_rate": 0.608,
+      "card_strictness": "lenient"
+    },
+    "21003": {
+      "name": "Juan Andrés Esquivel González",
+      "games": 16,
+      "factor": 0.571,
+      "home_win_rate": 0.7,
+      "card_strictness": "lenient"
+    },
+    "21103": {
+      "name": "Edgar Magdaleno Castrejon",
+      "games": 72,
+      "factor": 0.513,
+      "home_win_rate": 0.667,
+      "card_strictness": "lenient"
+    },
+    "21104": {
+      "name": "Jorge Antonio Sánchez Espinoza",
+      "games": 123,
+      "factor": 0.423,
+      "home_win_rate": 0.639,
+      "card_strictness": "lenient"
+    },
+    "21105": {
+      "name": "Víctor Alfonso Cáceres Hernández",
+      "games": 131,
+      "factor": 0.365,
+      "home_win_rate": 0.625,
+      "card_strictness": "lenient"
+    },
+    "21127": {
+      "name": "Michel Ricardo Espinoza Avalos",
+      "games": 105,
+      "factor": 0.339,
+      "home_win_rate": 0.618,
+      "card_strictness": "lenient"
+    },
+    "21155": {
+      "name": "Saúl Alfredo Silva Pineda",
+      "games": 12,
+      "factor": 0.894,
+      "home_win_rate": 0.8,
+      "card_strictness": "lenient"
+    },
+    "21156": {
+      "name": "Enedina Caudillo Gómez",
+      "games": 92,
+      "factor": 0.063,
+      "home_win_rate": 0.53,
+      "card_strictness": "lenient"
+    },
+    "21213": {
+      "name": "Guillermo Pacheco Larios",
+      "games": 83,
+      "factor": 0.236,
+      "home_win_rate": 0.585,
+      "card_strictness": "lenient"
+    },
+    "21217": {
+      "name": "Mayra Alejandra Mora Cerero",
+      "games": 10,
+      "factor": 1.0,
+      "home_win_rate": 1.0,
+      "card_strictness": "lenient"
+    },
+    "21219": {
+      "name": "Edgar Ulises Rangel Araújo",
+      "games": 50,
+      "factor": 0.07,
+      "home_win_rate": 0.529,
+      "card_strictness": "lenient"
+    },
+    "21318": {
+      "name": "Eduardo Acosta Orea",
+      "games": 38,
+      "factor": 0.469,
+      "home_win_rate": 0.667,
+      "card_strictness": "lenient"
+    },
+    "21814": {
+      "name": "Marco Antonio Bisguerra Mendiola",
+      "games": 112,
+      "factor": 0.379,
+      "home_win_rate": 0.629,
+      "card_strictness": "lenient"
+    },
+    "21872": {
+      "name": "Marco Antonio Ortíz Nava",
+      "games": 134,
+      "factor": 0.371,
+      "home_win_rate": 0.62,
+      "card_strictness": "lenient"
+    },
+    "21877": {
+      "name": "Eduardo Galván Basulto",
+      "games": 22,
+      "factor": -0.483,
+      "home_win_rate": 0.333,
+      "card_strictness": "lenient"
+    },
+    "32420": {
+      "name": "Jesús Lorenzo Soto Dávila",
+      "games": 73,
+      "factor": 0.611,
+      "home_win_rate": 0.702,
+      "card_strictness": "lenient"
+    },
+    "32421": {
+      "name": "Erick Durón Martínez",
+      "games": 87,
+      "factor": 0.449,
+      "home_win_rate": 0.65,
+      "card_strictness": "lenient"
+    },
+    "32422": {
+      "name": "Manuel Enrique Martínez Sánchez",
+      "games": 66,
+      "factor": 0.278,
+      "home_win_rate": 0.6,
+      "card_strictness": "lenient"
+    },
+    "32424": {
+      "name": "Jonathan Maximiliano Gómez Olmos",
+      "games": 139,
+      "factor": 0.141,
+      "home_win_rate": 0.555,
+      "card_strictness": "lenient"
+    },
+    "33639": {
+      "name": "Leonardo Javier Castillo Rodríguez",
+      "games": 123,
+      "factor": 0.213,
+      "home_win_rate": 0.576,
+      "card_strictness": "lenient"
+    },
+    "37634": {
+      "name": "Jesus Rafael Lopez Valle",
+      "games": 93,
+      "factor": -0.055,
+      "home_win_rate": 0.484,
+      "card_strictness": "lenient"
+    },
+    "41332": {
+      "name": "Mario Terrazas Chávez",
+      "games": 69,
+      "factor": 0.474,
+      "home_win_rate": 0.679,
+      "card_strictness": "lenient"
+    },
+    "46314": {
+      "name": "Abraham de Jesús Quirarte Contreras",
+      "games": 61,
+      "factor": 0.584,
+      "home_win_rate": 0.696,
+      "card_strictness": "lenient"
+    },
+    "57025": {
+      "name": "Sandra Ramírez",
+      "games": 56,
+      "factor": 0.566,
+      "home_win_rate": 0.696,
+      "card_strictness": "lenient"
+    },
+    "65864": {
+      "name": "Jaime Daniel González Ramírez",
+      "games": 64,
+      "factor": 0.189,
+      "home_win_rate": 0.562,
+      "card_strictness": "lenient"
+    },
+    "65892": {
+      "name": "Jéssica Fernanda Morales Morales",
+      "games": 74,
+      "factor": 0.142,
+      "home_win_rate": 0.545,
+      "card_strictness": "lenient"
+    },
+    "65922": {
+      "name": "Daniel Quintero Huittrón",
+      "games": 127,
+      "factor": 0.275,
+      "home_win_rate": 0.596,
+      "card_strictness": "lenient"
+    },
+    "65998": {
+      "name": "?. Meza Méndez",
+      "games": 20,
+      "factor": 0.0,
+      "home_win_rate": 0.5,
+      "card_strictness": "lenient"
+    },
+    "66029": {
+      "name": "Iván Antonio López Sánchez",
+      "games": 78,
+      "factor": 0.708,
+      "home_win_rate": 0.727,
+      "card_strictness": "lenient"
+    },
+    "66037": {
+      "name": "Oscar Yahir Barriga Castro",
+      "games": 53,
+      "factor": 0.221,
+      "home_win_rate": 0.575,
+      "card_strictness": "lenient"
+    },
+    "66038": {
+      "name": "Gustavo Padilla Aguirre",
+      "games": 27,
+      "factor": 0.227,
+      "home_win_rate": 0.579,
+      "card_strictness": "lenient"
+    },
+    "66168": {
+      "name": "Maximiliano Quintero Hernández",
+      "games": 113,
+      "factor": 0.171,
+      "home_win_rate": 0.561,
+      "card_strictness": "lenient"
+    },
+    "66236": {
+      "name": "Jair De Jesús Sosa García",
+      "games": 60,
+      "factor": 0.259,
+      "home_win_rate": 0.585,
+      "card_strictness": "lenient"
+    },
+    "66356": {
+      "name": "Mario Alberto Ramirez Sanchez",
+      "games": 12,
+      "factor": 0.213,
+      "home_win_rate": 0.571,
+      "card_strictness": "lenient"
+    },
+    "66388": {
+      "name": "Michel Caballero Galicia",
+      "games": 90,
+      "factor": 0.311,
+      "home_win_rate": 0.615,
+      "card_strictness": "lenient"
+    },
+    "67114": {
+      "name": "Katia Itzel García",
+      "games": 37,
+      "factor": 0.651,
+      "home_win_rate": 0.714,
+      "card_strictness": "lenient"
+    },
+    "69283": {
+      "name": "Martín Molina Astorga",
+      "games": 65,
+      "factor": 0.164,
+      "home_win_rate": 0.56,
+      "card_strictness": "lenient"
+    },
+    "69284": {
+      "name": "Luis Alfredo García Rodríguez",
+      "games": 74,
+      "factor": 0.101,
+      "home_win_rate": 0.534,
+      "card_strictness": "lenient"
+    },
+    "69380": {
+      "name": "Ismael Rosario Lopez Peñuelas",
+      "games": 100,
+      "factor": 0.314,
+      "home_win_rate": 0.603,
+      "card_strictness": "lenient"
+    },
+    "69429": {
+      "name": "Jorge Abraham Camacho Peregrina",
+      "games": 85,
+      "factor": 0.377,
+      "home_win_rate": 0.619,
+      "card_strictness": "lenient"
+    },
+    "69773": {
+      "name": "Karen Hernández Andrade",
+      "games": 50,
+      "factor": 0.678,
+      "home_win_rate": 0.73,
+      "card_strictness": "lenient"
+    },
+    "71920": {
+      "name": "Vicente Jassiel Reynoso Arce",
+      "games": 69,
+      "factor": 0.742,
+      "home_win_rate": 0.75,
+      "card_strictness": "lenient"
+    },
+    "72863": {
+      "name": "Rodrigo René Sansores Díaz",
+      "games": 35,
+      "factor": 0.886,
+      "home_win_rate": 0.808,
+      "card_strictness": "lenient"
+    },
+    "72893": {
+      "name": "Jaime Adrián Villasana Carrasco",
+      "games": 39,
+      "factor": 0.183,
+      "home_win_rate": 0.567,
+      "card_strictness": "lenient"
+    },
+    "73009": {
+      "name": "Miguel Ángel Anaya Suárez",
+      "games": 32,
+      "factor": 0.049,
+      "home_win_rate": 0.522,
+      "card_strictness": "lenient"
+    },
+    "73161": {
+      "name": "Jesús Aarón Gómez Ruíz",
+      "games": 19,
+      "factor": 0.337,
+      "home_win_rate": 0.615,
+      "card_strictness": "lenient"
+    },
+    "74415": {
+      "name": "Daniel Gabriel Martínez Mendez",
+      "games": 39,
+      "factor": 0.099,
+      "home_win_rate": 0.533,
+      "card_strictness": "lenient"
+    },
+    "74418": {
+      "name": "Hector Salvador Solorio Arreola",
+      "games": 39,
+      "factor": -0.002,
+      "home_win_rate": 0.5,
+      "card_strictness": "lenient"
+    },
+    "74426": {
+      "name": "Aldo Ballesteros Barba",
+      "games": 24,
+      "factor": 0.503,
+      "home_win_rate": 0.647,
+      "card_strictness": "lenient"
+    },
+    "74427": {
+      "name": "Eduardo Reynoso Martínez",
+      "games": 18,
+      "factor": 0.098,
+      "home_win_rate": 0.533,
+      "card_strictness": "lenient"
+    },
+    "74430": {
+      "name": "Francisco Javier González De La Mora",
+      "games": 16,
+      "factor": -0.41,
+      "home_win_rate": 0.357,
+      "card_strictness": "lenient"
+    },
+    "74431": {
+      "name": "Joaquín Alberto Vizcarra Armenta",
+      "games": 34,
+      "factor": 0.085,
+      "home_win_rate": 0.522,
+      "card_strictness": "lenient"
+    },
+    "74432": {
+      "name": "Yonatan Peinado Aguirre",
+      "games": 54,
+      "factor": 0.135,
+      "home_win_rate": 0.556,
+      "card_strictness": "lenient"
+    },
+    "74445": {
+      "name": "Salvador Pérez Villalobos",
+      "games": 38,
+      "factor": 0.066,
+      "home_win_rate": 0.517,
+      "card_strictness": "lenient"
+    },
+    "74448": {
+      "name": "Orlando Delgadillo Franco",
+      "games": 29,
+      "factor": 0.31,
+      "home_win_rate": 0.609,
+      "card_strictness": "lenient"
+    },
+    "75471": {
+      "name": "Jesús Enrique Herrera Armenta",
+      "games": 22,
+      "factor": 0.103,
+      "home_win_rate": 0.533,
+      "card_strictness": "lenient"
+    },
+    "75505": {
+      "name": "Diego Gilberto Gurrea Mendoza",
+      "games": 15,
+      "factor": 0.259,
+      "home_win_rate": 0.583,
+      "card_strictness": "lenient"
+    },
+    "76093": {
+      "name": "Mauricio Eleazar López Sánchez",
+      "games": 22,
+      "factor": 0.576,
+      "home_win_rate": 0.692,
+      "card_strictness": "lenient"
+    },
+    "78015": {
+      "name": "Alan Cristobal Rodríguez Cancino",
+      "games": 29,
+      "factor": 0.766,
+      "home_win_rate": 0.76,
+      "card_strictness": "lenient"
+    },
+    "78047": {
+      "name": "Enrique Augusto Ramírez Gutiérrez",
+      "games": 14,
+      "factor": 0.873,
+      "home_win_rate": 0.8,
+      "card_strictness": "lenient"
+    },
+    "839625": {
+      "name": "Fernando Alexander Cruz Garatachea",
+      "games": 25,
+      "factor": 0.411,
+      "home_win_rate": 0.632,
+      "card_strictness": "lenient"
+    },
+    "850791": {
+      "name": "Julio César Gil Jiménez",
+      "games": 18,
+      "factor": 0.109,
+      "home_win_rate": 0.533,
+      "card_strictness": "lenient"
+    },
+    "850848": {
+      "name": "Jorge Carlos Ortiz León",
+      "games": 15,
+      "factor": -0.337,
+      "home_win_rate": 0.385,
+      "card_strictness": "lenient"
+    },
+    "850849": {
+      "name": "Jaime Orlando Montes Santos",
+      "games": 10,
+      "factor": 0.734,
+      "home_win_rate": 0.75,
+      "card_strictness": "lenient"
+    },
+    "851565": {
+      "name": "José Luis Alba",
+      "games": 15,
+      "factor": 0.789,
+      "home_win_rate": 0.769,
+      "card_strictness": "lenient"
+    }
+  }
+}

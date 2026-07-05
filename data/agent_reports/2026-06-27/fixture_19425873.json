@@ -1,0 +1,96 @@
+{
+  "fixture_id": 19425873,
+  "match_id": "19425873",
+  "context": {
+    "home_team": "Toluca",
+    "away_team": "Necaxa",
+    "date": "2025-07-13 01:00:00.000000",
+    "venue": "Estadio Nemesio Díez",
+    "result": "home_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19425873",
+      "probs": {
+        "home_win": 0.5972,
+        "draw": 0.2144,
+        "away_win": 0.1883
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.55,
+      "components": {
+        "xg": null,
+        "elo_diff": 212.3,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 59.7% home, 21.4% draw, 18.8% away (conf=0.55)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19425873",
+      "team_favored": "Toluca",
+      "win_probability_estimate": 0.6772,
+      "ensemble_prob_home": 0.5972,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en Estadio Nemesio Díez: ventaja tradicional",
+        "Ensemble da 59.7% al local — base cuantitativa",
+        "Altitud 2680m favorece al local aclimatado",
+        "Estadio con capacidad 3,500"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Necaxa) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local TOL tiene ventaja de localía. Ensemble da 59.7%. Bull refuerza a 67.7% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19425873",
+      "team_favored": "Necaxa",
+      "win_probability_estimate": 0.2383,
+      "ensemble_prob_away": 0.1883,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Visitante (Necaxa) puede capitalizar errores locales",
+        "Ensemble da 18.8% al visitante — base cuantitativa",
+        "Local TOL viene con presión de resultado",
+        "Visitantes aclimatados a altitud alta = ventaja"
+      ],
+      "risks_acknowledged": [
+        "Local TOL tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante NXA tiene oportunidad. Ensemble da 18.8%. Bear refuerza a 23.8%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19425873",
+    "final_prediction": {
+      "home_win": 0.5710747252307662,
+      "draw": 0.2395680197613833,
+      "away_win": 0.18935725500785056
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.5328,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Toluca, Bear favorece Necaxa (opuestos) → numérico 0.50→0.70",
+      "Discrepancia alta (spread=0.33) → confianza penalizada -0.02"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.677",
+      "bear_visitante home_win=0.343",
+      "numerico home_win=0.597"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:54.244291"
+}

@@ -1,0 +1,93 @@
+{
+  "fixture_id": 19346903,
+  "match_id": "19346903",
+  "context": {
+    "home_team": "Juárez",
+    "away_team": "Guadalajara",
+    "date": "2025-03-16 01:10:00.000000",
+    "venue": "Estadio Olímpico Benito Juárez",
+    "result": "draw"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19346903",
+      "probs": {
+        "home_win": 0.3805,
+        "draw": 0.2759,
+        "away_win": 0.3436
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.625,
+      "components": {
+        "xg": null,
+        "elo_diff": 57.4,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 38.0% home, 27.6% draw, 34.4% away (conf=0.62)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19346903",
+      "team_favored": "Juárez",
+      "win_probability_estimate": 0.4305,
+      "ensemble_prob_home": 0.3805,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en Estadio Olímpico Benito Juárez: ventaja tradicional",
+        "Ensemble da 38.0% al local — base cuantitativa",
+        "Estadio con capacidad 19,703"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Guadalajara) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local JUA tiene ventaja de localía. Ensemble da 38.0%. Bull refuerza a 43.0% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19346903",
+      "team_favored": "Guadalajara",
+      "win_probability_estimate": 0.4236,
+      "ensemble_prob_away": 0.3436,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Guadalajara) puede capitalizar errores locales",
+        "Ensemble da 34.4% al visitante — base cuantitativa",
+        "Local JUA viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local JUA tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante GUA tiene oportunidad. Ensemble da 34.4%. Bear refuerza a 42.4%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19346903",
+    "final_prediction": {
+      "home_win": 0.369832,
+      "draw": 0.28766675,
+      "away_win": 0.34250125000000003
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.6025,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Juárez, Bear favorece Guadalajara (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.430",
+      "bear_visitante home_win=0.259",
+      "numerico home_win=0.381"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:59.495537"
+}

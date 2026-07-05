@@ -1,0 +1,94 @@
+{
+  "fixture_id": 19346919,
+  "match_id": "19346919",
+  "context": {
+    "home_team": "Atlas",
+    "away_team": "Juárez",
+    "date": "2025-04-05 23:00:00.000000",
+    "venue": "Estadio Jalisco",
+    "result": "draw"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19346919",
+      "probs": {
+        "home_win": 0.4092,
+        "draw": 0.2918,
+        "away_win": 0.299
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.632,
+      "components": {
+        "xg": null,
+        "elo_diff": 79.9,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 40.9% home, 29.2% draw, 29.9% away (conf=0.63)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19346919",
+      "team_favored": "Atlas",
+      "win_probability_estimate": 0.4892,
+      "ensemble_prob_home": 0.4092,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en Estadio Jalisco: ventaja tradicional",
+        "Ensemble da 40.9% al local — base cuantitativa",
+        "Altitud 1566m favorece al local aclimatado",
+        "Estadio con capacidad 55,110"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Juárez) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local ATS tiene ventaja de localía. Ensemble da 40.9%. Bull refuerza a 48.9% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19346919",
+      "team_favored": "Juárez",
+      "win_probability_estimate": 0.349,
+      "ensemble_prob_away": 0.299,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Visitante (Juárez) puede capitalizar errores locales",
+        "Ensemble da 29.9% al visitante — base cuantitativa",
+        "Local ATS viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local ATS tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante JUA tiene oportunidad. Ensemble da 29.9%. Bear refuerza a 34.9%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19346919",
+    "final_prediction": {
+      "home_win": 0.40376249999999997,
+      "draw": 0.3001085,
+      "away_win": 0.296129
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.6074,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Atlas, Bear favorece Juárez (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.489",
+      "bear_visitante home_win=0.293",
+      "numerico home_win=0.409"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:52.714641"
+}

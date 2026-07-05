@@ -1,0 +1,93 @@
+{
+  "fixture_id": 19346917,
+  "match_id": "19346917",
+  "context": {
+    "home_team": "Tijuana",
+    "away_team": "Necaxa",
+    "date": "2025-04-05 03:00:00.000000",
+    "venue": "Estadio Caliente",
+    "result": "away_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19346917",
+      "probs": {
+        "home_win": 0.3532,
+        "draw": 0.2521,
+        "away_win": 0.3948
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.628,
+      "components": {
+        "xg": null,
+        "elo_diff": 66.4,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 35.3% home, 25.2% draw, 39.5% away (conf=0.63)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19346917",
+      "team_favored": "Tijuana",
+      "win_probability_estimate": 0.4032,
+      "ensemble_prob_home": 0.3532,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en Estadio Caliente: ventaja tradicional",
+        "Ensemble da 35.3% al local — base cuantitativa",
+        "Estadio con capacidad 27,333"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Necaxa) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local TIJ tiene ventaja de localía. Ensemble da 35.3%. Bull refuerza a 40.3% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19346917",
+      "team_favored": "Necaxa",
+      "win_probability_estimate": 0.4748,
+      "ensemble_prob_away": 0.3948,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Necaxa) puede capitalizar errores locales",
+        "Ensemble da 39.5% al visitante — base cuantitativa",
+        "Local TIJ viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local TIJ tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante NXA tiene oportunidad. Ensemble da 39.5%. Bear refuerza a 47.5%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19346917",
+    "final_prediction": {
+      "home_win": 0.3431469797114202,
+      "draw": 0.26901616886817925,
+      "away_win": 0.38783685142040053
+    },
+    "predicted_outcome": "away_win",
+    "confidence": 0.6046,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Tijuana, Bear favorece Necaxa (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.403",
+      "bear_visitante home_win=0.236",
+      "numerico home_win=0.353"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:48.592110"
+}

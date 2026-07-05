@@ -1,0 +1,94 @@
+{
+  "fixture_id": 19600026,
+  "match_id": "19600026",
+  "context": {
+    "home_team": "Guadalajara",
+    "away_team": "Cruz Azul",
+    "date": "2025-11-28 02:07:00.000000",
+    "venue": "Guadalajara Stadium",
+    "result": "draw"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19600026",
+      "probs": {
+        "home_win": 0.3924,
+        "draw": 0.2638,
+        "away_win": 0.3438
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.718,
+      "components": {
+        "xg": null,
+        "elo_diff": 25.5,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 39.2% home, 26.4% draw, 34.4% away (conf=0.72)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19600026",
+      "team_favored": "Guadalajara",
+      "win_probability_estimate": 0.4424,
+      "ensemble_prob_home": 0.3924,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en Guadalajara Stadium: ventaja tradicional",
+        "Ensemble da 39.2% al local — base cuantitativa",
+        "Altitud 1566m favorece al local aclimatado",
+        "Estadio con capacidad 45,664"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Cruz Azul) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local GUA tiene ventaja de localía. Ensemble da 39.2%. Bull refuerza a 44.2% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19600026",
+      "team_favored": "Cruz Azul",
+      "win_probability_estimate": 0.4238,
+      "ensemble_prob_away": 0.3438,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Cruz Azul) puede capitalizar errores locales",
+        "Ensemble da 34.4% al visitante — base cuantitativa",
+        "Local GUA viene con presión de resultado"
+      ],
+      "risks_acknowledged": [
+        "Local GUA tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante CAZ tiene oportunidad. Ensemble da 34.4%. Bear refuerza a 42.4%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19600026",
+    "final_prediction": {
+      "home_win": 0.37993350000000004,
+      "draw": 0.2781985,
+      "away_win": 0.341868
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.6676,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Guadalajara, Bear favorece Cruz Azul (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.442",
+      "bear_visitante home_win=0.259",
+      "numerico home_win=0.392"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:32:03.086836"
+}

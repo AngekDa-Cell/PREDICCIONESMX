@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quinielas MX — Preview Cinépolis Style</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #040612;
+  color: #fff;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.container { max-width: 420px; margin: 0 auto; }
+
+/* ─── Header con gradiente Cinépolis ─── */
+.hero {
+  background: radial-gradient(106.21% 106.21% at 35.59% -4.61%, #4780ff 0, #8034c9 56%, #05102a 90%);
+  border-radius: 20px;
+  padding: 32px 20px 28px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.06), transparent);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: 1.875rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.hero .sub {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 18px;
+}
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Stats cards ─── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: #13213F;
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+  border: 1px solid rgba(71,129,255,0.15);
+}
+.stat-num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #4781ff, #8034c9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stat-label {
+  font-size: 0.65rem;
+  color: #808695;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* ─── Section header ─── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.section-link {
+  color: #4781ff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ─── Match card ─── */
+.match {
+  background: #13213F;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(71,129,255,0.1);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.match:hover {
+  transform: translateY(-2px);
+  border-color: rgba(71,129,255,0.4);
+}
+.match-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: #808695;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.match-pick {
+  display: inline-block;
+  background: rgba(71,129,255,0.15);
+  color: #4781ff;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.match-teams {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.team {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.team-crest {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+  border: 2px solid;
+  overflow: hidden;
+}
+.team-crest img { width: 100%; height: 100%; object-fit: cover; }
+.team-name {
+  font-size: 0.7rem;
+  color: #C7CDD6;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+.vs {
+  font-size: 1.25rem;
+  color: #4781ff;
+  font-weight: 900;
+}
+
+/* ─── Botones Cinépolis-style ─── */
+.cta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.cta {
+  background: linear-gradient(135deg, #4781ff, #8034c9);
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: white;
+  cursor: pointer;
+}
+.cta.secondary {
+  background: #13213F;
+  color: #4781ff;
+  border: 1px solid rgba(71,129,255,0.3);
+}
+
+/* ─── Footer ─── */
+.note {
+  text-align: center;
+  color: #808695;
+  font-size: 0.7rem;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.note strong { color: #C7CDD6; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO con gradiente Cinépolis -->
+  <div class="hero">
+    <span class="hero-pill">⚽ JORNADA 1 · APERTURA 2026</span>
+    <h1 style="margin-top:14px;">Quiniela<br/>MX</h1>
+    <p class="sub">Predicciones Liga MX con datos en vivo</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Partidos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">62%</div>
+      <div class="stat-label">Efectividad</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">9</div>
+      <div class="stat-label">Racha</div>
+    </div>
+  </div>
+
+  <!-- CTA buttons -->
+  <div class="cta-row">
+    <a href="#" class="cta">Ver partidos →</a>
+    <a href="#" class="cta secondary">Calendario</a>
+  </div>
+
+  <!-- Próximos partidos -->
+  <div class="section-header">
+    <span class="section-title">Próximos partidos</span>
+    <a href="#" class="section-link">Ver todos →</a>
+  </div>
+
+  <!-- Match 1 -->
+  <div class="match">
+    <div class="match-meta">
+      <span>jueves 17 jul · 19:00</span>
+      <span class="match-pick">Local 65%</span>
+    </div>
+    <div class="match-teams">
+      <div class="team">
+        <div class="team-crest" style="background:#C8102E;border-color:#FFFFFF;">
+          <img src="https://cdn.sportmonks.com/images/soccer/teams/15/3951.png" alt="NEC" onerror="this.style.display='none';this.parentNode.innerHTML='NEC'">
+        </div>
+        <span class="team-name">Necaxa</span>
+      </div>
+      <div class="vs">vs</div>
+      <div class="team">
+        <div class="team-crest" style="background:#0A2D5C;border-color:#C8102E;">
+          <img src="https://cdn.sportmonks.com/images/soccer/teams/15/7023.png" alt="ATL" onerror="this.style.display='none';this.parentNode.innerHTML='ATL'">
+        </div>
+        <span class="team-name">Atlante</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Match 2 -->
+  <div class="match">
+    <div class="match-meta">
+      <span>jueves 17 jul · 21:00</span>
+      <span class="match-pick">Local 58%</span>
+    </div>
+    <div class="match-teams">
+      <div class="team">
+        <div class="team-crest" style="background:#C8102E;border-color:#000000;">
+          <img src="https://cdn.sportmonks.com/images/soccer/teams/15/11023.png" alt="TIJ" onerror="this.style.display='none';this.parentNode.innerHTML='TIJ'">
+        </div>
+        <span class="team-name">Tijuana</span>
+      </div>
+      <div class="vs">vs</div>
+      <div class="team">
+        <div class="team-crest" style="background:#F4C40F;border-color:#003594;">
+          <img src="https://cdn.sportmonks.com/images/soccer/teams/15/609.png" alt="TIG" onerror="this.style.display='none';this.parentNode.innerHTML='TIG'">
+        </div>
+        <span class="team-name">Tigres UANL</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">
+    Preview <strong>Cinépolis-inspired</strong> · Paleta real extraída del CSS de cinepolis.com<br/>
+    <strong>Tipografía:</strong> Montserrat · <strong>Radial-gradient:</strong> #4780ff → #8034c9 → #05102a
+  </p>
+
+</div>
+</body>
+</html>

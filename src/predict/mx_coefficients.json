@@ -1,0 +1,101 @@
+{
+  "altitude": {
+    "win_per_1000m": 0.0248,
+    "gd_per_1000m": 0.088,
+    "baseline_home_win": 0.576,
+    "source": "Calibrado con 1529 partidos Liga MX (2021-2026)",
+    "vs_mcsharry": "McSharry (Sudam\u00e9rica): +12%/1000m vs MX: +2.48%/1000m \u2014 efecto ~5x m\u00e1s d\u00e9bil en MX"
+  },
+  "rest_days": {
+    "optimum": "por calcular",
+    "fatigue_threshold": 3,
+    "rust_threshold": 10
+  },
+  "fixture_congestion": {
+    "high_threshold": 3,
+    "expected_decline_pct": "a calcular"
+  },
+  "elo_shrinkage": {
+    "factor": 0.7,
+    "rationale": "Liga MX Elo sistematicamente sobreestimado (drift +25%). Shrinkage hacia 1500 lo corrige.",
+    "source": "Grid search sobre backtest 2025 (340 partidos)",
+    "results": {
+      "shrinkage_1.0_baseline": {"accuracy": 0.5529, "brier": 0.5996},
+      "shrinkage_0.7_optimal": {"accuracy": 0.5588, "brier": 0.5875},
+      "improvement_brier": "-2.0%",
+      "improvement_accuracy": "+0.6pp"
+    },
+    "added": "2026-06-27 (Fase 6)"
+  },
+  "xg_ensemble": {
+    "xg_weight": 0.55,
+    "elo_weight": 0.225,
+    "dc_weight": 0.135,
+    "heuristic_weight": 0.09,
+    "decay_factor": 0.85,
+    "home_advantage_xg": 1.10,
+    "lambda_clamp": [0.3, 4.5],
+    "rationale": "xG proxy (log-link ridge sobre shots-on-target, shots-insidebox, shot_quality, is_home) entrenado con 3830 equipo-partidos Liga MX. Ensemble con peso 55% para xG mejora accuracy 3.8pp sobre baseline en 2025.",
+    "source": "Backtest grid search 2024-01-01 → 2025-12-31 (680 partidos)",
+    "results": {
+      "baseline_2024_2025": {"accuracy": 0.4824, "brier": 0.6205},
+      "with_xg_2024_2025": {"accuracy": 0.5132, "brier": 0.6092},
+      "improvement_acc_pp": 3.08,
+      "improvement_brier_pct": -1.82,
+      "baseline_2025_only": {"accuracy": 0.5000, "brier": 0.6078},
+      "with_xg_2025_only": {"accuracy": 0.5353, "brier": 0.6004},
+      "improvement_acc_pp_2025": 3.53
+    },
+    "model": "Ridge log-link regression. Coefs: sot=+0.105, sib=+0.004, sb=-0.021, sot_off=-0.022, shot_quality=+0.268, is_home=+0.095, intercept=+0.257",
+    "added": "2026-06-27 (Fase 8)"
+  },
+  "attendance_heuristic": {
+    "enabled": true,
+    "weight_in_ensemble": "via heuristic_weight=0.09 (no change)",
+    "halazgo_principal": "Estadio lleno favorece visitante (no local). Estadio vacío favorece local.",
+    "halazgo_data": {
+      "ratio_0_15_vacio": {"n": 45, "home_win_pct": 53.3, "draw_pct": 26.7, "away_win_pct": 20.0},
+      "ratio_95_110_lleno": {"n": 37, "home_win_pct": 21.6, "draw_pct": 32.4, "away_win_pct": 45.9}
+    },
+    "grid_search_heur_weight": {
+      "9_percent_baseline": {"acc": 51.47, "brier": 0.6093},
+      "14_percent": {"acc": 50.88, "brier": 0.6107},
+      "19_percent": {"acc": 50.44, "brier": 0.6123},
+      "24_percent": {"acc": 50.44, "brier": 0.6143},
+      "verdict": "Baseline (9%) es óptimo, más heur EMPEORA"
+    },
+    "backtest_attendance_2025": {
+      "sin_heur": {"acc": 53.53, "brier": 0.6004},
+      "con_heur": {"acc": 53.82, "brier": 0.6005},
+      "delta_acc_pp": 0.29,
+      "delta_brier": 0.0001,
+      "verdict": "Mantener heur — valor cualitativo (+0.29pp acc)"
+    },
+    "added": "2026-06-27 (Fase 9)"
+  },
+  "stacking_experiment": {
+    "enabled": false,
+    "approach": "XGBoost meta-learner sobre 12 probs de modelos + 5 features clave (attendance, weather_avail, ref_bias, altitude_diff, is_derby)",
+    "hyperparams": {
+      "n_estimators": 30,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "reg_alpha": 1.0,
+      "reg_lambda": 2.0,
+      "min_child_weight": 10
+    },
+    "walk_forward_5_folds": {
+      "mean_baseline_acc": 51.94,
+      "mean_stacking_acc": 51.29,
+      "mean_delta_acc_pp": -0.65,
+      "mean_baseline_brier": 0.6075,
+      "mean_stacking_brier": 0.6044,
+      "mean_delta_brier": -0.0031,
+      "folds_improved_acc": "2/5",
+      "folds_improved_brier": "3/5",
+      "verdict": "NO adoptar — sin mejora consistente con 340-680 partidos por fold"
+    },
+    "future_potential": "Re-evaluar cuando tengamos >2000 partidos (>3 temporadas adicionales)",
+    "added": "2026-06-27 (Fase 9)"
+  }
+}

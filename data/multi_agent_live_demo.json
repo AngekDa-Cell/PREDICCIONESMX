@@ -1,0 +1,60 @@
+{
+  "phase": "10.2",
+  "demo_type": "single_match_live",
+  "timestamp": "2026-06-27",
+  "fixture_id": 19425897,
+  "match": {
+    "home": "Tigres UANL",
+    "away": "Puebla",
+    "date": "2025-08-09",
+    "real_result": "home_win"
+  },
+  "agents": {
+    "numerico": {
+      "probs": {"home_win": 0.489, "draw": 0.267, "away_win": 0.243},
+      "predicted_outcome": "home_win",
+      "confidence": 0.552
+    },
+    "bull_local": {
+      "team_favored": "Tigres UANL",
+      "win_probability_estimate": 0.55,
+      "confidence": 0.62,
+      "key_arguments": [
+        "El Volcán (UANL) es una de las canchas más difíciles de México",
+        "Tigres tiene plantilla profunda y costosa; cualquier rotación supera a la base poblana",
+        "Históricamente Tigres domina el H2H: en los últimos 10 enfrentamientos ganó 6",
+        "Puebla suele ser irregular; suma rachas largas de partidos sin ganar como visitante"
+      ]
+    },
+    "bear_visitante": {
+      "team_favored": "Puebla",
+      "win_probability_estimate": 0.31,
+      "confidence": 0.55,
+      "key_arguments": [
+        "Tigres UANL históricamente arranca lento los torneos Apertura",
+        "Puebla es un equipo históricamente incómodo para los grandes",
+        "Inicio de temporada = mayor impredecibilidad estadística",
+        "Posible efecto nuevo técnico en Puebla mientras Tigres cae en confianza excesiva"
+      ]
+    }
+  },
+  "judge": {
+    "final_prediction": {"home_win": 0.472, "draw": 0.281, "away_win": 0.247},
+    "predicted_outcome": "home_win",
+    "confidence": 0.562,
+    "weights_used": {"numerico": 0.70, "bull_local": 0.15, "bear_visitante": 0.15},
+    "adjustments": ["Bull favorece Tigres, Bear favorece Puebla (opuestos) → numérico 0.50→0.70"]
+  },
+  "outcome": {
+    "numerico_correct": true,
+    "judge_correct": true,
+    "brier_numerico": 0.3915,
+    "brier_judge": 0.4194,
+    "delta_brier": 0.0279
+  },
+  "interpretation": {
+    "agreement": "Bull (Tigres) y numérico (Tigres) coinciden. Bear discrepa (Puebla) con argumentos cualitativos de upset.",
+    "judge_decision": "Como Bull y Bear son opuestos, el juez eleva peso del numérico a 0.70. Mantiene home_win como pick final.",
+    "latency": "Ambos sub-agentes completaron en ~35s en paralelo."
+  }
+}

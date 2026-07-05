@@ -1,0 +1,95 @@
+{
+  "fixture_id": 19425978,
+  "match_id": "19425978",
+  "context": {
+    "home_team": "Puebla",
+    "away_team": "Tijuana",
+    "date": "2025-10-18 01:00:00.000000",
+    "venue": "Estadio Cuauhtémoc",
+    "result": "home_win"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19425978",
+      "probs": {
+        "home_win": 0.3309,
+        "draw": 0.2833,
+        "away_win": 0.3858
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.628,
+      "components": {
+        "xg": null,
+        "elo_diff": -78.2,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 33.1% home, 28.3% draw, 38.6% away (conf=0.63)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19425978",
+      "team_favored": "Puebla",
+      "win_probability_estimate": 0.3809,
+      "ensemble_prob_home": 0.3309,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Localía en Estadio Cuauhtémoc: ventaja tradicional",
+        "Ensemble da 33.1% al local — base cuantitativa",
+        "Altitud 2135m favorece al local aclimatado",
+        "Estadio con capacidad 51,726"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Tijuana) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local PUE tiene ventaja de localía. Ensemble da 33.1%. Bull refuerza a 38.1% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19425978",
+      "team_favored": "Tijuana",
+      "win_probability_estimate": 0.4658,
+      "ensemble_prob_away": 0.3858,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Visitante (Tijuana) puede capitalizar errores locales",
+        "Ensemble da 38.6% al visitante — base cuantitativa",
+        "Local PUE viene con presión de resultado",
+        "Visitantes aclimatados a altitud alta = ventaja"
+      ],
+      "risks_acknowledged": [
+        "Local PUE tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante TIJ tiene oportunidad. Ensemble da 38.6%. Bear refuerza a 46.6%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19425978",
+    "final_prediction": {
+      "home_win": 0.3248235,
+      "draw": 0.29345725,
+      "away_win": 0.38171924999999995
+    },
+    "predicted_outcome": "away_win",
+    "confidence": 0.6046,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Puebla, Bear favorece Tijuana (opuestos) → numérico 0.50→0.70"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.381",
+      "bear_visitante home_win=0.240",
+      "numerico home_win=0.331"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:58.035891"
+}

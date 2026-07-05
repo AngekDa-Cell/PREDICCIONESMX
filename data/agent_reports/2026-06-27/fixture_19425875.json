@@ -1,0 +1,96 @@
+{
+  "fixture_id": 19425875,
+  "match_id": "19425875",
+  "context": {
+    "home_team": "Cruz Azul",
+    "away_team": "Mazatlán",
+    "date": "2025-07-13 03:05:00.000000",
+    "venue": "Mexico City Stadium",
+    "result": "draw"
+  },
+  "agents": {
+    "numerico": {
+      "agent": "numerico",
+      "match_id": "19425875",
+      "probs": {
+        "home_win": 0.5791,
+        "draw": 0.2413,
+        "away_win": 0.1796
+      },
+      "predicted_outcome": "home_win",
+      "confidence": 0.625,
+      "components": {
+        "xg": null,
+        "elo_diff": 267.3,
+        "shrinkage": 0.7
+      },
+      "reasoning_summary": "Ensemble xG+Elo+DC+heur: 57.9% home, 24.1% draw, 18.0% away (conf=0.62)"
+    },
+    "bull_local": {
+      "agent": "bull_local",
+      "match_id": "19425875",
+      "team_favored": "Cruz Azul",
+      "win_probability_estimate": 0.6591,
+      "ensemble_prob_home": 0.5791,
+      "delta_vs_ensemble": 0.08,
+      "key_arguments": [
+        "Localía en Mexico City Stadium: ventaja tradicional",
+        "Ensemble da 57.9% al local — base cuantitativa",
+        "Altitud 2240m favorece al local aclimatado",
+        "Estadio con capacidad 87,523"
+      ],
+      "risks_acknowledged": [
+        "Visitante (Mazatlán) puede aprovechar contraataque"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Local CAZ tiene ventaja de localía. Ensemble da 57.9%. Bull refuerza a 65.9% por argumentos cualitativos."
+    },
+    "bear_visitante": {
+      "agent": "bear_visitante",
+      "match_id": "19425875",
+      "team_favored": "Mazatlán",
+      "win_probability_estimate": 0.2296,
+      "ensemble_prob_away": 0.1796,
+      "delta_vs_ensemble": 0.05,
+      "key_arguments": [
+        "Visitante (Mazatlán) puede capitalizar errores locales",
+        "Ensemble da 18.0% al visitante — base cuantitativa",
+        "Local CAZ viene con presión de resultado",
+        "Visitantes aclimatados a altitud alta = ventaja"
+      ],
+      "risks_acknowledged": [
+        "Local CAZ tiene mejor récord en casa"
+      ],
+      "confidence": 0.55,
+      "reasoning_summary": "Visitante MZA tiene oportunidad. Ensemble da 18.0%. Bear refuerza a 23.0%."
+    }
+  },
+  "judge": {
+    "judge": "dwc_mad",
+    "match_id": "19425875",
+    "final_prediction": {
+      "home_win": 0.556237,
+      "draw": 0.26059224999999997,
+      "away_win": 0.18317075
+    },
+    "predicted_outcome": "home_win",
+    "confidence": 0.5963,
+    "agents_weights_used": {
+      "numerico": 0.7,
+      "bull_local": 0.15,
+      "bear_visitante": 0.15
+    },
+    "adjustments_applied": [
+      "Bull favorece Cruz Azul, Bear favorece Mazatlán (opuestos) → numérico 0.50→0.70",
+      "Discrepancia alta (spread=0.31) → confianza penalizada -0.01"
+    ],
+    "discrepancies_noted": [
+      "bull_local home_win=0.659",
+      "bear_visitante home_win=0.347",
+      "numerico home_win=0.579"
+    ],
+    "issues_found": []
+  },
+  "mode": "simulate",
+  "timestamp": "2026-06-27T14:31:58.487456"
+}

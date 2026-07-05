@@ -1,0 +1,175 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                  SCHEMA V2 — PREDICTIONS_MX (VISUAL)                        ║
+║                  19 tablas · 11 nuevas · 8 mejoradas                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+                          ┌─────────────┐
+                          │   LEAGUE    │
+                          │  (liga)     │
+                          └──────┬──────┘
+                                 │ 1:N
+                ┌────────────────┼────────────────┐
+                │                │                │
+                ▼ N:1           ▼ N:1           ▼ 1:N
+          ┌──────────┐    ┌──────────┐    ┌──────────────┐
+          │  SEASON  │    │  FIXTURE │    │    TEAM      │
+          │(temporada)│   │(partido) │    │   (equipo)   │
+          └────┬─────┘    └────┬─────┘    └──┬──────┬────┘
+               │               │             │      │
+               │ 1:N           │             │ 1:N  │ N:1
+               │               │             ▼      ▼
+               │               │        ┌────────┐ ┌────────┐
+               │               │        │ PLAYER │ │ VENUE  │
+               │               │        │(jugador)│ │(estadio)│
+               │               │        └───┬────┘ └────────┘
+               │               │            │ 1:N
+               │               │            ▼
+               │               │    ┌──────────────────┐
+               │               │    │ FIXTURE_LINEUP   │
+               │               │    │ (alineación)     │
+               │               │    └──────────────────┘
+               │               │
+               │               ├──────────────────────────┐
+               │               │                          │
+               │               ▼ 1:N                      ▼ 1:1
+               │       ┌──────────────────┐      ┌──────────────────┐
+               │       │ FIXTURE_EVENT    │      │  MATCH_WEATHER   │
+               │       │  (goles, etc.)   │      │  (clima)         │
+               │       └──────────────────┘      └──────────────────┘
+               │
+               │       ┌──────────────────┐      ┌──────────────────┐
+               │       │ FIXTURE_STATISTIC│      │  MATCH_CONTEXT   │
+               │       │  (stats)         │      │ (derby, presión) │
+               │       └──────────────────┘      └──────────────────┘
+               │
+               │ 1:N
+               ▼
+        ┌──────────────┐         ┌──────────────┐
+        │  COACH       │ 1:N     │ PLAYER_INJURY│
+        │(técnico/DT)  ├────────►│ (lesiones)   │
+        └──────┬───────┘         └──────────────┘
+               │ 1:N
+               ▼
+        ┌──────────────────┐     ┌──────────────────┐
+        │  COACH_TENURE    │     │ PLAYER_TRANSFER  │
+        │ (historial DT)   │     │ (transferencias) │
+        └──────────────────┘     └──────────────────┘
+
+
+        TABLAS CALCULADAS (features para ML)
+        ─────────────────────────────────────
+        ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+        │  TEAM_FORM   │ │ PLAYER_FORM  │ │  COACH_FORM  │
+        │ (últimos 5)  │ │ (últimos 5)  │ │ (últimos 5)  │
+        └──────────────┘ └──────────────┘ └──────────────┘
+
+        ┌──────────────┐
+        │  TRAVEL_LOG  │
+        │ (fatiga x   │
+        │  viaje)     │
+        └──────────────┘
+
+LEYENDA DE RELACIONES
+════════════════════
+  1:N = Uno a Muchos (padre → hijos)
+  N:1 = Muchos a Uno (hijos → padre)
+  1:1 = Uno a Uno
+
+DATOS CLAVE POR TABLA
+═════════════════════
+
+🏟️  VENUE (MEJORADO)
+    • altitude_m      ← altitud del estadio (¡clave en México!)
+    • latitude, longitude
+    • surface         ← césped natural / sintético / mixto
+    • climate_zone    ← árido, templado, tropical
+    • roof_type       ← abierto, retractil, fijo
+
+👤  PLAYER (MEJORADO)
+    • preferred_foot  ← zurdo/diestro
+    • shirt_number
+    • primary_position / secondary_position
+    • date_of_birth (edad calculable)
+
+🧠  COACH (NUEVO)
+    • tactical_style    ← ofensivo, defensivo, posesión, contraataque
+    • formation_preference ← 4-4-2, 4-3-3, etc.
+    • years_experience
+
+📋  FIXTURE_LINEUP (NUEVO)
+    • is_starter, is_captain
+    • position_group / position_detail
+    • minutes_played
+    • rating ← rendimiento individual
+    • goals, assists, cards
+
+🌦️  MATCH_WEATHER (NUEVO)
+    • temperature_c, feels_like_c
+    • humidity_pct
+    • wind_kph
+    • precipitation_mm
+    • conditions ← "Clear", "Rain", "Cloudy"
+
+🧠  MATCH_CONTEXT (NUEVO — "psicología")
+    • is_derby, is_classic
+    • home_rest_days / away_rest_days
+    • home_consecutive_home / away_consecutive_away
+    • psychological_pressure_home / away ← manual o calculado
+    • notes_manual ← texto libre del analista
+
+✈️  TRAVEL_LOG (NUEVO — fatiga)
+    • distance_km ← calculable desde venues
+    • transport_mode ← avión, autobús
+    • travel_hours
+
+📈  TEAM_FORM / PLAYER_FORM / COACH_FORM (CALCULADOS)
+    • últimos 5 partidos: W/D/L, goles, rating
+    • momentum_score
+    • fatigue_index (jugador)
+    • pressure_index (DT)
+
+FLUJO DE DATOS PARA PREDICCIONES
+═════════════════════════════════
+
+   ┌─────────────────┐
+   │ FIXTURE PRÓXIMO │
+   └────────┬────────┘
+            │
+            ▼
+   ┌─────────────────────────────────────────────┐
+   │ Features calculadas (ejemplo):              │
+   │                                             │
+   │ home_team_form.momentum_score               │
+   │ home_team_form.last_5_wins                  │
+   │ home_team.travel_log.travel_hours (anterior)│
+   │ home_team.context.home_consecutive_home     │
+   │                                             │
+   │ home_coach_form.pressure_index              │
+   │ home_coach.tactical_style                   │
+   │ home_coach.formation_preference             │
+   │                                             │
+   │ home_key_player_1_form.last_5_goals         │
+   │ home_key_player_1_form.fatigue_index        │
+   │ home_key_player_1_injury.recent             │
+   │                                             │
+   │ venue.altitude_m                            │
+   │ weather.temperature_c (pronóstico)          │
+   │ context.is_derby                            │
+   │ context.psychological_pressure_home         │
+   └─────────────────────────────────────────────┘
+            │
+            ▼
+   ┌─────────────────────────────┐
+   │  MODELO ML → Predicción     │
+   │  • Resultado 1X2            │
+   │  • Goles esperados          │
+   │  • Confianza %              │
+   │  • Razón principal          │
+   └─────────────────────────────┘
+
+NOTAS
+═════
+• Todas las FKs tienen ON DELETE configurable (cascade donde aplica)
+• Tablas con 'as_of_date' son snapshots/series temporales
+• 'meta_json' preserva la respuesta cruda del API para debugging
+• Datos manuales se marcan con sufijo _manual o campo notes_manual
