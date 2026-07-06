@@ -72,6 +72,44 @@ const nextConfig = {
       allowedOrigins: ["quinielas.lol", "localhost"],
     },
   },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Compat redirects (C2: consistencia total en código del workspace)
+  //
+  // Estado actual:
+  // - /partidos → /votacion: manejado por Next.js (nginx NO lo tiene). 301.
+  // - /analisis, /efectividad, /historial → /: nginx los maneja AHORA con 307,
+  //   por lo que este redirect de Next.js queda como respaldo hasta que
+  //   algún día se limpien las reglas de nginx del host.
+  //
+  // Notas:
+  // - 301 = permanent (SEO transfiere PageRank, browser cachea)
+  // - 307 = temporary (mantiene método HTTP, no cambia a GET)
+  // ─────────────────────────────────────────────────────────────────────────────
+  async redirects() {
+    return [
+      {
+        source: "/partidos",
+        destination: "/votacion",
+        permanent: true, // 301
+      },
+      {
+        source: "/analisis",
+        destination: "/",
+        permanent: false, // 307 (match nginx legacy)
+      },
+      {
+        source: "/efectividad",
+        destination: "/",
+        permanent: false, // 307
+      },
+      {
+        source: "/historial",
+        destination: "/",
+        permanent: false, // 307
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
