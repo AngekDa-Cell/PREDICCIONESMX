@@ -15,6 +15,11 @@ full_pipeline.py — Pipeline nuclear diario (Plan A+D).
   9. Drift detection + recalibración si aplica (~1 min)
  10. Reporte completo + Telegram (~5s)
 
+Quick wins integrados:
+  C1b Refresh resultados fixtures finalizados (SportMonks) (~10s)   [FIX 2026-07-18]
+  C2  Reconciliación outcome_hit (~1s)
+  C5  Alert cambios DT (~5s)
+
 Uso:
   python3 scripts/full_pipeline.py            # modo real
   python3 scripts/full_pipeline.py --dry-run  # solo mostrar qué haría
@@ -807,6 +812,21 @@ def main():
     results.append(drift_result)
 
     # ===== QUICK WINS INTEGRATION =====
+    # C1b: Refresh resultados de fixtures ya finalizados (FIX 2026-07-18:
+    # antes el pipeline solo buscaba fixtures NUEVOS pero no actualizaba
+    # los resultados de partidos ya jugados → BD quedaba stale indefinidamente).
+    # Corre ANTES de C2 porque C2 reconcilia predicciones contra home_score/away_score.
+    if not args.dry_run:
+        # hours_back=2 cubre partidos que terminaron hace >=2h.
+        # Para pipeline diario 11:00 UTC cubre todo lo del día anterior + juegos diurnos MX.
+        result = run_step(
+            "C1b Refresh resultados fixtures finalizados (SportMonks)",
+            ["python3", "scripts/refresh_fixtures_results.py", "--hours-back", "2"],
+            dry_run=False,
+            timeout=180,
+        )
+        results.append(result)
+
     # C2: Reconciliación outcome_hit
     if not args.dry_run:
         result = run_step(
@@ -816,25 +836,25 @@ def main():
         )
         results.append(result)
 
-    # C5: Alert cambios DT
+    # C5: Alert cambios DT (FIX 2026-07-12: antes corría 2 veces — vía run_step y subprocess.run)
     if not args.dry_run:
+        import shlex
+        c5_cmd = ["python3", "scripts/coach_change_alert.py", "--days", "30"]
         result = run_step(
             "C5 Detectar cambios de DT",
-            ["python3", "scripts/coach_change_alert.py"],
+            c5_cmd,
             dry_run=False,
+            timeout=60,
         )
-        # Parsear output para saber si hay cambios
+        # Parsear output del ÚNICO run (output_tail está en result["output_tail"])
         coach_changes_count = 0
+        output_tail = result.get("output_tail", "") or ""
         try:
+            # Guardar a /tmp también para no romper consumidores legacy
             with open("/tmp/coach_changes.txt", "w") as f:
-                # Re-correr para capturar output
-                r2 = subprocess.run(
-                    ["python3", "scripts/coach_change_alert.py", "--days", "30"],
-                    cwd=str(PROJECT_ROOT),
-                    capture_output=True, text=True, timeout=30,
-                )
-                f.write(r2.stdout)
-                coach_changes_count = r2.stdout.count("→") if r2.returncode == 0 else 0
+                f.write(output_tail)
+            # Contar marcadores de cambio (flecha →) solo en el output real
+            coach_changes_count = output_tail.count("→")
         except Exception:
             pass
         result["coach_changes_count"] = coach_changes_count
