@@ -128,6 +128,25 @@ def main():
             # Confidence: prob máxima de la Poisson (consistente con marcador)
             confidence = max(home_win_p, draw_p, away_win_p)
 
+            # *** PLATT SCALING OVERRIDE (Fase B 2026-07-19) ***
+            # Si Platt scaling está activo (data/platt_coefficients.json existe),
+            # sobreescribir las probs Poisson-DC con las del ensemble calibrado.
+            # Esto usa el modelo combinado (xG + Elo + DC + heur) que ha mostrado
+            # mayor accuracy OOS (+0.50pp acc, -0.33pp brier) vs DC puro.
+            # El marcador (most_likely_score) sigue viniendo de la Poisson DC
+            # por consistencia score↔score. La inconsistencia leve entre
+            # probs (ensemble calibrado) y marcador (DC puro) es aceptable
+            # porque ambos vienen del mismo modelo base (DC + heurísticas + ensemble).
+            ensemble_calibrated = pred.get("ensemble_calibrated")
+            ensemble_raw = pred.get("ensemble")
+            if (ensemble_calibrated is not None and ensemble_raw is not None
+                and ensemble_calibrated is not ensemble_raw):
+                # Platt está activo (calibration.py creó un dict nuevo)
+                home_win_p = ensemble_calibrated["home"]
+                draw_p = ensemble_calibrated["draw"]
+                away_win_p = ensemble_calibrated["away"]
+                confidence = max(home_win_p, draw_p, away_win_p)
+
             # *** SCORE CONSISTENTE CON OUTCOME TOP ***
             # El argmax puntual de la Poisson (e.g. "1-1") puede diferir del
             # outcome top (e.g. Local 39.6% > Empate 32.8% > Visit 27.6%).
@@ -216,7 +235,7 @@ def main():
 
             print(
                 f"  ✓ {home_name:25s} vs {away_name:25s} "
-                f"→ H:{ensemble['home']:.1%} D:{ensemble['draw']:.1%} A:{ensemble['away']:.1%} "
+                f"→ H:{home_win_p:.1%} D:{draw_p:.1%} A:{away_win_p:.1%} "
                 f"conf:{confidence:.0%} {most_likely}"
             )
         except Exception as e:

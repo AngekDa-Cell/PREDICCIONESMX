@@ -30,6 +30,19 @@ from predict.elo import get_elo_predictions
 from predict.misc_utils import get_season_id_for_date, get_shrinkage_factor  # we'll define this below
 
 
+def _apply_platt_if_available(probs: dict) -> dict:
+    """Aplica Platt scaling si está disponible, si no devuelve probs sin cambio.
+
+    Helper para no repetir la lógica en cada punto del return. Usado desde
+    predict_match() para ensemble_calibrated y pick calibrado.
+    """
+    try:
+        from predict.calibration import apply_calibration
+        return apply_calibration(probs)
+    except Exception:
+        return probs
+
+
 def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
     """
     Genera predicción completa para backtesting.
@@ -234,6 +247,9 @@ def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
         'heuristic': {'home': adj_probs['home_win'], 'draw': adj_probs['draw'], 'away': adj_probs['away_win']},
         'xg': {'home': xg_pred['home_win'], 'draw': xg_pred['draw'], 'away': xg_pred['away_win']},
         'ensemble': ensemble,
+        # Ensemble calibrado vía Platt scaling (Fase B 2026-07-19).
+        # Si no hay coefs en data/platt_coefficients.json, devuelve ensemble sin cambio.
+        'ensemble_calibrated': _apply_platt_if_available(ensemble),
         # Confianza del PICK: probabilidad máxima del ensemble (no la del modelo DC).
         # Antes heredábamos adj_output['confidence'] (sample size de DC, ~0.6-0.85),
         # lo cual era engañoso: mostraba 71% en partidos con probs 36/27/36.
@@ -241,8 +257,13 @@ def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
         # Tier de confianza: high (>=0.55 acc~67%), medium (>=0.40 acc~55%), low (<0.40 random).
         # Quick Win A2: usar tier para filtrar picks.
         'tier': tier,
-        # Pick recomendado (None si tier=low).
-        'pick': max(ensemble, key=ensemble.get) if tier != "low" else None,
+        # Pick recomendado (None si tier=low). Usa ensemble_calibrated si disponible.
+        'pick': (
+            max(_apply_platt_if_available(ensemble), key=_apply_platt_if_available(ensemble).get)
+            if tier != "low" else None
+        ),
+        # Pick sin calibrar (legacy/backtest).
+        'pick_raw': max(ensemble, key=ensemble.get) if tier != "low" else None,
         # Marcador más probable REAL de la matriz Poisson DC (no heurístico round).
         'most_likely_score': dc_output.get('most_likely_score'),
         'predicted_home_goals': dc_output.get('predicted_home_goals'),
