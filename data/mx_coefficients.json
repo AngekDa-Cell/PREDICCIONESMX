@@ -1,5 +1,5 @@
 {
-  "_comment": "Coeficientes calibrados para ensemble Liga MX. El sistema carga esto en runtime; si falta, usa defaults hardcoded. Regenerar periódicamente con grid search + walk-forward.",
+  "_comment": "Coeficientes calibrados para ensemble Liga MX. El sistema carga esto en runtime; si falta, usa defaults hardcoded. Regenerar peri\u00f3dicamente con grid search + walk-forward.",
   "generated_at": "2026-07-01",
   "_sources": [
     "Fase 8: grid_search_heur_weight.py (2024-2025)",
@@ -13,7 +13,7 @@
     "elo_weight": 0.225,
     "dc_weight": 0.135,
     "heuristic_weight": 0.09,
-    "_note": "Pesos calibrados Fase 8 grid search sobre 680 partidos 2024-2025."
+    "_note": "Pesos calibrados Fase 8 grid search sobre 680 partidos 2024-2025. A/B Fase B 2026-07-19 n=300: v1 elo-heavy tiene mejor Brier (-0.0032) pero peor acc (-0.67pp). Sin mejora concluyente, mantener baseline hasta grid search con n>500."
   },
   "elo_shrinkage": {
     "factor": 0.8,
@@ -22,7 +22,7 @@
   },
   "team_local_shrinkage": {
     "enabled": true,
-    "_note": "Shrinkage por equipo (Querétaro=0.746 home, América=0.857 home) compensa over/underperformance histórico. Usado en get_elo_predictions."
+    "_note": "Shrinkage por equipo (Quer\u00e9taro=0.746 home, Am\u00e9rica=0.857 home) compensa over/underperformance hist\u00f3rico. Usado en get_elo_predictions."
   },
   "calibration": {
     "method": "platt",
@@ -34,11 +34,11 @@
     "medium": 0.4,
     "low": 0.0,
     "high_tier_accuracy": 0.669,
-    "_note": "Filtro de tiers. Si confidence >= 0.55 → pick HIGH (acc ~67% en BT). < 0.40 → LOW (casi random). Solo mostrar pick cuando >= MEDIUM."
+    "_note": "Filtro de tiers. Si confidence >= 0.55 \u2192 pick HIGH (acc ~67% en BT). < 0.40 \u2192 LOW (casi random). Solo mostrar pick cuando >= MEDIUM."
   },
   "injury_weight": 0.05,
   "injury_weight_note": "Boost por lesiones diferenciales. Default 0.05 (conservador), tuneable con BT.",
   "referee_weight": 0.02,
   "referee_max_shift": 0.05,
-  "_note_referee": "Sprint 3.4 — Referee bias factor con peso 0.02, max shift ±0.05"
+  "_note_referee": "Sprint 3.4 \u2014 Referee bias factor con peso 0.02, max shift \u00b10.05"
 }
