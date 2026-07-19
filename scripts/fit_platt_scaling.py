@@ -26,6 +26,7 @@ import json
 import argparse
 import csv
 import math
+from datetime import datetime
 from pathlib import Path
 from pathlib import Path
 from collections import defaultdict
@@ -256,7 +257,13 @@ def main():
     output = {
         "_target": args.target,
         "_global_a_b": coefs_global,
-        "_note": f"Ajustado 2026-07-19 (Fase B Platt scaling). Out-of-sample Δ Brier={delta*100:+.2f}pp.",
+        "_note": f"Recalibración {datetime.now().strftime('%Y-%m-%d')} (Fase B Platt scaling, target={args.target}). Out-of-sample Δ Brier={delta*100:+.2f}pp.",
+        # Métricas OOS para que recalibrate_platt.sh pueda comparar
+        "_oos_brier_pre": avg_pre,
+        "_oos_brier_post": avg_post,
+        "_oos_brier_delta_pp": delta * 100,
+        "_n_fit": len(rows),
+        "_generated_at": datetime.now().isoformat(),
     }
     with open(args.output_coefs, "w") as f:
         json.dump(output, f, indent=2)
