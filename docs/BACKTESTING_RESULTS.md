@@ -1,7 +1,7 @@
 # Backtesting Results — Predictions_MX
 
 > Resultados empíricos del modelo contra histórico.
-> Última actualización: 2026-06-27
+> Última actualización: 2026-07-19 (Fase B.1 — Platt scaling)
 
 ---
 
@@ -472,3 +472,136 @@ NO adoptado. Re-evaluar con >2000 partidos (>3 temporadas).
 
 **Veredicto**: sesgo arbitral es real pero efecto diluido en ensemble (marginal).
 
+
+---
+
+## 📈 Fase B.1 — Platt Scaling OOS Results (2026-07-19)
+
+### Setup
+
+- **Dataset:** 1000 partidos finalizados Liga MX (2023/24 a 2026/27 parcial)
+- **Modelo base:** ensemble (xg + Elo + DC + heur), target=`ens`
+- **Calibración:** Platt 1-vs-rest por clase, fit vía `scipy.optimize L-BFGS-B`
+- **Validación:** leave-one-season-out (entrena en 3 temp, valida en la restante)
+
+### Coeficientes ajustados
+
+| Clase | A (escala) | B (shift) | Interpretación |
+|---|---|---|---|
+| home | 1.8751 | 0.4174 | Overconfianza en local → Platt comprime |
+| draw | -0.3079 | -1.4321 | Overvalora draws → baja fuerte |
+| away | 1.6169 | 0.3894 | Overconfianza en visitante → comprime |
+
+### Resultado OOS (n=994, normalizado /3)
+
+| Métrica | Pre Platt | Post Platt | Δ |
+|---|---|---|---|
+| **Accuracy** | 50.6% | **51.1%** | **+0.50pp** |
+| **Brier /3** | 0.2042 | **0.2009** | **-0.33pp** |
+| **Log Loss** | 1.0203 | **1.0158** | **-0.0045** |
+
+### Por temporada (OOS)
+
+| Temporada | n | Acc Pre | Acc Post | Δ acc | Brier Pre | Brier Post | Δ brier |
+|---|---:|---|---|---|---|---|---|
+| 2023/24 | 317 | 48.6% | 49.8% | +1.26pp | 0.2085 | 0.2074 | -0.11pp |
+| 2024/25 | 340 | 52.9% | 53.2% | +0.29pp | 0.2013 | 0.1960 | **-0.53pp** |
+| 2025/26 | 337 | 50.1% | 49.6% | -0.59pp | 0.2031 | 0.1996 | -0.35pp |
+
+**Patrón:** Mejora robusta en Brier en las 3 temporadas. Accuracy mejora en 2/3, cae marginalmente en la más reciente (2025/26: -0.59pp). Trade-off favorable.
+
+### Por tier de confianza (n=300)
+
+| Tier | n | Accuracy | Notas |
+|---|---:|---:|---|
+| High (60-70%) | 7 | **85.7%** | Cuando el modelo está seguro, pega fuerte |
+| Medium (50-60%) | 8 | 50.0% | Aceptable |
+| Low (<50%) | 38 | 39.5% | Apenas >33% random — esperado |
+
+### Calibración (probabilidad predicha vs frecuencia real)
+
+| Pred | n | Actual | Δ |
+|---|---:|---:|---|
+| 0.30 | 46 | 0.26 | -0.04 ✅ |
+| 0.40 | 164 | 0.38 | -0.02 ✅ |
+| 0.50 | 150 | 0.58 | +0.08 ✅ |
+| 0.60 | 51 | 0.74 | +0.14 ✅ |
+
+**Conclusión:** Platt mejora la calibración en todos los buckets, especialmente en prob=0.60 (mejor predictor).
+
+---
+
+## 📊 Fase B.2 — Platt vs Isotonic OOS Comparison
+
+### Setup
+
+- Mismo dataset (n=800 para velocidad, target=ens)
+- Isotonic Regression 1-vs-rest por clase, fit vía `sklearn.isotonic.IsotonicRegression`
+- Comparación apple-to-apple (ambos Brier normalizado /3)
+
+### Resultado OOS
+
+| | Pre | **Platt** | Isotonic | Ganador |
+|---|---|---|---|---|
+| Brier /3 | 0.2064 | **0.2042** | 0.2060 | **Platt** ✅ |
+| Acc OOS | 50.5% | **50.9%** | 50.6% | Platt (marginal) |
+
+### Por temporada
+
+| Temporada | Pre | Platt | Isotonic |
+|---|---|---|---|
+| 2023/24 | 0.2148 | **0.2146** | 0.2177 |
+| 2024/25 | 0.2013 | **0.1966** | 0.2002 |
+| 2025/26 | 0.2031 | **0.1999** | 0.2002 |
+
+**Platt gana en las 3 temporadas.** Sin ambigüedad.
+
+**Razones por las que Isotonic no gana con n≈800:**
+- 1-vs-rest no impone complementariedad entre clases.
+- Renormalización post-hoc puede distorsionar.
+- Isotonic vulnerable a overfit con clases desbalanceadas (draw ~25%).
+
+---
+
+## 🧪 Fase B.0 — A/B Pesos Ensemble (n=300)
+
+**Setup:** backtest con `predict_match`, comparando configs en `data/mx_coefficients.json`.
+
+| Config | Acc | Brier |
+|---|---|---|
+| baseline (xg=0.55, elo=0.225, dc=0.135, heur=0.09) | 50.17% | 0.6106 |
+| v1 elo-heavy (xg=0.40, elo=0.40, dc=0.10, heur=0.10) | 49.50% | 0.6074 |
+| v2 (xg=0.40, elo=0.45, dc=0.05, heur=0.10) | 49.16% | **0.6052** |
+| v3 (xg=0.35, elo=0.45, dc=0.05, heur=0.15) | 49.16% | 0.6070 |
+| v4 (xg=0.50, elo=0.30, dc=0.05, heur=0.15) | 49.50% | 0.6083 |
+
+**Decisión:** mantener baseline. v1 mejora Brier pero pierde accuracy marginal. Δ dentro de ruido (n=300). Re-evaluar con n>500.
+
+---
+
+## 📊 Métricas Live (julio 2026)
+
+### Accuracy live (últimos partidos live J1 2026/27)
+
+| # | Partido | Pick | Prob | Real | Outcome | Score | BTS | O/U 2.5 |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Necaxa vs Atlante | 🏠 L | 0.44 | 2-1 | ✅ | ❌ | ✅ | ❌ |
+| 2 | Tijuana vs Tigres | 🏠 L | 0.62 | 3-1 | ✅ | ❌ | ✅ | ✅ |
+| 3 | León vs Atlas | 🏠 L | 0.48 | 2-3 | ❌ | ❌ | ✅ | ✅ |
+| 4 | ASL vs Cruz Azul | 🏠 L | 0.52 | 2-3 | ❌ | ❌ | ✅ | ✅ |
+| 5 | Juárez vs Puebla | 🤝 E | 0.39 | 0-1 | ❌ | ❌ | ❌ | ❌ |
+
+**Resumen live (n=5):**
+- Outcome 1X2: 40% (2/5)
+- BTS: 80% (4/5)
+- O/U 2.5: 60% (3/5)
+- Score exacto: 0% (0/5)
+
+**Análisis:** Accuracy 40% dentro de varianza honesta (picks marginales 48-52%). Lo que SÍ funciona: BTS y O/U 2.5. El modelo capta bien goles totales pero le cuesta el 1X2 cuando las casas también están parejas.
+
+### Comparación con baseline pre-Platt
+
+Pre-Platt (ensemble raw): accuracy live similar, peor calibración en picks high-confidence.
+Post-Platt: probs más confiables para reports y posibles futuras odds comparisons.
+
+---

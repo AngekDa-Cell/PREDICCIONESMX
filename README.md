@@ -1,185 +1,180 @@
 # ⚽ Predictions_MX — Sistema Profesional de Predicciones Liga MX
 
-> **Bot:** [@Predictions_MX_bot](https://t.me/Predictions_MX_bot) · **Owner:** Ángel Padilla · **Última actualización:** 2026-06-26
+> **Bot:** [@Predictions_MX_bot](https://t.me/Predictions_MX_bot) · **Owner:** Ángel Padilla · **Última actualización:** 2026-07-19
 
-Sistema profesional de predicciones para la **Liga MX** (y Liga de Expansión MX), construido sobre datos de **[SportMonks v3](https://www.sportmonks.com/)** + enriquecido con APIs externas y curación manual para análisis profundo.
+Sistema profesional de predicciones para la **Liga MX**, construido sobre datos de **[SportMonks v3](https://www.sportmonks.com/)** con pipeline automatizado de ingesta → predicción → publicación.
 
 ---
 
 ## 🎯 ¿Qué es esto?
 
-No es solo "predicción de goles". Es un **sistema de análisis profundo** que combina:
+Dos sistemas integrados en un workspace:
 
-- 📊 **Estadísticas detalladas** de cada partido (78 stats por equipo)
-- 👤 **Datos individuales** de jugadores (rating, posición, minutos, goles)
-- 🧠 **Contexto humano** (forma reciente, presión del DT, fatiga)
-- 🏟️ **Contexto físico** (altitud del estadio, clima, viaje)
-- 🎭 **Contexto emocional** (derby, clásico, presión mediática — vía manual)
+1. **Backend de predicciones** (este repo): ingesta SportMonks, modelo ensemble, calibración Platt, validación out-of-sample, reportes Telegram.
+2. **Frontend público** ([quinielas.lol](https://quinielas.lol), repo separado): visualización web + sistema de votaciones crowdsourced de la comunidad.
 
-El objetivo: **predecir resultados de partidos de Liga MX con features de nivel profesional**, no amateur.
+**Objetivo:** predecir resultados de Liga MX con accuracy >50% (baseline aleatorio 33%, estado del arte ≈55-60%) usando features engineered y calibración estadística.
 
 ---
 
 ## ⚡ Quick Start
 
 ```bash
-# 1. Variables de entorno (¡solo Ángel tiene el token!)
+# Variables de entorno (Ángel tiene el token)
 cp .env.example .env
-# Editar .env y pegar SPORTMONKS_API_TOKEN
+# Editar .env con SPORTMONKS_API_TOKEN
 
-# 2. Instalar dependencias
-pip3 install --break-system-packages requests pandas numpy sqlalchemy python-dotenv
+# Dependencias
+pip3 install --break-system-packages requests pandas numpy sqlalchemy python-dotenv scipy scikit-learn
 
-# 3. Inicializar BD (crea las 19 tablas)
-python3 -m proyectos.src.init_db
+# Pipeline diario (corre automático 11:00 UTC vía cron OpenClaw)
+python3 scripts/full_pipeline.py
 
-# 4. Ingerir datos
-python3 -m proyectos.src.test_connection      # verificar API
-python3 -m proyectos.src.ingest_leagues        # 2 ligas
-python3 -m proyectos.src.ingest_seasons        # 44 temporadas
-python3 -m proyectos.src.ingest_seasons_targeted  # fixtures + events + stats (5 temporadas × 2 ligas)
-python3 -m proyectos.src.ingest_statistics     # 192K stats detalladas
-python3 -m proyectos.src.ingest_coaches        # 285 coaches + 1,082 tenures
-python3 -m proyectos.src.ingest_lineups        # 127,186 alineaciones + players
-python3 -m proyectos.src.ingest_venues         # 45 venues con altitud real
+# Validar resultados (corre semanal lunes 09:00 UTC vía cron container)
+python3 scripts/recalibrate_platt.sh
+
+# Predicción ad-hoc (próximos partidos)
+python3 src/predict/cli.py --match "América vs Chivas"
 ```
 
 ---
 
-## 📊 Estado actual del proyecto
+## 📊 Estado actual (julio 2026)
 
-```
-📦 BASE DE DATOS (SQLite: data/predictions_mx.db)
-══════════════════════════════════════════════════════════════
-  19 tablas totales (schema v2)
-  15 con datos scrapeados de SportMonks
-   4 pendientes de calcular (forms, context, travel)
-```
+### Métricas live (Fase B con Platt scaling)
 
-### Tablas y conteos actuales (junio 2026):
+| Métrica | Pre Platt | **Post Platt** | Δ vs baseline |
+|---|---|---|---|
+| Accuracy OOS (n=994, 3 temp) | 50.6% | **51.1%** | +18pp vs 33% random |
+| Brier /3 | 0.2042 | **0.2009** | -0.33pp |
+| Log Loss | 1.0203 | **1.0158** | -0.0045 |
 
-| Tabla | Registros | Fuente | Status |
-|---|---:|---|:---:|
-| `leagues` | 2 | SportMonks | ✅ |
-| `seasons` | 44 | SportMonks | ✅ |
-| `teams` | 47 | SportMonks | ✅ |
-| `venues` | 45 | SportMonks + manual | ✅ |
-| `players` | 2,492 | SportMonks | ✅ |
-| `coaches` | 285 | SportMonks | ✅ |
-| `coach_tenures` | 1,082 | SportMonks | ✅ |
-| `fixtures` | 3,081 | SportMonks | ✅ |
-| `fixture_events` | 53,770 | SportMonks | ✅ |
-| `fixture_statistics` | 192,370 | SportMonks | ✅ |
-| `fixture_lineups` | 127,186 | SportMonks | ✅ |
-| `referees` | (pendiente) | SportMonks | ⏳ |
-| `player_injuries` | 0 | Scraping ESPN MX | ⏳ |
-| `player_transfers` | 0 | SportMonks | ⏳ |
-| `match_weather` | 0 | Open-Meteo | ⏳ |
-| `match_context` | 0 | Calculado + manual | ⏳ |
-| `travel_log` | 0 | Calculado | ⏳ |
-| `team_form` | 0 | Calculado | ⏳ |
-| `player_form` | 0 | Calculado | ⏳ |
-| `coach_form` | 0 | Calculado | ⏳ |
+Calibración excelente por tier:
+- High (60-70%, n=7): 85.7% acc
+- Medium (50-60%, n=8): 50% acc
+- Low (<50%, n=38): 39.5% acc (random)
 
-**Ligas cubiertas:**
-- 🇲🇽 **Liga MX** (id=743) — 1,701 fixtures históricos
-- 🇲🇽 **Liga de Expansión MX** (id=749) — 1,380 fixtures históricos
+### Modelos
+
+- **Ensemble** (xg + Elo + Dixon-Coles + heur) — baseline 50.17% acc OOS
+- **Platt scaling 1-vs-rest** — calibración de probabilidades (Fase B.1)
+- **Recalibrador automático semanal** — lunes 09:00 UTC, rollback si Δ Brier >1pp
+- **28 features engineered** + **15 heurísticas**
+
+### Tablas BD (SQLite: `data/predictions_mx.db`)
+
+| Tabla | Registros | Fuente |
+|---|---:|---|
+| `fixtures` | 3,143 | SportMonks |
+| `seasons` | 44 | SportMonks |
+| `teams` | 47 | SportMonks |
+| `venues` | 45 | SportMonks + manual |
+| `players` | 2,492 | SportMonks |
+| `coaches` | 285 | SportMonks |
+| `coach_tenures` | 1,082 | SportMonks |
+| `fixture_events` | 53,770 | SportMonks |
+| `fixture_statistics` | 192,370 | SportMonks |
+| `fixture_lineups` | 127,186 | SportMonks |
+| `analyst_predictions` | live + backtest | Calculado |
+| `market_odds` | 14d rolling | MVP sintético (Fase A.3) |
+| `player_injuries` | activo | ESPN API (Fase 10.5) |
+| `match_weather` | próximos 7d | Open-Meteo |
+
+**Ligas:** Liga MX (id=743) — 6 temporadas scrapeadas (2021-2027 parcial).
 
 ---
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura (high-level)
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                       SPORTMONKS API v3                          │
-│  Custom Plan de Ángel: 3,000 calls/hora                          │
-│  Ligas: Liga MX (743) + Liga Expansión (749)                     │
+│  Plan Ángel: 3,000 calls/hora                                    │
+│  Endpoints: fixtures, lineups, statistics, events, etc.          │
 └────────────────────────────┬────────────────────────────────────┘
                              │
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                  sportmonks_client.py                            │
-│  - Rate limiting (ventana móvil 1h)                              │
-│  - Retries con backoff exponencial                               │
-│  - Sistema de `includes` anidados                                │
-│  - Paginación por cursor                                         │
+│         sportmonks_client.py (rate-limited, includes)            │
 └────────────────────────────┬────────────────────────────────────┘
                              │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│            Scripts de ingesta (src/ingest_*.py)                  │
-│  - leagues, seasons, fixtures, events, statistics                │
-│  - coaches, coach_tenures, lineups                               │
-│  - venues, metadata (formations, attendance)                     │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      SQLite (data/predictions_mx.db)            │
-│  19 tablas (ver tabla arriba)                                    │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-              ┌──────────────┴──────────────┐
-              ▼                             ▼
-   ┌─────────────────────┐       ┌─────────────────────────┐
-   │ Feature engineering │       │ Cálculo de forms         │
-   │ (scripts python)    │       │ (team/player/coach)      │
-   └──────────┬──────────┘       └────────────┬────────────┘
-              │                               │
-              └─────────────┬─────────────────┘
+        ┌────────────────────┼─────────────────────┐
+        ▼                    ▼                     ▼
+┌──────────────┐   ┌──────────────────┐   ┌──────────────────┐
+│   Ingesta    │   │   Ingesta ESPN   │   │   Ingesta ODDS   │
+│  (fixtures,  │   │   (lesiones MX)  │   │  (mercado MVP)   │
+│  lineups,    │   │                  │   │                  │
+│  stats)      │   │                  │   │                  │
+└──────┬───────┘   └────────┬─────────┘   └────────┬─────────┘
+       │                    │                      │
+       └────────────────────┼──────────────────────┘
                             ▼
-              ┌──────────────────────────────┐
-              │   MODELO ML                  │
-              │   - Poisson bivariado (MVP)  │
-              │   - XGBoost / LightGBM       │
-              │   - Ensemble                 │
-              └──────────────┬───────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                  SQLite (data/predictions_mx.db)                │
+│                  19 tablas (schema v2)                            │
+└────────────────────────────┬────────────────────────────────────┘
                              │
                              ▼
-              ┌──────────────────────────────┐
-              │  Reportes / Telegram Bot      │
-              │  (este chat con @angelpadilla)│
-              └──────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                  Feature Engineering                             │
+│  - Home/away split, exponential form, h2h, altitude             │
+│  - Rest days, fixture congestion, coach tenure                   │
+│  - Referee bias, attendance ratio, weather                       │
+│  - Player injuries impact                                       │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│            ENSEMBLE (xg + Elo + Dixon-Coles + heur)             │
+│                  Pesos: 0.55/0.225/0.135/0.09                    │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  PLATT SCALING (calibración)                     │
+│                  1-vs-rest por clase (Fase B.1)                  │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              Sistema de Predicción → 3 destinos                  │
+│  1. BD: analyst_predictions (backtest, reconciliation)           │
+│  2. Reporte diario: data/daily_report.txt + Telegram             │
+│  3. Frontend: quinielas.lol (read-only BD bind)                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+**Crón jobs:**
+- `0 11 * * * UTC` — Pipeline diario (OpenClaw cron, me despierta)
+- `0 4 * * * UTC` — Backup BD (crontab container, bash puro)
+- `0 9 * * 1 UTC` — Recalibrar Platt (crontab container, lunes)
+
+Ver [`ARCHITECTURE.md`](./ARCHITECTURE.md) para detalle completo.
 
 ---
 
 ## 🗺️ Roadmap
 
-### ✅ Fase 1 — Schema v2 + Datos scrapeados (COMPLETADA)
-- 19 tablas diseñadas (8 mejoradas + 11 nuevas)
-- Migración preservando 3,081 fixtures + 53,770 events + 192,370 stats
-- Ingesta de coaches, lineups, venues con altitud real de México
+### ✅ Completado
 
-### 🔄 Fase 2 — Más datos scrapeables (EN PROGRESO)
-- [ ] `ingest_metadata.py` — Formations + attendance de cada fixture
-- [ ] `ingest_referees.py` — Árbitros por temporada
-- [ ] `ingest_transfers.py` — Transferencias por equipo
-- [ ] `ingest_standings.py` — Tabla de posiciones por temporada
-- [ ] `ingest_topscorers.py` — Goleadores con player + team
-- [ ] `ingest_weather.py` — Weather histórico vía Open-Meteo (gratis)
+- **Fase 1-5**: Schema, ingesta, modelos base, calibración, backtesting (2026)
+- **Fase 6-9**: Recalibración Platt, threshold mínimo, attendance heur, referee bias, weather ingest, xG proxy
+- **Fase 10.1-10.3**: Sistema multi-agente debate (Bull/Bear/Numérico/Contextual/Auditor + Juez DWC-MAD)
+- **Fase A**: quinielas.lol frontend LIVE, sistema de votos Sprint 4, market odds MVP
+- **Fase B.1**: Platt scaling en producción, recalibrador automático semanal (jul 2026)
+- **Fix**: paso C1b refresh fixtures resultados (bugfix jul 2026)
 
-### 📝 Fase 3 — Cálculo de features + curación manual
-- [ ] `compute_team_form.py` — Forma últimos 5 partidos
-- [ ] `compute_player_form.py` — Forma/goles/asist por jugador
-- [ ] `compute_coach_form.py` — Racha DT + presión
-- [ ] `compute_match_context.py` — Derby, descanso, consecutivos
-- [ ] `compute_travel_log.py` — Distancia desde venue anterior
-- [ ] `data/manual/coach_tactics.json` — tactical_style + formation (manual)
-- [ ] `data/manual/stadium_surface.json` — surface/roof (manual)
-- [ ] `data/manual/team_context.json` — Presiones especiales
+### 🔄 En progreso (Fase B.2)
 
-### 🤖 Fase 4 — Scraping avanzado (opcional)
-- [ ] `scrape_transfermarkt.py` — Tactical style del DT
-- [ ] `scrape_espn_injuries.py` — Lesiones de jugadores MX
+- Recency weighting en fit Platt (drift temporal)
+- CLV tracker (cuando odds reales disponibles)
 
-### 🚀 Fase 5 — Modelo ML
-- [ ] **MVP:** Poisson bivariado (baseline)
-- [ ] **XGBoost / LightGBM** con features engineered
-- [ ] **Ensemble** (Poisson + XGBoost + Dixon-Coles)
-- [ ] **Backtest** con histórico 2021-2026
-- [ ] **Predicciones en vivo** de próxima jornada
-- [ ] **Reportes automatizados** vía Telegram
+### 📅 Planeado (Fase C/D)
+
+- **Fase C** (1 mes): drift detection, autotrain, lesiones ESPN avanzadas
+- **Fase D** (2-3 meses): tracking data, reports semanales, quiniela.lol v2
+
+Ver [`docs/ROADMAP.md`](./docs/ROADMAP.md) para detalle completo.
 
 ---
 
@@ -187,44 +182,57 @@ python3 -m proyectos.src.ingest_venues         # 45 venues con altitud real
 
 ```
 proyectos/
-├── src/                           # Código fuente Python
-│   ├── config.py                  # Config desde .env
-│   ├── logging_setup.py           # Logging a consola + archivo rotativo
-│   ├── sportmonks_client.py       # Cliente HTTP con rate-limit + retries
-│   ├── db.py                      # 19 modelos SQLAlchemy (schema v2)
-│   ├── init_db.py                 # Crea las tablas
-│   ├── migrate_v2.py              # Migración v1 → v2 preservando datos
-│   ├── test_connection.py         # Prueba el token
-│   ├── ingest_leagues.py          # Liga MX + Expansión
-│   ├── ingest_seasons.py          # Temporadas
-│   ├── ingest_seasons_targeted.py # Equipos + fixtures + eventos (5 temporadas)
-│   ├── ingest_statistics.py       # Stats detalladas por partido
-│   ├── ingest_coaches.py          # Coaches + tenures
-│   ├── ingest_lineups.py          # Alineaciones + players
-│   ├── ingest_venues.py           # Venues + altitud/coords
-│   └── ...                        # Más scripts de ingesta (Fase 2+)
+├── src/                                # Código fuente Python
+│   ├── config.py                       # Config desde .env
+│   ├── sportmonks_client.py            # Cliente HTTP rate-limited
+│   ├── db.py                           # 19 modelos SQLAlchemy (schema v2)
+│   ├── ingest_*.py                     # Scripts de ingesta (SportMonks, ESPN)
+│   ├── predict/                        # Sistema de predicción
+│   │   ├── features.py                 # 28 features engineered
+│   │   ├── elo.py                      # Elo rating (FiveThirtyEight style)
+│   │   ├── dixon_coles.py              # Poisson + τ
+│   │   ├── xg.py                       # xG proxy (Ridge log-link)
+│   │   ├── heuristics.py               # 15 heurísticas
+│   │   ├── backtest.py                 # Validación OOS
+│   │   ├── populate_analyst_predictions.py  # Genera live + backtest
+│   │   └── calibration.py              # Platt scaling (Fase B.1)
+│   ├── agents/                         # Multi-agente debate (Fase 10)
+│   └── ...
+│
+├── scripts/                            # Scripts de operación
+│   ├── full_pipeline.py                # Pipeline diario (10 pasos)
+│   ├── reconcile_outcomes.py           # Reconcilia predicción vs realidad
+│   ├── refresh_fixtures_results.py     # C1b: actualiza resultados SportMonks
+│   ├── recalibrate_platt.sh            # Recalibrador semanal (cron lunes)
+│   ├── build_calibration_dataset.py    # Genera CSV para fit Platt
+│   ├── fit_platt_scaling.py            # Ajuste Platt + OOS eval
+│   ├── fit_isotonic.py                 # Comparación Platt vs Isotonic
+│   ├── coach_change_alert.py           # Detecta cambios DT
+│   └── backup_db.sh                    # Backup diario BD (cron)
 │
 ├── data/
-│   ├── predictions_mx.db          # BD principal (SQLite, 175 MB)
-│   ├── predictions_mx.v1_backup.db # Backup de v1 (por seguridad)
-│   ├── predictions_mx.log         # Log rotativo
-│   ├── stat_type_mapping.json     # Cache de tipos de stats
-│   ├── venue_elevation_cache.json # Cache de altitudes Open-Meteo
-│   ├── raw/                       # Datos crudos (futuro)
-│   ├── processed/                 # Datos procesados
-│   └── historical/                # Histórico consolidado
+│   ├── predictions_mx.db               # BD principal (~272 MB)
+│   ├── calibracion_dataset.csv         # Temp para fit Platt
+│   ├── platt_coefficients.json         # Coefs calibrados
+│   ├── mx_coefficients.json            # Pesos ensemble + shrinkage
+│   ├── daily_report.{json,txt}         # Reporte diario (Telegram-ready)
+│   ├── backups/                        # Últimos 3 backups BD
+│   └── logs/                           # Logs estructurados
 │
-├── models/                        # Modelos ML entrenados (Fase 5)
-├── tests/                         # Tests unitarios
 ├── docs/
-│   ├── SCHEMA_V2.md               # Diseño detallado del schema
-│   ├── SCHEMA_V2_VISUAL.txt       # Diagrama visual ASCII
-│   └── SOURCES_AUDIT.md           # Auditoría de fuentes de datos
+│   ├── ROADMAP.md                      # Roadmap completo
+│   ├── METHODOLOGY.md                  # Cómo funciona el modelo
+│   ├── BACKTESTING_RESULTS.md          # Métricas empíricas
+│   ├── FEATURES.md                     # Catálogo de 28 features
+│   ├── SCHEMA_V2.md                    # Diseño BD
+│   ├── RESEARCH_SYNTHESIS.md           # Papers revisados
+│   ├── ARTICLES_INVENTORY.md           # Inventario bibliográfico
+│   └── SOURCES_AUDIT.md                # Auditoría de fuentes
 │
-├── .env.example                   # Plantilla de variables de entorno
-├── .gitignore                     # Exclusiones (.env, *.db, etc.)
-├── ARCHITECTURE.md                # Arquitectura detallada
-└── README.md                      # Este archivo
+├── models/                             # Modelos ML entrenados
+├── tests/                              # 42+ tests unitarios (~5.5s)
+├── .env.example                        # Plantilla variables entorno
+└── README.md                           # Este archivo
 ```
 
 ---
@@ -233,34 +241,26 @@ proyectos/
 
 | Doc | Contenido |
 |---|---|
-| [`README.md`](./README.md) | Este archivo — overview + quick start + roadmap |
+| [`README.md`](./README.md) | Este archivo — overview + quick start + estado actual |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Decisiones de diseño + diagrama detallado |
-| [`docs/SCHEMA_V2.md`](./docs/SCHEMA_V2.md) | Diseño de las 19 tablas (incluye ER diagram) |
-| [`docs/SCHEMA_V2_VISUAL.txt`](./docs/SCHEMA_V2_VISUAL.txt) | Diagrama visual ASCII del schema |
-| [`docs/SOURCES_AUDIT.md`](./docs/SOURCES_AUDIT.md) | Qué cubre SportMonks vs qué hay que scrapear |
+| [`docs/ROADMAP.md`](./docs/ROADMAP.md) | Roadmap completo (Fases 1-D) |
+| [`docs/METHODOLOGY.md`](./docs/METHODOLOGY.md) | Cómo funciona el modelo (features, ensemble, Platt) |
+| [`docs/BACKTESTING_RESULTS.md`](./docs/BACKTESTING_RESULTS.md) | Métricas empíricas + Fase B resultados |
+| [`docs/FEATURES.md`](./docs/FEATURES.md) | Catálogo de 28 features engineered |
+| [`docs/SCHEMA_V2.md`](./docs/SCHEMA_V2.md) | Diseño de las 19 tablas |
+| [`docs/RESEARCH_SYNTHESIS.md`](./docs/RESEARCH_SYNTHESIS.md) | Papers revisados (Dixon-Coles, FiveThirtyEight, etc.) |
+| [`docs/ARTICLES_INVENTORY.md`](./docs/ARTICLES_INVENTORY.md) | Inventario bibliográfico |
+| [`docs/SOURCES_AUDIT.md`](./docs/SOURCES_AUDIT.md) | Qué cubre SportMonks vs qué falta |
 
 ---
 
 ## 🔐 Seguridad
 
-- ✅ Token de SportMonks en `.env` con permisos `600`
+- ✅ Token SportMonks en `.env` con permisos `600`
 - ✅ `.env` excluido del repo vía `.gitignore`
 - ✅ Token NUNCA se imprime en logs
-- ✅ Backup de v1 preservado en `data/predictions_mx.v1_backup.db`
-- ✅ DB con permisos restrictivos para lectura/escritura
-
----
-
-## 🎯 Ligas objetivo (Custom Plan de Ángel)
-
-| Liga | SportMonks ID | Cobertura histórica |
-|---|---|---|
-| Mexico (categoría padre) | **458** | (referencia) |
-| **Liga MX** | **743** | 22 temporadas (2005-2026) |
-| **Liga de Expansión MX** | **749** | 22 temporadas (2005-2026) |
-
-**Límite del plan:** 3,000 calls/hora
-**Status actual:** ~2,940 calls/hora disponibles (usamos ~60 en ingesta inicial)
+- ✅ BD con permisos restrictivos (RO bind para frontend quiniela.lol)
+- ✅ Crons bash puros sin LLM (no exponen tokens)
 
 ---
 
@@ -279,29 +279,30 @@ with S() as s:
         print(f'  {t:<25} {cnt:>10,}')
 "
 
-# Backup antes de cambios importantes
+# Test conexión SportMonks
+python3 -m proyectos.src.test_connection
+
+# Backup manual antes de cambios importantes
 cp /workspace/proyectos/data/predictions_mx.db \
    /workspace/proyectos/data/predictions_mx.$(date +%Y%m%d_%H%M%S).backup.db
 
-# Ver logs
+# Logs
 tail -f /workspace/proyectos/data/predictions_mx.log
-
-# Probar conexión al API sin gastar muchas calls
-python3 -m proyectos.src.test_connection
+tail -f /workspace/proyectos/data/logs/cron_recalibrate.log
 ```
 
 ---
 
 ## 🤝 Contribución
 
-Este es un proyecto personal de Ángel Padilla. Las decisiones se toman considerando:
+Este es un proyecto personal de Ángel Padilla. Decisiones se toman considerando:
 - Tiempo del propietario (no abusar)
-- Presupuesto ($0 en APIs externas, solo SportMonks custom)
+- Presupuesto ($0 APIs externas, solo SportMonks custom)
 - Calidad de datos (auditados contra docs oficiales)
 - Privacidad (nada de tokens en logs/repo)
 
 ---
 
-**Última actualización:** 2026-06-26
+**Última actualización:** 2026-07-19 (Fase B.1 Platt scaling + recalibrador + fix pipeline C1b)
 **Mantenedor:** Predictions_MX agent (@Predictions_MX_bot)
-**Estado:** 🟢 Activo — Fase 1 completa, Fase 2 en progreso
+**Estado:** 🟢 Activo — Fase A (frontend quiniela.lol) + Fase B.1 (Platt scaling) completas

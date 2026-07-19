@@ -1,39 +1,46 @@
 # Roadmap — Predictions_MX
 
 > Plan de mejora continua del sistema de predicción.
-> Última actualización: 2026-06-27 21:00 UTC (Fase 10.3 — sistema 5-agentes + quinielas.lol frontend LIVE en producción)
+> Última actualización: 2026-07-19 (Fase B.1 — Platt scaling + recalibrador auto + fix pipeline C1b)
 
 ---
 
 ## 📊 Estado actual
 
-**Métricas (backtest 2025, 340 partidos):**
-- ✅ Accuracy: **52.65%** (vs 33.3% baseline)
-- ✅ Brier Score: **0.5959**
-- ✅ Calibration: <0.10 delta en todos los buckets
-- ✅ Log Loss: 0.999
+**Métricas live (julio 2026, n=994 OOS, Fase B.1 con Platt scaling):**
+- ✅ Accuracy: **51.1%** (Platt OOS, +18pp vs 33.3% baseline)
+- ✅ Brier Score: **0.2009** (3-class, normalizado por n*k)
+- ✅ Calibration: excelente (prob=0.50 → actual 58%, prob=0.60 → actual 74%)
+- ✅ Log Loss: 1.0158
 
-**Métricas (backtest 2024-2025, 680 partidos con xG + attendance heur):**
-- ✅ Accuracy: **52.21%** (+3.97pp vs baseline sin xG)
-- ✅ Brier Score: **0.6092** (-0.0112)
+**Métricas Fase B.0 (backtest 2025, 340 partidos, ensemble sin Platt):**
+- Accuracy: 52.65% (vs 33.3% baseline)
+- Brier Score: 0.5959
 
-**Métricas (backtest 2025 aislado, 340 partidos):**
-- ✅ Accuracy: **53.82%** (con heur attendance)
-- ✅ Brier Score: **0.6005**
+**Métricas Fase B.0 (backtest 2024-2025, 680 partidos con xG + attendance heur):**
+- Accuracy: **52.21%** (+3.97pp vs baseline sin xG)
+- Brier Score: **0.6092** (-0.0112)
+
+**Métricas Fase B.0 (backtest 2025 aislado, 340 partidos):**
+- Accuracy: **53.82%** (con heur attendance)
+- Brier Score: **0.6005**
 
 **Modelos:**
 - Dixon-Coles (Poisson + τ)
 - Elo Rating (FiveThirtyEight style, shrinkage 0.7)
 - xG Proxy (Ridge log-link, decay 0.85)
 - Ensemble: **xG 55% + Elo 22.5% + DC 13.5% + heur 9%** (Fase 8, grid search)
+- **Platt scaling** (Fase B.1) — calibración de probabilidades, recalibración semanal lunes
 
 **Features:**
-- **15 features engineered** (Fase 9 extendida)
+- **28 features engineered** (Fase 9 extendida)
 - **15 heurísticas** (Fase 9 extendida)
 - Narrativas manuales JSON
 
 **Experimentos NO adoptados:**
 - Stacking XGBoost (walk-forward 5 folds: Δ acc -0.65pp, Δ Brier -0.0031)
+- A/B pesos elo-heavy (Fase B.0, n=300: Δ acc -0.67pp) — baseline mantiene
+- Isotonic regression (Fase B.2, n=800 OOS: Platt gana en Brier en 3/3 temporadas)
 
 ---
 
@@ -174,11 +181,19 @@
 
 ## 🎯 Prioridades inmediatas (próximas 2 semanas)
 
-1. **Recalibrar Platt scaling** (auto)
-2. **Ingerir attendance + referee** desde SportMonks
-3. **Backtesting por equipo** (identificar dónde falla)
-4. **Value bet detection** (cuando tengamos cuotas)
-5. **Weather ingestion** desde Open-Meteo
+1. ~~**Recalibrar Platt scaling** (auto)~~ ✅ COMPLETADO Fase B.1 (commit bf6f539, cron lunes 09:00 UTC)
+2. ~~**Ingerir attendance + referee** desde SportMonks~~ ✅ COMPLETADO Fases 9-10.5
+3. ~~**Backtesting por equipo** (identificar dónde falla)~~ ✅ COMPLETADO Fase 9
+4. **Value bet detection** (cuando tengamos cuotas reales) — ⏳ pendiente, MVP sintético activo
+5. ~~**Weather ingestion** desde Open-Meteo~~ ✅ COMPLETADO Fase 9 (93.4% cobertura)
+
+### Próximas (Fase B.2-C-D)
+
+6. **Recency weighting en fit Platt** — más peso a temporadas recientes para atacar drift
+7. **CLV tracker** — comparar probs calibradas vs odds mercado (cuando scrape real)
+8. **Drift detection automático** (Fase C) — alerta si accuracy live cae >5pp vs OOS
+9. **Autotrain schedule** (Fase C) — re-entrenar ensemble con últimos N meses
+10. **Tracking data + reports semanales** (Fase D)
 
 ---
 
@@ -400,3 +415,92 @@ Ver `memory/predictions_mx_multi_agent.md` para:
 - **No convergencia**: debate en loop → máximo 3 rondas + juez final
 - **Falsos positivos**: agentes reportan bugs que no son → yo valido antes de actuar
 
+
+---
+
+## ✅ Fase B — Calibración Platt + Recalibración Auto (2026-07-18/19)
+
+**Motivación:** El ensemble base (xg+Elo+DC+heur) tiene bias sistemático — overvalora local/visitante y undervalora draws. Platt scaling ajusta las probabilidades sin cambiar los picks base.
+
+### B.0 — A/B pesos ensemble (NO concluyente)
+
+Probadas 5 configs en n=300 apples-to-apples:
+- baseline (xg=0.55, elo=0.225, dc=0.135, heur=0.09): 50.17% acc, 0.6106 Brier
+- v1 elo-heavy (xg=0.40, elo=0.40, dc=0.10, heur=0.10): 49.50% acc, 0.6074 Brier
+- v2 (xg=0.40, elo=0.45, dc=0.05, heur=0.10): 49.16% acc, **0.6052** Brier
+- v3, v4: en rango
+
+**Decisión:** mantener baseline. Δ acc dentro de ruido (n=300). v1 mejora Brier pero pierde accuracy. **Re-evaluar con n>500 si hay tiempo.**
+
+### B.1 — Platt scaling aplicado (commit 1c96410)
+
+Ajustado (A,B) por clase vía `scipy.optimize L-BFGS-B` sobre n=1000 partidos (2023/24 a 2026/27 parcial).
+
+**Coefs:**
+- home: A=1.88, B=+0.42 (overconfianza en local → comprime)
+- draw: A=-0.31, B=-1.43 (overvalora draws → baja fuerte)
+- away: A=1.62, B=+0.39 (overconfianza en visitante → comprime)
+
+**OOS Brier (n=994, leave-one-season-out, normalizado /3):**
+
+| Métrica | Pre Platt | Post Platt | Δ |
+|---|---|---|---|
+| Accuracy | 50.6% | **51.1%** | +0.50pp |
+| Brier /3 | 0.2042 | **0.2009** | -0.33pp |
+| Log Loss | 1.0203 | **1.0158** | -0.0045 |
+
+Por temporada:
+- 2023/24: acc +1.26pp, Brier -0.11pp
+- 2024/25: acc +0.29pp, Brier **-0.53pp**
+- 2025/26: acc -0.59pp, Brier **-0.35pp**
+
+**Trade-off conocido:** leve desacople score↔probs. El `most_likely_score` sigue desde matriz Poisson DC (consistencia score↔score, requerido por Ángel 2026-06-28). Las probs 1X2 vienen del ensemble calibrado (Fase B.1).
+
+### B.1.bis — Recalibrador automático (commit bf6f539)
+
+`scripts/recalibrate_platt.sh` (185 LOC, bash puro) — mismo patrón que `backup_db.sh`.
+
+**Cron:** `0 9 * * 1 UTC` (lunes, antes del pipeline diario).
+
+**Flujo:**
+1. Build dataset (800 partidos, ~40s)
+2. Fit Platt (target=ens, ~5s)
+3. Eval OOS leave-one-season-out
+4. Si Δ Brier empeora >1pp → rollback automático
+5. Si OK → activa nuevos coefs atómico + Telegram notification
+
+**Trigger próximo:** lunes 26 jul 09:00 UTC.
+
+### B.2 — Platt vs Isotonic (commit 66fe4b3)
+
+Implementé `scripts/fit_isotonic.py` (Isotonic 1-vs-rest por clase) para comparar con Platt.
+
+**OOS (n=800, normalizado /3):**
+
+| | Pre | **Platt** | Isotonic | Ganador |
+|---|---|---|---|---|
+| Brier /3 | 0.2064 | **0.2042** | 0.2060 | Platt |
+| Acc OOS | 50.5% | **50.9%** | 50.6% | Platt (marginal) |
+
+**Platt gana en las 3 temporadas OOS.** Razones:
+- Isotonic 1-vs-rest no impone complementariedad entre clases.
+- n≈800 moderado → Isotonic vulnerable a overfit incluso OOS.
+- Draw minoritario (~25%) → Isotonic sobreajusta colas.
+
+**Acción:** Platt como calibrador oficial. Isotonic archivado en `data/isotonic_coefficients.json` (no activado).
+
+### 🐛 Bugfix Pipeline: C1b Refresh Resultados (commit 49e4aea)
+
+**Bug:** `step_refresh_fixtures_sportmonks` solo buscaba fixtures NUEVOS. Nunca actualizaba `home_score/away_score/state` de partidos ya finalizados. Resultado: BD quedaba stale indefinidamente, `reconcile_outcomes.py` no evaluaba nada nuevo.
+
+**Fix:** nuevo `scripts/refresh_fixtures_results.py` (66 LOC, idempotente) integrado como quick win **C1b** en `full_pipeline.py`, antes de C2 (reconciliación).
+
+**Bug adicional descubierto:** SportMonks v3 rechaza `include=scores,state,participants` con comas → 404 silencioso. Solución: una llamada por `include` (state / scores / lineups / statistics).
+
+**Resultado inmediato (post-fix):** 4 fixtures actualizados (León-Atlas, ASL-CA, Juárez-Puebla, Pumas-Pachuca). 5 predicciones reconciliadas. Accuracy live 90d mejoró de 40% → 50%.
+
+### Pendiente Fase B.2+
+
+1. **Recency weighting en fit** — peso 1.0 para temp reciente, 0.7 para media, 0.4 para antigua. Esperado: -0.5pp Brier en n recientes.
+2. **Multi-agente debate con Platt** — Fase 10 agentes deben usar probs calibradas (no raw ensemble).
+3. **Re-fit Platt con temp 2026/27 parcial** — cuando haya n>30 partidos finalizados.

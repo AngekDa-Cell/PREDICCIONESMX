@@ -1,7 +1,7 @@
 # Methodology — Predictions_MX
 
 > Documentación técnica completa del sistema de predicción.
-> Última actualización: 2026-06-27
+> Última actualización: 2026-07-19 (Fase B.1 — Platt scaling agregado)
 
 Este documento describe en detalle **cómo funciona el modelo** de Predictions_MX — qué algoritmos, qué features, qué calibraciones, qué heurísticas. Para una revisión de papers académicos, ver [`RESEARCH_SYNTHESIS.md`](RESEARCH_SYNTHESIS.md).
 
@@ -688,3 +688,99 @@ top-pick no cambia significativamente.
 - ✅ Grid search heur: descarta cambios
 - ✅ Stacking XGBoost: implementado, validado, NO adoptado
 - ❌ Stacking queda como experimento futuro
+
+---
+
+## 🎯 Platt Scaling (Fase B.1) — Calibración de Probabilidades
+
+### Motivación
+
+El ensemble (xg + Elo + DC + heur) tiene **bias sistemático**:
+- Overvalora local y visitante (overconfianza).
+- Undervalora empates (overconfianza inversa).
+
+Prob Platt scaling para corregir sin cambiar el argmax (los picks se mantienen).
+
+### Algoritmo
+
+Platt scaling 1-vs-rest por clase (3 regresiones logísticas independientes):
+
+```
+P_calibrated(cls) = sigmoid(A_cls * logit(P_raw(cls)) + B_cls)
+```
+
+donde:
+- `P_raw(cls)` es la probabilidad cruda del ensemble para esa clase.
+- `logit(p) = log(p / (1-p))`.
+- `A`, `B` se ajustan por máxima verosimilitud sobre datos históricos.
+
+Para las 3 clases (home/draw/away), se ajustan 3 pares (A, B) por separado.
+Luego se renormaliza para que sumen 1.0.
+
+### Implementación
+
+- **Script:** `scripts/fit_platt_scaling.py` (215 LOC)
+- **Coefs storage:** `data/platt_coefficients.json`
+- **Aplicación:** `src/predict/calibration.py` (`apply_calibration(probs)`)
+- **Integración:** `populate_analyst_predictions.py` overridea `home_win/draw/away_win/confidence`
+  con `ensemble_calibrated` cuando Platt está activo.
+- **`most_likely_score`** sigue desde matriz Poisson DC (consistencia score↔score).
+
+### Coefs actuales (n=800, target=ens)
+
+| Clase | A | B |
+|---|---|---|
+| home | 1.8751 | 0.4174 |
+| draw | -0.3079 | -1.4321 |
+| away | 1.6169 | 0.3894 |
+
+**Interpretación:**
+- `A > 1` (home, away): Platt comprime las probs crudas (overconfianza detectada).
+- `A < 1` (draw): efecto contrario, expande (underconfianza detectada).
+- `B > 0` (home, away): shift hacia arriba (compensa compresión).
+- `B < 0` (draw): shift hacia abajo (compensa expansión).
+
+### Mejora OOS (n=994, leave-one-season-out)
+
+| Métrica | Pre Platt | Post Platt | Δ |
+|---|---|---|---|
+| Accuracy | 50.6% | **51.1%** | +0.50pp |
+| Brier /3 | 0.2042 | **0.2009** | -0.33pp |
+| Log Loss | 1.0203 | **1.0158** | -0.0045 |
+
+### Recalibración automática
+
+`scripts/recalibrate_platt.sh` (cron container `0 9 * * 1 UTC`):
+1. Build dataset con últimos 800 partidos (~40s).
+2. Fit Platt (~5s).
+3. Eval OOS leave-one-season-out.
+4. Si Δ Brier empeora >1pp → rollback automático.
+5. Telegram notification (éxito o fail).
+
+### Comparación con Isotonic (Fase B.2)
+
+Platt es estrictamente mejor en Brier OOS:
+- 2023/24: Platt 0.2146 vs Isotonic 0.2177
+- 2024/25: Platt 0.1966 vs Isotonic 0.2002
+- 2025/26: Platt 0.1999 vs Isotonic 0.2002
+
+**Conclusión:** Platt paramétrico es más robusto que Isotonic no-paramétrico con n≈800 y clases desbalanceadas (draw minoritario).
+
+### Limitaciones
+
+- **Clase draw** está en el límite del rango útil (A<0 indica fuerte compresión). Con más draws en datos de validación, podría requerir re-fitting manual.
+- **Drift temporal:** aunque recalibramos semanalmente, el bias puede cambiar más rápido que el ciclo semanal si hay shocks (nuevo DT, lesión masiva).
+- **No captura interdependencia** entre clases (Platt es 1-vs-rest). Isotonic tampoco lo hace mejor (probado).
+
+### Archivos relevantes
+
+- `src/predict/calibration.py` — `apply_calibration()` con fallback transparente
+- `src/predict/backtest.py` — `predict_match` retorna `ensemble_calibrated` + `pick` calibrado
+- `src/predict/populate_analyst_predictions.py` — override de probs con Platt
+- `scripts/fit_platt_scaling.py` — fit + eval OOS
+- `scripts/fit_isotonic.py` — comparación isotonic (archivado, no activado)
+- `scripts/build_calibration_dataset.py` — genera CSV para fit
+- `scripts/recalibrate_platt.sh` — recalibrador semanal con rollback
+- `data/platt_coefficients.json` — coefs actuales
+- `data/isotonic_coefficients.json` — modelos isotonic (archivados)
+
