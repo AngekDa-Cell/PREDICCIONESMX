@@ -108,24 +108,44 @@ def main():
             else:
                 _dc_top_score = f"{round(home_goals)}-{round(away_goals)}"
 
-            # *** CONSISTENCIA: derivar probs 1X2 desde la misma matriz Poisson
-            # que da el marcador esperado. Antes se usaba el ensemble ponderado
-            # (xG + Elo + DC + heur) que generaba probs distintas a las del
-            # marcador DC puro, causando conflictos score↔probs (Ángel 28-jun).
-            import math
-            def _poisson(k, lam):
-                return (lam ** k) * math.exp(-lam) / math.factorial(k)
+            # *** BUG FIX 2026-07-23: usar la score_probs REAL del DC (con corrección
+            # rho para 0-0, 1-0, 0-1, 1-1) en lugar de recalcular Poisson independiente.
+            # El bug anterior (líneas 119-127 antes del fix) generaba siempre MLS=1-0
+            # o 0-1 porque la Poisson sin rho con goles esperados ~1.0-1.5 siempre tiene
+            # argmax en k=1 para ambos equipos. Ahora exponemos dc_score_probs desde
+            # predict_match() y la usamos si está disponible.
             _score_probs = {}
-            for _h in range(8):
-                for _a in range(8):
-                    _score_probs[(_h, _a)] = _poisson(_h, home_goals) * _poisson(_a, away_goals)
-            _total = sum(_score_probs.values())
-            for _k in _score_probs:
-                _score_probs[_k] /= _total if _total > 0 else 1.0
+            _dc_sp_raw = pred.get("dc_score_probs", {})
+            if _dc_sp_raw and isinstance(_dc_sp_raw, dict) and len(_dc_sp_raw) > 0:
+                # _dc_sp_raw viene como dict {"h-a": p, ...} del DC. Convertir a tuplas.
+                for _k, _v in _dc_sp_raw.items():
+                    try:
+                        _h_str, _a_str = _k.split("-")
+                        _score_probs[(int(_h_str), int(_a_str))] = float(_v)
+                    except (ValueError, AttributeError):
+                        continue
+                # Renormalizar por si acaso (suma debería ser ~1 si DC lo generó bien).
+                _total = sum(_score_probs.values())
+                if _total > 0:
+                    for _k in _score_probs:
+                        _score_probs[_k] /= _total
+            if not _score_probs:
+                # Fallback al bug anterior si dc_score_probs no está disponible.
+                import math
+                def _poisson(k, lam):
+                    return (lam ** k) * math.exp(-lam) / math.factorial(k)
+                for _h in range(8):
+                    for _a in range(8):
+                        _score_probs[(_h, _a)] = _poisson(_h, home_goals) * _poisson(_a, away_goals)
+                _total = sum(_score_probs.values())
+                for _k in _score_probs:
+                    _score_probs[_k] /= _total if _total > 0 else 1.0
+
+            # Derivar 1X2 desde la matriz (ya sea DC o Poisson fallback).
             home_win_p = sum(p for (h, a), p in _score_probs.items() if h > a)
             draw_p     = sum(p for (h, a), p in _score_probs.items() if h == a)
             away_win_p = sum(p for (h, a), p in _score_probs.items() if h < a)
-            # Confidence: prob máxima de la Poisson (consistente con marcador)
+            # Confidence: prob máxima de la matriz (consistente con marcador)
             confidence = max(home_win_p, draw_p, away_win_p)
 
             # *** PLATT SCALING OVERRIDE (Fase B 2026-07-19) ***
@@ -147,18 +167,25 @@ def main():
                 away_win_p = ensemble_calibrated["away"]
                 confidence = max(home_win_p, draw_p, away_win_p)
 
-            # *** SCORE CONSISTENTE CON OUTCOME TOP ***
-            # El argmax puntual de la Poisson (e.g. "1-1") puede diferir del
+            # *** SCORE CONSISTENTE CON PICK ***
+            # El argmax puntual de la matriz (e.g. "1-1") puede diferir del
             # outcome top (e.g. Local 39.6% > Empate 32.8% > Visit 27.6%).
             # Para que score y probs cuenten la misma historia, elegimos el
-            # marcador más probable DENTRO del outcome top:
-            #   - Si top es Local: mejor (h>a) en score_probs
-            #   - Si top es Empate: mejor (h==a) en score_probs
-            #   - Si top es Visit: mejor (h<a) en score_probs
-            if home_win_p >= draw_p and home_win_p >= away_win_p:
+            # marcador más probable DENTRO del pick (no del max puro):
+            #   - Si pick es Local: mejor (h>a) en score_probs
+            #   - Si pick es Empate: mejor (h==a) en score_probs
+            #   - Si pick es Visit: mejor (h<a) en score_probs
+            # BUG FIX 2026-07-23: antes usaba max(home, draw, away) que siempre
+            # daba HOME/AWAY (nunca DRAW como pick). Ahora respeta el threshold
+            # DRAW >= 0.32 de predict_match().
+            _pick_for_score = pred.get('pick') or max(
+                {'home': home_win_p, 'draw': draw_p, 'away': away_win_p},
+                key={'home': home_win_p, 'draw': draw_p, 'away': away_win_p}.get
+            )
+            if _pick_for_score == 'home':
                 _top_outcome = 'home'
                 _top_filter = lambda x: x[0] > x[1]
-            elif away_win_p >= draw_p and away_win_p >= home_win_p:
+            elif _pick_for_score == 'away':
                 _top_outcome = 'away'
                 _top_filter = lambda x: x[0] < x[1]
             else:
@@ -215,6 +242,12 @@ def main():
                 "draw": round(draw_p, 4),
                 "away_win": round(away_win_p, 4),
                 "confidence": round(confidence, 4),
+                # Probs del Dixon-Coles puro (para trazabilidad y análisis).
+                # Antes no se guardaban; ahora populate_analyst_predictions.py
+                # las expone desde predict_match(). Bug fix 2026-07-23.
+                "home_win_dc": pred.get('dc_home_win'),
+                "draw_dc": pred.get('dc_draw'),
+                "away_win_dc": pred.get('dc_away_win'),
                 "predicted_home_goals": home_goals,
                 "predicted_away_goals": away_goals,
                 "most_likely_score": most_likely,
@@ -262,10 +295,11 @@ def main():
             INSERT INTO analyst_predictions (
                 fixture_id, home_team, away_team, season, match_date,
                 home_win, draw, away_win, confidence,
+                home_win_dc, draw_dc, away_win_dc,
                 predicted_home_goals, predicted_away_goals, most_likely_score,
                 key_factors, contrarian_view, derby_flag, derby_name,
                 features_used, notes, is_backtest, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, datetime('now'))
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, datetime('now'))
             ON CONFLICT(fixture_id) DO UPDATE SET
                 home_team = excluded.home_team,
                 away_team = excluded.away_team,
@@ -275,6 +309,9 @@ def main():
                 draw = excluded.draw,
                 away_win = excluded.away_win,
                 confidence = excluded.confidence,
+                home_win_dc = excluded.home_win_dc,
+                draw_dc = excluded.draw_dc,
+                away_win_dc = excluded.away_win_dc,
                 predicted_home_goals = excluded.predicted_home_goals,
                 predicted_away_goals = excluded.predicted_away_goals,
                 most_likely_score = excluded.most_likely_score,
@@ -289,6 +326,7 @@ def main():
         """, (
             p["fixture_id"], p["home_team"], p["away_team"], p["season"], p["match_date"],
             p["home_win"], p["draw"], p["away_win"], p["confidence"],
+            p.get("home_win_dc"), p.get("draw_dc"), p.get("away_win_dc"),
             p["predicted_home_goals"], p["predicted_away_goals"], p["most_likely_score"],
             p["key_factors"], p["contrarian_view"], p["derby_flag"], p["derby_name"],
             p["features_used"], p["notes"],

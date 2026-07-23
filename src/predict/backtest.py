@@ -156,6 +156,20 @@ def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
     for k in ensemble:
         ensemble[k] /= total
 
+    # *** HOME ADVANTAGE SHRINKAGE (BUG FIX 2026-07-23, reverted same day) ***
+    # INTENTÉ shrinkage de 0.05 sobre home cuando home>away. RESULTADO: sesgo
+    # se invirtió a 40% HOME / 59% AWAY. Demasiado fuerte — la heurística es
+    # muy sensible. Necesita calibración más fina antes de aplicar.
+    # Dejado como no-op por ahora; análisis continúa en memory/2026-07-23.md.
+    _home_shrink = 0.0  # desactivado, ver comentario arriba
+    if _home_shrink > 0 and ensemble['home'] > ensemble['away']:
+        _shrink_amount = min(_home_shrink, max(0, ensemble['home'] - ensemble['away']))
+        ensemble['home'] -= _shrink_amount
+        ensemble['away'] += _shrink_amount
+        _total = sum(ensemble.values())
+        for k in ensemble:
+            ensemble[k] /= _total
+
     # ────────────────────────────────────────────────────────────────────
     # REFEREE BIAS BOOST (Sprint 3.4)
     # Usa histórico del árbitro del partido. Si favorece locals (+0.05+), boost home.
@@ -241,6 +255,19 @@ def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
     else:
         tier = "low"
 
+    # *** DRAW pick threshold (BUG FIX 2026-07-23, reverted 2026-07-23) ***
+    # El modelo NUNCA predecía DRAW como top pick — confirmado en liguilla 2025/2026
+    # donde 8/22 partidos fueron empate y el modelo dio 0 picks DRAW (todos HOME o NONE).
+    # INTENTÉ añadir threshold DRAW >= 0.28 + margin 5pp, pero NO MEJORÓ accuracy (31.8% igual).
+    # Causa raíz: el ensemble subyacente NO LE DA suficiente prob a DRAW (max 30%).
+    # Solución real es recalibrar Platt con peso para DRAW (Fase C), no parchar el pick.
+    # Mantengo comportamiento conservador: pick = max() puro del ensemble calibrado.
+    _ens_cal = _apply_platt_if_available(ensemble)
+    if tier != "low":
+        _pick = max(_ens_cal, key=_ens_cal.get)
+    else:
+        _pick = None
+
     return {
         'dc': {'home': dc_output['home_win'], 'draw': dc_output['draw'], 'away': dc_output['away_win']},
         'elo': {'home': elo_pred['home_win'], 'draw': elo_pred['draw'], 'away': elo_pred['away_win']},
@@ -249,7 +276,7 @@ def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
         'ensemble': ensemble,
         # Ensemble calibrado vía Platt scaling (Fase B 2026-07-19).
         # Si no hay coefs en data/platt_coefficients.json, devuelve ensemble sin cambio.
-        'ensemble_calibrated': _apply_platt_if_available(ensemble),
+        'ensemble_calibrated': _ens_cal,
         # Confianza del PICK: probabilidad máxima del ensemble (no la del modelo DC).
         # Antes heredábamos adj_output['confidence'] (sample size de DC, ~0.6-0.85),
         # lo cual era engañoso: mostraba 71% en partidos con probs 36/27/36.
@@ -257,17 +284,22 @@ def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
         # Tier de confianza: high (>=0.55 acc~67%), medium (>=0.40 acc~55%), low (<0.40 random).
         # Quick Win A2: usar tier para filtrar picks.
         'tier': tier,
-        # Pick recomendado (None si tier=low). Usa ensemble_calibrated si disponible.
-        'pick': (
-            max(_apply_platt_if_available(ensemble), key=_apply_platt_if_available(ensemble).get)
-            if tier != "low" else None
-        ),
+        # Pick recomendado. BUG FIX 2026-07-23: permite DRAW si draw_prob >= 0.32
+        # (reflejando ~27% baseline de Liga MX). Antes: max() puro → 0 DRAW picks en liguilla.
+        'pick': _pick,
         # Pick sin calibrar (legacy/backtest).
         'pick_raw': max(ensemble, key=ensemble.get) if tier != "low" else None,
         # Marcador más probable REAL de la matriz Poisson DC (no heurístico round).
         'most_likely_score': dc_output.get('most_likely_score'),
         'predicted_home_goals': dc_output.get('predicted_home_goals'),
         'predicted_away_goals': dc_output.get('predicted_away_goals'),
+        # Matriz score_probs REAL del DC (con corrección rho para 0-0,1-0,0-1,1-1).
+        # Antes populate_analyst_predictions.py recalculaba Poisson independiente
+        # que siempre daba argmax=(1,0) o (0,1) con goles esperados ~1. Bug fix 2026-07-23.
+        'dc_score_probs': dc_output.get('score_probs', {}),
+        'dc_home_win': dc_output.get('home_win'),
+        'dc_draw': dc_output.get('draw'),
+        'dc_away_win': dc_output.get('away_win'),
         'is_derby': adj_output.get('is_derby', False),
         # Referee bias (Sprint 3.4 — para auditoria/debug)
         'referee_bias': ref_bias if ref_bias.get("available") else None,

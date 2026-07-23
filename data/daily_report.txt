@@ -1,20 +1,20 @@
-⚽ Predictions_MX — Reporte diario 2026-07-05
+⚽ Predictions_MX — Reporte diario 2026-07-23
 
 🏥 Lesiones: 0 en 0 equipos
 
-⚽ 9 picks próximos 14d | 🟢 1 fuerte · 🟡 5 moderado · ⚪ 3 parejo
-   🟡 2026-07-17 Necaxa             vs Atlante            → 🏠 L (44%)
-   🟢 2026-07-17 Tijuana            vs Tigres UANL        → 🏠 L (62%)
-   🟡 2026-07-18 León               vs Atlas              → 🏠 L (48%)
-   🟡 2026-07-18 Atlético San Luis  vs Cruz Azul          → 🏠 L (52%)
-   ⚪ 2026-07-18 Juárez             vs Puebla             → 🤝 E (39%)
-   ⚪ 2026-07-18 Pumas UNAM         vs Pachuca            → ✈️ V (36%)
-   ⚪ 2026-07-19 Monterrey          vs Santos Laguna      → 🏠 L (36%)
-   🟡 2026-07-19 Guadalajara        vs Toluca             → ✈️ V (46%)
+⚽ 16 picks próximos 14d | 🟢 4 fuerte · 🟡 12 moderado · ⚪ 0 parejo
+   🟢 2026-07-25 Tigres UANL        vs Atlético San Luis  → 🏠 L (63%)
+   🟡 2026-07-25 Tijuana            vs León               → 🏠 L (45%)
+   🟡 2026-07-25 Atlante            vs América            → 🏠 L (54%)
+   🟢 2026-07-25 Guadalajara        vs Juárez             → 🏠 L (60%)
+   🟡 2026-07-26 Santos Laguna      vs Atlas              → 🏠 L (43%)
+   🟡 2026-07-26 Necaxa             vs Monterrey          → ✈️ V (48%)
+   🟡 2026-07-27 Pachuca            vs Querétaro          → 🏠 L (52%)
+   🟡 2026-08-01 Puebla             vs Guadalajara        → ✈️ V (50%)
 
 🔄 Cambios DT recientes (1):
    • Monterrey: Matías Jesús Almeyda (antes Domènec Torrent Font)
 
-📊 BT reciente (30): acc=46.7% brier=0.634
+📊 BT reciente (0): acc=0.0% brier=0.000
 
 Estado: ✅ OK

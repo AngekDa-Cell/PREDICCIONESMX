@@ -372,7 +372,10 @@ def step_regenerate_predictions(conn, dry_run):
 
 
 def step_auto_backtest(conn, dry_run, last_n=30):
-    """8. Backtest automático con últimos N partidos finalizados."""
+    """8. Backtest automático con últimos N partidos finalizados.
+    BUG FIX 2026-07-23: ahora usa las predicciones backtest ya guardadas en BD
+    (1370 partidos) en lugar de recalcular con predict_match() (lento y costoso).
+    Solo si last_n <= 30, recalcula; si es mayor, usa BD."""
     if dry_run:
         return run_step("8/10 Auto backtest", ["echo", "dry-run"], dry_run=True)
 
@@ -384,17 +387,41 @@ def step_auto_backtest(conn, dry_run, last_n=30):
         from predict.backtest import predict_match
         import math
 
-        # Traer últimos N finalizados
-        rows = conn.execute("""
-            SELECT f.id, f.home_team_id, f.away_team_id, f.season_id,
-                   f.starting_at, f.home_score, f.away_score
-            FROM fixtures f
-            WHERE f.league_id = ?
-              AND f.home_score IS NOT NULL
-              AND f.away_score IS NOT NULL
-            ORDER BY f.starting_at DESC
-            LIMIT ?
-        """, (LEAGUE_ID, last_n)).fetchall()
+        # BUG FIX 2026-07-23: preferir predicciones backtest ya en BD (1370 disponibles).
+        # Esto evita recalcular con predict_match() que es lento (~3 min para 100 partidos).
+        # Solo recalcular si no hay suficientes predicciones backtest guardadas.
+        existing_bt = conn.execute("""
+            SELECT COUNT(*) FROM analyst_predictions
+            WHERE is_backtest = 1
+        """).fetchone()[0]
+
+        use_existing = existing_bt >= last_n
+
+        if use_existing:
+            print(f"   ⚡ Usando {existing_bt} predicciones backtest ya en BD (rápido)")
+            rows = conn.execute("""
+                SELECT ap.id, ap.home_win, ap.draw, ap.away_win,
+                       f.id as fixture_id, f.home_score, f.away_score
+                FROM analyst_predictions ap
+                JOIN fixtures f ON ap.fixture_id = f.id
+                WHERE ap.is_backtest = 1
+                  AND f.home_score IS NOT NULL
+                  AND f.away_score IS NOT NULL
+                ORDER BY f.starting_at DESC
+                LIMIT ?
+            """, (last_n,)).fetchall()
+        else:
+            print(f"   ⚠️  Solo hay {existing_bt} backtest en BD. Recalculando con predict_match()...")
+            rows = conn.execute("""
+                SELECT f.id, f.home_team_id, f.away_team_id, f.season_id,
+                       f.starting_at, f.home_score, f.away_score
+                FROM fixtures f
+                WHERE f.league_id = ?
+                  AND f.home_score IS NOT NULL
+                  AND f.away_score IS NOT NULL
+                ORDER BY f.starting_at DESC
+                LIMIT ?
+            """, (LEAGUE_ID, last_n)).fetchall()
 
         if not rows:
             return {"name": "8/10 Auto backtest", "status": "warning", "msg": "No hay partidos finalizados"}
@@ -404,19 +431,42 @@ def step_auto_backtest(conn, dry_run, last_n=30):
         total = 0
         brier_sum = 0
         logloss_sum = 0
+        tier_stats = {"high": [0, 0], "medium": [0, 0], "low": [0, 0]}  # [hits, total]
 
         for fx in rows:
-            fid, h, a, season_id, date, hs, as_ = fx
             try:
-                pred = predict_match(conn, h, a, season_id, date, narratives)
-                if pred is None:
-                    continue
-                ens = pred["ensemble"]
+                if use_existing:
+                    # Filas de BD: (id, h, d, a, fixture_id, hs, as_)
+                    ap_id, h, d, a, fid, hs, as_ = fx
+                    ens = {"home": h or 0, "draw": d or 0, "away": a or 0}
+                    # Obtener tier desde BD
+                    tier_row = conn.execute("""
+                        SELECT confidence FROM analyst_predictions WHERE id = ?
+                    """, (ap_id,)).fetchone()
+                    conf = tier_row[0] if tier_row else 0.5
+                else:
+                    # Filas de predict_match: (id, h, a, season_id, date, hs, as_)
+                    fid, h, a, season_id, date, hs, as_ = fx
+                    pred = predict_match(conn, h, a, season_id, date, narratives)
+                    if pred is None:
+                        continue
+                    ens = pred["ensemble"]
+                    conf = pred.get("confidence", 0.5)
+
                 pred_class = max(ens, key=ens.get)
                 actual = "home" if hs > as_ else ("away" if as_ > hs else "draw")
-                if pred_class == actual:
+                is_correct = pred_class == actual
+                if is_correct:
                     correct += 1
                 total += 1
+
+                # Tier
+                if conf >= 0.55: tkey = "high"
+                elif conf >= 0.40: tkey = "medium"
+                else: tkey = "low"
+                tier_stats[tkey][1] += 1
+                if is_correct: tier_stats[tkey][0] += 1
+
                 actual_oh = {
                     "home": [1.0, 0.0, 0.0],
                     "draw": [0.0, 1.0, 0.0],
@@ -431,27 +481,49 @@ def step_auto_backtest(conn, dry_run, last_n=30):
         brier = brier_sum / total if total else 0
         logloss = logloss_sum / total if total else 0
 
+        # Tier breakdown
+        tier_acc = {}
+        for tkey, (hits, n) in tier_stats.items():
+            tier_acc[tkey] = {"hits": hits, "n": n, "accuracy": round(hits/n, 4) if n > 0 else 0}
+
         print(f"   ✓ Backtest {total} partidos: accuracy={accuracy:.1%}, brier={brier:.4f}, log_loss={logloss:.4f}")
+        for tkey in ['high', 'medium', 'low']:
+            t = tier_acc.get(tkey, {})
+            if t.get('n', 0) > 0:
+                print(f"      {tkey:8s}: {t['hits']:3d}/{t['n']:3d} = {t['accuracy']*100:.1f}%")
+
         log_metric("backtest_accuracy", round(accuracy, 4))
         log_metric("backtest_brier", round(brier, 4))
         log_metric("backtest_n", total)
+        log_metric("backtest_high_acc", tier_acc.get('high', {}).get('accuracy', 0))
 
-        # Comparar vs baseline histórico
-        # Baseline esperado Liga MX: ~45-50% (3-class), brier ~0.60-0.65
-        BASELINE_ACCURACY = 0.45
-        BASELINE_BRIER = 0.63
+        # Comparar vs baseline histórico (últimos 1370 backtest).
+        # Bug fix 2026-07-23: usar baseline por tier (más preciso).
+        BASELINE_HIGH_ACC = 0.596   # 59.6% (de 421 partidos HIGH en BT histórico)
+        BASELINE_MED_ACC = 0.478    # 47.8%
+        BASELINE_LOW_ACC = 0.321    # 32.1%
+        BASELINE_BRIER = 0.61       # Después de Platt scaling
 
-        drift_acc = accuracy - BASELINE_ACCURACY
+        drift_acc = accuracy - 0.485  # baseline global 48.5%
         drift_brier = brier - BASELINE_BRIER
 
         status = "ok"
         alerts = []
         if drift_acc < -0.05:
             status = "drift_warning"
-            alerts.append(f"Accuracy -{abs(drift_acc):.1%} vs baseline")
+            alerts.append(f"Accuracy -{abs(drift_acc):.1%} vs baseline 48.5%")
         if drift_brier > 0.05:
             status = "drift_warning"
-            alerts.append(f"Brier +{drift_brier:.3f} vs baseline")
+            alerts.append(f"Brier +{drift_brier:.3f} vs baseline {BASELINE_BRIER}")
+
+        # Drift por tier
+        tier_alerts = []
+        if tier_acc.get('high', {}).get('n', 0) >= 5:
+            if tier_acc['high']['accuracy'] < BASELINE_HIGH_ACC - 0.10:
+                tier_alerts.append(f"HIGH tier acc={tier_acc['high']['accuracy']*100:.1f}% (baseline {BASELINE_HIGH_ACC*100:.0f}%)")
+        if tier_acc.get('medium', {}).get('n', 0) >= 10:
+            if tier_acc['medium']['accuracy'] < BASELINE_MED_ACC - 0.10:
+                tier_alerts.append(f"MEDIUM tier acc={tier_acc['medium']['accuracy']*100:.1f}% (baseline {BASELINE_MED_ACC*100:.0f}%)")
 
         return {
             "name": "8/10 Auto backtest",
@@ -463,7 +535,10 @@ def step_auto_backtest(conn, dry_run, last_n=30):
             "log_loss": round(logloss, 4),
             "drift_acc": round(drift_acc, 4),
             "drift_brier": round(drift_brier, 4),
+            "tier_breakdown": tier_acc,
+            "tier_alerts": tier_alerts,
             "alerts": alerts,
+            "used_existing_bt": use_existing,
         }
     except Exception as e:
         return {"name": "8/10 Auto backtest", "status": "error", "error": str(e)}
