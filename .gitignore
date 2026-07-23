@@ -43,3 +43,11 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+# Estado/agentes locales (no parte del proyecto)
+data/backups/state/
+data/calibration_dataset.csv
+data/platt_coefficients.json.prev
+data/platt_coefficients.json.bak
+*.bak-pre-telegram-*
+
+# No trackear cambios de permisos en scripts (solo se commitea código)
