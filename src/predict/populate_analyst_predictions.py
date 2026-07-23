@@ -222,6 +222,21 @@ def main():
             elif away_win_p > 0.55:
                 key_factors.append("Visitante favorito")
 
+            # H2H histórico (SportMonks 10-20 años). BUG FIX 2026-07-23.
+            # Antes no aparecía en el reporte — Ángel preguntaba "por qué Atlante?"
+            # sin poder ver el H2H. Ahora se imprime si hay ≥6 partidos.
+            h2h_info = pred.get("h2h") or {}
+            h2h_n = h2h_info.get("total", 0)
+            if h2h_n >= 6:
+                # a_wins es desde perspectiva del home team (predict_match retorna
+                # desde team_a que es home_team_id)
+                home_h2h_w = h2h_info.get("a_wins", 0)
+                away_h2h_w = h2h_info.get("b_wins", 0)
+                h2h_d = h2h_info.get("draws", 0)
+                key_factors.append(
+                    f"H2H: {h2h_n} partidos ({home_name[:5]} {home_h2h_w}-{h2h_d}-{away_h2h_w})"
+                )
+
             # Contrarian view (heurísticas que sugieren cautela)
             contrarian = []
             if 0.45 < home_win_p < 0.55:

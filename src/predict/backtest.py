@@ -303,6 +303,18 @@ def predict_match(conn, home_id, away_id, season_id, fixture_date, narratives):
         'is_derby': adj_output.get('is_derby', False),
         # Referee bias (Sprint 3.4 — para auditoria/debug)
         'referee_bias': ref_bias if ref_bias.get("available") else None,
+        # H2H feature (BUG FIX 2026-07-23 — historial SportMonks 10-20 años).
+        # Total + win_rate + draw_rate para auditoría y reporte al usuario.
+        # Sin este campo el operador (Ángel) no podía ver POR QUÉ el modelo predecía X.
+        'h2h': {
+            'total': features.get('h2h', {}).get('total', 0),
+            'a_wins': features.get('h2h', {}).get('a_wins', 0),
+            'b_wins': features.get('h2h', {}).get('b_wins', 0),
+            'draws': features.get('h2h', {}).get('draws', 0),
+            'a_win_rate': features.get('h2h', {}).get('a_win_rate', 0),
+            'draw_rate': features.get('h2h', {}).get('draw_rate', 0),
+            'source': features.get('h2h', {}).get('source', 'none'),
+        },
     }
 
 

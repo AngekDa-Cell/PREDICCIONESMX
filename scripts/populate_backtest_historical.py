@@ -239,6 +239,59 @@ def main():
     print(f"✅ {len(inserts)} predicciones backtest insertadas/actualizadas")
     print(f"📊 BD: {total} filas backtest totales")
 
+    # ─────────────────────────────────────────────────────────────────────
+    # BUG FIX 2026-07-23: reconciliar outcomes (outcome_hit, score_hit, etc).
+    # Antes el script solo insertaba las probs pero nunca llenaba las columnas
+    # de "actual_*". Ahora las llena directamente desde la tabla fixtures.
+    # ─────────────────────────────────────────────────────────────────────
+    print("🔄 Reconciliando outcomes con resultados finales…")
+    reconcile_sql = """
+        UPDATE analyst_predictions
+        SET
+            actual_home_goals = f.home_score,
+            actual_away_goals = f.away_score,
+            outcome_hit = CASE
+                WHEN f.home_score IS NULL OR f.away_score IS NULL THEN NULL
+                WHEN f.home_score > f.away_score AND home_win >= draw AND home_win >= away_win THEN 1
+                WHEN f.away_score > f.home_score AND away_win >= draw AND away_win >= home_win THEN 1
+                WHEN f.home_score = f.away_score AND draw >= home_win AND draw >= away_win THEN 1
+                ELSE 0
+            END,
+            score_hit = CASE
+                WHEN f.home_score IS NULL OR most_likely_score IS NULL THEN NULL
+                WHEN most_likely_score = (CAST(f.home_score AS TEXT) || '-' || CAST(f.away_score AS TEXT)) THEN 1
+                ELSE 0
+            END,
+            bts_hit = CASE
+                WHEN f.home_score IS NULL OR f.away_score IS NULL THEN NULL
+                WHEN f.home_score > 0 AND f.away_score > 0 THEN 1
+                ELSE 0
+            END,
+            ou_2_5_hit = CASE
+                WHEN f.home_score IS NULL OR f.away_score IS NULL THEN NULL
+                WHEN (f.home_score + f.away_score) >= 3 THEN 1
+                ELSE 0
+            END,
+            result_recorded_at = CURRENT_TIMESTAMP
+        FROM fixtures f
+        WHERE analyst_predictions.fixture_id = f.id
+          AND analyst_predictions.is_backtest = 1
+          AND f.home_score IS NOT NULL
+          AND f.away_score IS NOT NULL
+    """
+    cur.execute(reconcile_sql)
+    conn.commit()
+
+    hits = conn.execute("""
+        SELECT COUNT(*) FROM analyst_predictions
+        WHERE is_backtest = 1 AND outcome_hit = 1
+    """).fetchone()[0]
+    total_recon = conn.execute("""
+        SELECT COUNT(*) FROM analyst_predictions
+        WHERE is_backtest = 1 AND outcome_hit IS NOT NULL
+    """).fetchone()[0]
+    print(f"   ✓ Reconciliados: {total_recon} partidos, {hits} acierto (acc={hits/max(1,total_recon)*100:.1f}%)")
+
 
 if __name__ == "__main__":
     main()
