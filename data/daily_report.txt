@@ -15,6 +15,7 @@
 🔄 Cambios DT recientes (1):
    • Monterrey: Matías Jesús Almeyda (antes Domènec Torrent Font)
 
-📊 BT reciente (0): acc=0.0% brier=0.000
+📊 BT reciente (30): acc=43.3% brier=0.664
+⚠️ Drift: Accuracy -5.2% vs baseline 48.5%; Brier +0.054 vs baseline 0.61
 
-Estado: ✅ OK
+Estado: ⚠️ WARNING

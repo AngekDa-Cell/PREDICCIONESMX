@@ -154,7 +154,68 @@ def get_head_to_head(
     limit: int = 10,
     league_id: int = 743
 ) -> Dict[str, Any]:
-    """Historial directo entre dos equipos."""
+    """Historial directo entre dos equipos.
+
+    BUG FIX 2026-07-23: ahora consulta primero el cache de H2H de SportMonks
+    (tabla team_h2h_cache con ~939 pares y miles de fixtures del histórico)
+    y SOLO si no hay datos, hace fallback a la BD local. Esto soluciona el
+    problema de "no hay H2H" para partidos como Atlante vs América donde los
+    equipos no se han enfrentado en los últimos 5 años pero sí tienen
+    18+ partidos en el histórico completo.
+
+    Returns: dict con total, a_wins, b_wins, draws, a_win_rate, draw_rate, etc.
+             Si source='sportmonks_cache', los datos son de SportMonks (10-20 años).
+             Si source='local_db', los datos son de la BD local (5 años).
+             Si total=0, no hay datos de ningún origen.
+    """
+    # ────────────────────────────────────────────────────────────────────
+    # PASO 1: Buscar en cache SportMonks (PRIORIDAD)
+    # ────────────────────────────────────────────────────────────────────
+    try:
+        # team_h2h_cache tiene pares ordenados por ID menor primero
+        a_sorted, b_sorted = sorted([team_a, team_b])
+        cache_row = conn.execute("""
+            SELECT n_matches, team_a_wins, team_b_wins, draws,
+                   team_a_goals, team_b_goals, team_a_home_wins, team_a_away_wins
+            FROM team_h2h_cache
+            WHERE team_a_id = ? AND team_b_id = ?
+        """, (a_sorted, b_sorted)).fetchone()
+
+        if cache_row and cache_row[0] > 0:
+            n, awins, bwins, draws, agf, aga, ahw, aaw = cache_row
+            # Mapear de vuelta al orden original team_a vs team_b
+            if a_sorted == team_a:
+                # team_a == team_a_sorted (es el menor)
+                return {
+                    'total': n,
+                    'a_wins': awins, 'b_wins': bwins, 'draws': draws,
+                    'a_goals': agf, 'b_goals': aga,
+                    'a_win_rate': awins / n if n else 0.0,
+                    'draw_rate': draws / n if n else 0.0,
+                    'a_home_wins': ahw,
+                    'a_away_wins': aaw,
+                    'source': 'sportmonks_cache',
+                }
+            else:
+                # team_a == team_b_sorted (es el mayor)
+                return {
+                    'total': n,
+                    'a_wins': bwins, 'b_wins': awins, 'draws': draws,
+                    'a_goals': aga, 'b_goals': agf,
+                    'a_win_rate': bwins / n if n else 0.0,
+                    'draw_rate': draws / n if n else 0.0,
+                    # En este caso ahw = team_b_sorted_home_wins (no team_a)
+                    'a_home_wins': n - ahw - awins,  # resto = team_b como away wins
+                    'a_away_wins': awins - ahw,
+                    'source': 'sportmonks_cache',
+                }
+    except Exception:
+        # Si la tabla no existe (BD vieja), cae al fallback
+        pass
+
+    # ────────────────────────────────────────────────────────────────────
+    # PASO 2: Fallback a BD local (5 años)
+    # ────────────────────────────────────────────────────────────────────
     query = """
         SELECT f.home_team_id, f.away_team_id, f.home_score, f.away_score
         FROM fixtures f
@@ -193,6 +254,7 @@ def get_head_to_head(
         'a_goals': a_gf, 'b_goals': a_ga,
         'a_win_rate': a_wins / total if total > 0 else 0.0,
         'draw_rate': draws / total if total > 0 else 0.0,
+        'source': 'local_db',
     }
 
 
