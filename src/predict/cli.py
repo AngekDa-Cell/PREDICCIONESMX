@@ -346,7 +346,7 @@ def generate_prediction(
             features, adj_output.get('heuristic_adjustments', []),
             adj_output.get('contrarian_view', ''),
             adj_output.get('is_derby', False),
-            adj_output.get('derby_info', {}).get('name'),
+            (adj_output.get('derby_info') or {}).get('name'),
             adj_output['confidence'],
             is_backtest=is_backtest,
         )

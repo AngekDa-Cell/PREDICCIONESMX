@@ -1,21 +1,20 @@
-⚽ Predictions_MX — Reporte diario 2026-07-23
+⚽ Predictions_MX — Reporte diario 2026-08-04
 
 🏥 Lesiones: 0 en 0 equipos
 
-⚽ 16 picks próximos 14d | 🟢 4 fuerte · 🟡 12 moderado · ⚪ 0 parejo
-   🟢 2026-07-25 Tigres UANL        vs Atlético San Luis  → 🏠 L (63%)
-   🟡 2026-07-25 Tijuana            vs León               → 🏠 L (45%)
-   🟡 2026-07-25 Atlante            vs América            → 🏠 L (54%)
-   🟢 2026-07-25 Guadalajara        vs Juárez             → 🏠 L (60%)
-   🟡 2026-07-26 Santos Laguna      vs Atlas              → 🏠 L (43%)
-   🟡 2026-07-26 Necaxa             vs Monterrey          → ✈️ V (48%)
-   🟡 2026-07-27 Pachuca            vs Querétaro          → 🏠 L (52%)
-   🟡 2026-08-01 Puebla             vs Guadalajara        → ✈️ V (50%)
+⚽ 9 picks próximos 14d | 🟢 4 fuerte · 🟡 4 moderado · ⚪ 1 parejo
+   🟡 2026-08-15 Atlante            vs Toluca             → 🏠 L (51%)
+   🟢 2026-08-16 Monterrey          vs Juárez             → 🏠 L (59%)
+   🟢 2026-08-16 Atlas              vs Tigres UANL        → ✈️ V (65%)
+   🟡 2026-08-16 Pumas UNAM         vs Querétaro          → 🏠 L (44%)
+   ⚪ 2026-08-16 América            vs Atlético San Luis  → 🏠 L (40%)
+   🟡 2026-08-17 Santos Laguna      vs Guadalajara        → ✈️ V (47%)
+   🟢 2026-08-17 Tijuana            vs Cruz Azul          → ✈️ V (60%)
+   🟡 2026-08-18 Necaxa             vs León               → 🏠 L (53%)
 
-🔄 Cambios DT recientes (1):
-   • Monterrey: Matías Jesús Almeyda (antes Domènec Torrent Font)
+📈 Accuracy live (90d): 50.0%
 
-📊 BT reciente (30): acc=43.3% brier=0.664
-⚠️ Drift: Accuracy -5.2% vs baseline 48.5%; Brier +0.054 vs baseline 0.61
+📊 BT reciente (30): acc=40.0% brier=0.677
+⚠️ Drift: Accuracy -8.5% vs baseline 48.5%; Brier +0.067 vs baseline 0.61
 
 Estado: ⚠️ WARNING
