@@ -7,15 +7,16 @@ Test extremo del feature de lesiones:
 """
 import sys, os
 from pathlib import Path
-sys.path.insert(0, str(Path('/workspace/proyectos')))
-sys.path.insert(0, str(Path('/workspace/proyectos/src')))
+_ROOT = Path(os.environ.get("PROJECT_ROOT", Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(_ROOT))
+sys.path.insert(0, str(_ROOT / "src"))
 
 import sqlite3
 import json
 import math
 from datetime import datetime
 
-conn = sqlite3.connect('/workspace/proyectos/data/predictions_mx.db')
+conn = sqlite3.connect(str(_ROOT / "data" / "predictions_mx.db"))
 
 # Cargar features
 from predict.features import get_player_injuries_impact

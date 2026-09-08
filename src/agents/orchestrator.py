@@ -29,7 +29,7 @@ if str(_PROYECTOS_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROYECTOS_ROOT))
 
 # Paths
-DATA_DIR = Path(os.environ.get("DATA_DIR", "/workspace/proyectos/data"))
+DATA_DIR = Path(os.environ.get("DATA_DIR", str(_SRC_DIR.parent / "data")))
 DB_PATH = DATA_DIR / "predictions_mx.db"
 REPORTS_DIR = DATA_DIR / "agent_reports"
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)

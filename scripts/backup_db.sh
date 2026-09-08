@@ -17,16 +17,23 @@
 
 set -u
 
-# Paths
-PROJECT_ROOT="/workspace/proyectos"
-DB_PATH="$PROJECT_ROOT/data/predictions_mx.db"
-BACKUP_DIR="$PROJECT_ROOT/data/backups"
+# Paths (parametrizables; auto-detect si no se exportan)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+if [[ -f "$PROJECT_ROOT/.env" ]]; then
+    set -a
+    # shellcheck disable=SC1091
+    source "$PROJECT_ROOT/.env"
+    set +a
+fi
+DB_PATH="${DB_PATH:-$PROJECT_ROOT/data/predictions_mx.db}"
+BACKUP_DIR="${BACKUP_DIR:-$PROJECT_ROOT/data/backups}"
 KEEP_LAST=3
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
 # Telegram config
 CHAT_ID="8683821860"  # Ángel
-CONFIG_FILE="/configs/openclaw.json"
+CONFIG_FILE="${CONFIG_FILE:-/etc/openclaw/openclaw.json}"
 
 # Flags
 SEND_TELEGRAM=true

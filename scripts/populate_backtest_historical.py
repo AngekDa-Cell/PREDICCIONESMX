@@ -10,7 +10,6 @@ históricos con resultado (walk-forward style: usa datos hasta la fecha del part
 - Backtest de liguilla con stats significativos
 
 Uso:
-    cd /workspace/proyectos
     python3 scripts/populate_backtest_historical.py --limit 100
     python3 scripts/populate_backtest_historical.py --seasons 5
     python3 scripts/populate_backtest_historical.py --dry-run

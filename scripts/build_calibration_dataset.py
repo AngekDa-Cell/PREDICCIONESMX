@@ -7,7 +7,7 @@ Para cada partido finalizado en Liga MX, llama a predict_match() y guarda:
   - probs: home_win, draw, away_win (ensemble + sub-modelos)
   - actual: 'home'/'away'/'draw' (basado en scores reales)
 
-Output: CSV en /workspace/proyectos/data/calibration_dataset.csv
+Output: CSV en $PROJECT_ROOT/data/calibration_dataset.csv (auto-detect desde script)
 
 Uso:
   python3 scripts/build_calibration_dataset.py              # todas las temporadas
@@ -19,10 +19,11 @@ import sys
 import csv
 import argparse
 import sqlite3
+import os
 from pathlib import Path
 from datetime import datetime
 
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = Path(os.environ.get("PROJECT_ROOT", Path(__file__).parent.parent))
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 

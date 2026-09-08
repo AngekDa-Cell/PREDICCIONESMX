@@ -12,7 +12,7 @@
 # Si el Δ Brier empeora más del 1pp, NO aplica los nuevos coefs (rollback).
 #
 # Programado en crontab container:
-#   0 9 * * 1 /workspace/proyectos/scripts/recalibrate_platt.sh >> /workspace/proyectos/data/logs/cron_recalibrate.log 2>&1
+#   0 9 * * 1 $PROJECT_ROOT/scripts/recalibrate_platt.sh >> $PROJECT_ROOT/data/logs/cron_recalibrate.log 2>&1
 #
 # Uso manual:
 #   ./scripts/recalibrate_platt.sh           # ejecuta, notifica Telegram
@@ -21,7 +21,20 @@
 
 set -u
 
-PROJECT_ROOT="/workspace/proyectos"
+# --- Resolución de paths (parametrizable) ---
+# PROJECT_ROOT: auto-detect desde la ubicación del script, override via env.
+# CONFIG_FILE: ruta al openclaw.json del agente, override via env.
+# Si existe .env en PROJECT_ROOT, se sourcea para exponer DATABASE_URL, etc.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+if [[ -f "$PROJECT_ROOT/.env" ]]; then
+    set -a
+    # shellcheck disable=SC1091
+    source "$PROJECT_ROOT/.env"
+    set +a
+fi
+CONFIG_FILE="${CONFIG_FILE:-/etc/openclaw/openclaw.json}"
+
 DATASET="$PROJECT_ROOT/data/calibration_dataset.csv"
 COEFS="$PROJECT_ROOT/data/platt_coefficients.json"
 COEFS_NEW="${COEFS}.new"
@@ -31,7 +44,6 @@ LOG_FILE="$LOG_DIR/cron_recalibrate.log"
 N_FIT=800
 
 CHAT_ID="8683821860"  # Ángel
-CONFIG_FILE="/configs/openclaw.json"
 
 # Flags
 QUIET=false

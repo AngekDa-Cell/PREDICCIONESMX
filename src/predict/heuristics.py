@@ -102,7 +102,7 @@ KNOWN_PATTERNS = {
 
 def load_manual_narratives(season: str = "current") -> Dict[str, Any]:
     """Carga narratives JSON editadas por Ángel."""
-    base = Path("/workspace/proyectos/data/manual")
+    base = Path(os.environ.get("PREDICCIONES_DATA_DIR", Path(__file__).resolve().parent.parent.parent / "data" / "manual"))
     files = [
         base / f"narratives_{season}.json",
         base / "narratives_default.json",

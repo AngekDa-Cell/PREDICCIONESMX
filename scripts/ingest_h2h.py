@@ -39,10 +39,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from src.config import SportMonksConfig  # noqa: E402
+from src.config import SportMonksConfig, PATHS  # noqa: E402
 from src.sportmonks_client import SportMonksClient  # noqa: E402
 
-DB = "/workspace/proyectos/data/predictions_mx.db"
+DB = str(PATHS.data_dir / "predictions_mx.db")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

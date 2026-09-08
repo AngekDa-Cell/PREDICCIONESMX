@@ -1,6 +1,8 @@
 # Secretos y configuración local
 .env
 *.env.local
+.secrets/
+*.github_token
 
 # Base de datos (recursivo: incluye data/, data/backups/, data/votos/, etc.)
 data/**/*.db

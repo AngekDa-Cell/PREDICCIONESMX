@@ -11,7 +11,6 @@ Para cada BT existente:
   5. Actualiza la fila con los nuevos valores.
 
 Uso:
-    cd /workspace/proyectos
     python3 scripts/regenerate_bt_consistency.py [--dry-run]
 """
 

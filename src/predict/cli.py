@@ -43,7 +43,7 @@ from predict.misc_utils import get_season_id_for_date, load_mx_coefficients
 # CONFIG
 # ─────────────────────────────────────────────────────────────────────────────
 
-DATA_DIR = Path(os.environ.get("DATA_DIR", "/workspace/proyectos/data"))
+DATA_DIR = Path(os.environ.get("DATA_DIR", str(Path(__file__).resolve().parent.parent / "data")))
 DB_PATH = DATA_DIR / "predictions_mx.db"
 MANUAL_DIR = DATA_DIR / "manual"
 LEAGUE_ID = 743  # Liga MX

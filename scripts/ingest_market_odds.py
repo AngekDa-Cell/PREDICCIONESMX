@@ -24,8 +24,9 @@ import sys
 import urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
+import os
 
-PROJECT_ROOT = Path("/workspace/proyectos")
+PROJECT_ROOT = Path(os.environ.get("PROJECT_ROOT", Path(__file__).resolve().parent.parent))
 DB_PATH = PROJECT_ROOT / "data" / "predictions_mx.db"
 
 

@@ -23,6 +23,7 @@ from typing import Dict, List, Any
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from src.config import PATHS
 from predict.features import get_full_feature_set
 from predict.dixon_coles import fit_dixon_coles, predict_from_model
 from predict.heuristics import apply_heuristics, detect_derby, load_manual_narratives
@@ -549,7 +550,7 @@ if __name__ == '__main__':
     parser.add_argument('--last-n', type=int, default=0)
     args = parser.parse_args()
 
-    conn = sqlite3.connect('/workspace/proyectos/data/predictions_mx.db')
+    conn = sqlite3.connect(str(PATHS.data_dir / "predictions_mx.db"))
 
     if args.last_n:
         # Obtener últimos N partidos

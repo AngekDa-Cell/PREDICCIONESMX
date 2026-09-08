@@ -7,7 +7,6 @@ Esto desbloquea los badges 🤖 IA + ProbabilityBars + ResultIndicator en el
 frontend quinielas.lol (frontend lee esta tabla).
 
 Uso:
-    cd /workspace/proyectos
     python3 src/predict/populate_analyst_predictions.py [--dry-run]
 
 Output:
