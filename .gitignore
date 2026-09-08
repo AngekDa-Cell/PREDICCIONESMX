@@ -55,4 +55,4 @@ data/platt_coefficients.json.bak
 # No trackear cambios de permisos en scripts (solo se commitea código)
 
 # Tareas del sistema (documentos que Ángel entrega al agente; no parte del proyecto)
-Tareas/
+tareas/
