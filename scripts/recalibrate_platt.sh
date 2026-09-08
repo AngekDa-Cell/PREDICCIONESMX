@@ -33,7 +33,7 @@ if [[ -f "$PROJECT_ROOT/.env" ]]; then
     source "$PROJECT_ROOT/.env"
     set +a
 fi
-CONFIG_FILE="${CONFIG_FILE:-/etc/openclaw/openclaw.json}"
+CONFIG_FILE="${CONFIG_FILE:-/opt/openclaw/predicciones/config/openclaw.json}"
 
 DATASET="$PROJECT_ROOT/data/calibration_dataset.csv"
 COEFS="$PROJECT_ROOT/data/platt_coefficients.json"

@@ -33,7 +33,7 @@ TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
 # Telegram config
 CHAT_ID="8683821860"  # Ángel
-CONFIG_FILE="${CONFIG_FILE:-/etc/openclaw/openclaw.json}"
+CONFIG_FILE="${CONFIG_FILE:-/opt/openclaw/predicciones/config/openclaw.json}"
 
 # Flags
 SEND_TELEGRAM=true
