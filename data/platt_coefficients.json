@@ -14,10 +14,10 @@
       "b": 0.3736469059784846
     }
   },
-  "_note": "Recalibraci\u00f3n 2026-08-24 (Fase B Platt scaling, target=ens). Out-of-sample \u0394 Brier=-0.53pp.",
+  "_note": "Recalibraci\u00f3n 2026-09-07 (Fase B Platt scaling, target=ens). Out-of-sample \u0394 Brier=-0.53pp.",
   "_oos_brier_pre": 0.6174154009625182,
   "_oos_brier_post": 0.6121528944375028,
   "_oos_brier_delta_pp": -0.5262506525015476,
   "_n_fit": 800,
-  "_generated_at": "2026-08-24T09:00:54.819459"
+  "_generated_at": "2026-09-07T09:00:53.554764"
 }
