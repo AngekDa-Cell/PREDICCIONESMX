@@ -100,4 +100,4 @@ LOG_FILE: Final[Path] = Path(os.getenv("LOG_FILE", str(PATHS.data_dir / "predict
 # Zona horaria
 # =============================================================
 
-TZ: Final[str] = os.getenv("TZ", "Europe/Berlin")
+TZ: Final[str] = os.getenv("TZ", "America/Mexico_City")

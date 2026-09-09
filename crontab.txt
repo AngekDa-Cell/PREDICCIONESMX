@@ -1,0 +1,20 @@
+# crontab.txt — PREDICCIONESMX (creado 2026-09-09)
+# Cron jobs del container. Formato supercronic (mismo que vixie cron).
+# TZ del container es America/Mexico_City; las horas están en UTC para alinear
+# con la convención previa del proyecto (11:00 UTC = pipeline diario).
+
+# Entorno para los cron jobs (supercronic soporta esta primera línea)
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+TZ=UTC
+
+# m h dom mon dow command
+
+# Pipeline diario (10 pasos + quick wins)
+0 11 * * * cd /workspace/proyectos && /usr/local/bin/python scripts/full_pipeline.py >> /workspace/proyectos/data/logs/cron_pipeline.log 2>&1
+
+# Backup diario de la BD + reporte Telegram (sin LLM)
+0 4 * * * cd /workspace/proyectos && bash scripts/backup_db.sh >> /workspace/proyectos/data/logs/cron_backup.log 2>&1
+
+# Recalibración Platt semanal (lunes)
+0 9 * * 1 cd /workspace/proyectos && bash scripts/recalibrate_platt.sh >> /workspace/proyectos/data/logs/cron_recalibrate.log 2>&1

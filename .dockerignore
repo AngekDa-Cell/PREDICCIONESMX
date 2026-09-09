@@ -1,0 +1,69 @@
+# .dockerignore — PREDICCIONESMX (creado 2026-09-09)
+# Cosas que NO se copian al contexto de docker build.
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Secretos (jamás a la imagen)
+.secrets/
+.env
+*.env.local
+*.github_token
+*.bak
+*.broken
+
+# Datos runtime (la BD se monta como bind-mount en runtime)
+data/**/*.db
+data/**/*.db-wal
+data/**/*.db-shm
+data/**/*.sqlite
+data/**/*.sqlite3
+data/raw/
+data/processed/
+data/historical/
+data/backups/
+data/logs/
+data/agent_reports/
+data/*.log
+data/calibration_dataset.csv
+data/platt_coefficients.json*
+data/backtest_*
+
+# Modelos entrenados (binarios, se regeneran)
+models/
+
+# Docs no runtime
+docs/
+ARCHITECTURE.md
+README.md
+cinepolis_preview.html
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Tareas del sistema (no parte del proyecto)
+tareas/
+
+# Tests no necesarios en runtime (se corren en CI)
+tests/
+
+# Archivos de deploy (se montan aparte)
+deploy/
+dokploy*.yml
+docker-compose*.yml

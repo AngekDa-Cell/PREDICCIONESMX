@@ -31,8 +31,8 @@ BACKUP_DIR="${BACKUP_DIR:-$PROJECT_ROOT/data/backups}"
 KEEP_LAST=3
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
-# Telegram config
-CHAT_ID="8683821860"  # Ángel
+# Telegram config (env primero, fallback a CONFIG_FILE del agente para dev local)
+CHAT_ID="${TELEGRAM_CHAT_ID:-8683821860}"  # Ángel
 CONFIG_FILE="${CONFIG_FILE:-/opt/openclaw/predicciones/config/openclaw.json}"
 
 # Flags
@@ -58,8 +58,8 @@ send_telegram() {
         return 0
     fi
 
-    local bot_token=""
-    if [[ -f "$CONFIG_FILE" ]]; then
+    local bot_token="${TELEGRAM_BOT_TOKEN:-}"
+    if [[ -z "$bot_token" && -f "$CONFIG_FILE" ]]; then
         bot_token=$(python3 -c "
 import json, sys
 try:
@@ -72,7 +72,7 @@ except Exception:
     fi
 
     if [[ -z "$bot_token" ]]; then
-        echo "⚠️  No Telegram token found, notification skipped"
+        echo "⚠️  No Telegram token found (env TELEGRAM_BOT_TOKEN o CONFIG_FILE), notification skipped"
         return 1
     fi
 

@@ -43,7 +43,7 @@ LOG_DIR="$PROJECT_ROOT/data/logs"
 LOG_FILE="$LOG_DIR/cron_recalibrate.log"
 N_FIT=800
 
-CHAT_ID="8683821860"  # Ángel
+CHAT_ID="${TELEGRAM_CHAT_ID:-8683821860}"  # Ángel
 
 # Flags
 QUIET=false
@@ -68,8 +68,8 @@ send_telegram() {
         return 0
     fi
 
-    local bot_token=""
-    if [[ -f "$CONFIG_FILE" ]]; then
+    local bot_token="${TELEGRAM_BOT_TOKEN:-}"
+    if [[ -z "$bot_token" && -f "$CONFIG_FILE" ]]; then
         bot_token=$(python3 -c "
 import json, sys
 try:
@@ -82,7 +82,7 @@ except Exception:
     fi
 
     if [[ -z "$bot_token" ]]; then
-        echo "⚠️  No Telegram token found"
+        echo "⚠️  No Telegram token found (env TELEGRAM_BOT_TOKEN o CONFIG_FILE)"
         return 1
     fi
 

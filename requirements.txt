@@ -1,0 +1,12 @@
+# Predictions_MX — Python dependencies (consolidated 2026-09-09)
+# Pinned to known-working versions from the running pipeline.
+# Update only after validating in dev branch.
+
+requests>=2.31,<3
+pandas>=2.1,<3
+numpy>=1.26,<3
+sqlalchemy>=2.0,<3
+python-dotenv>=1.0,<2
+scipy>=1.11,<2
+scikit-learn>=1.3,<2
+xgboost>=2.0,<3
