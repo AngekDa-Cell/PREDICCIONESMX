@@ -15,9 +15,12 @@ Features inyectadas (las 8 más relevantes para debate cualitativo):
 8. Rest days / fixture congestion
 """
 
+import logging
 import sys
 from pathlib import Path
 from typing import Dict, Any, Optional
+
+logger = logging.getLogger(__name__)
 
 # Setup paths
 _AGENT_DIR = Path(__file__).resolve().parent
@@ -85,7 +88,8 @@ def build_feature_block(
                     f"{away_form.get('losses', 0)}L, {away_form.get('goals_for', 0)}GF-"
                     f"{away_form.get('goals_against', 0)}GA, momentum={away_form.get('momentum', 0):.2f})")
     except Exception as e:
-        lines.append(f"## Forma reciente: ⚠️ error ({e})")
+        logger.warning("feature_block.forma_reciente error: %s", e)
+        lines.append("## Forma reciente: ⚠️ sin datos")
     
     # 2. Momentum compuesto
     try:
@@ -98,7 +102,8 @@ def build_feature_block(
         lines.append(f"- Visitante: {away_mom.get('composite_score', 0):.2f} "
                     f"(trend={away_mom.get('trend', 0):.2f}, consistency={away_mom.get('consistency', 0):.2f})")
     except Exception as e:
-        lines.append(f"## Momentum: ⚠️ error ({e})")
+        logger.warning("feature_block.momentum_compuesto error: %s", e)
+        lines.append("## Momentum: ⚠️ sin datos")
     
     # 3. H2H últimos 10
     try:
@@ -115,7 +120,8 @@ def build_feature_block(
             lines.append("")
             lines.append("## H2H: Sin datos suficientes")
     except Exception as e:
-        lines.append(f"## H2H: ⚠️ error ({e})")
+        logger.warning("feature_block.h2h error: %s", e)
+        lines.append("## H2H: ⚠️ sin datos")
     
     # 4. xG rolling recent — placeholder honesto
     lines.append("")
@@ -140,7 +146,8 @@ def build_feature_block(
             lines.append("")
             lines.append("## Attendance: ⚠️ sin datos")
     except Exception as e:
-        lines.append(f"## Attendance: ⚠️ error ({e})")
+        logger.warning("feature_block.attendance error: %s", e)
+        lines.append("## Attendance: ⚠️ sin datos")
     
     # 6. Referee bias
     try:
@@ -157,7 +164,8 @@ def build_feature_block(
             lines.append("")
             lines.append("## Árbitro: ⚠️ sin datos")
     except Exception as e:
-        lines.append(f"## Árbitro: ⚠️ error ({e})")
+        logger.warning("feature_block.referee error: %s", e)
+        lines.append("## Árbitro: ⚠️ sin datos")
     
     # 7. Weather
     try:
@@ -175,7 +183,8 @@ def build_feature_block(
             lines.append("")
             lines.append("## Clima: ⚠️ sin datos")
     except Exception as e:
-        lines.append(f"## Clima: ⚠️ error ({e})")
+        logger.warning("feature_block.weather error: %s", e)
+        lines.append("## Clima: ⚠️ sin datos")
     
     # 8. Rest days
     try:
@@ -192,6 +201,7 @@ def build_feature_block(
             lines.append(f"  → {congested_team} viene de fixture congestionada "
                         f"({cong_h.get('matches_last_7d', 0) if cong_h.get('congested') else cong_a.get('matches_last_7d', 0)} partidos en 7 días)")
     except Exception as e:
-        lines.append(f"## Descanso: ⚠️ error ({e})")
+        logger.warning("feature_block.rest_days error: %s", e)
+        lines.append("## Descanso: ⚠️ sin datos")
     
     return "\n".join(lines)

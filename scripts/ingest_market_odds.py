@@ -60,7 +60,7 @@ def synthetic_odds_from_predictions(con: sqlite3.Connection, days_ahead: int = 1
 
     Strategy: usar nuestras predicciones + ruido gaussiano ~5%.
     """
-    rows = con.execute(f"""
+    rows = con.execute("""
         SELECT
             f.id, f.starting_at,
             ap.home_win, ap.draw, ap.away_win
@@ -68,9 +68,9 @@ def synthetic_odds_from_predictions(con: sqlite3.Connection, days_ahead: int = 1
         LEFT JOIN analyst_predictions ap ON ap.fixture_id = f.id
         WHERE f.home_score IS NULL
         AND f.starting_at BETWEEN datetime('now')
-            AND datetime('now', '+{days_ahead} days')
+            AND datetime('now', '+' || ? || ' days')
         ORDER BY f.starting_at
-    """).fetchall()
+    """, (int(days_ahead),)).fetchall()
 
     if not rows:
         print(f"   No hay partidos próximos en {days_ahead} días")

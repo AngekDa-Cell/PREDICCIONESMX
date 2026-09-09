@@ -151,7 +151,8 @@ def get_fixtures_to_ingest(
     query += " ORDER BY f.starting_at"
 
     if limit:
-        query += f" LIMIT {limit}"
+        query += " LIMIT ?"
+        params.append(int(limit))
 
     return conn.execute(query, params).fetchall()
 
