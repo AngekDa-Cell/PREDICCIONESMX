@@ -192,7 +192,7 @@ function Header() {
           marginTop: 4,
         }}
       >
-        Llená tu quiniela jornada por jornada
+        Llena tu quiniela jornada por jornada
       </p>
     </header>
   );
@@ -225,7 +225,7 @@ function EmptyState() {
           marginTop: 6,
         }}
       >
-        La Liga MX está entre jornadas. Volvé cuando se acerque la próxima fecha.
+        La Liga MX está entre jornadas. Vuelve cuando se acerque la próxima fecha.
       </p>
     </div>
   );
@@ -242,7 +242,7 @@ function Footnote() {
         paddingBottom: 8,
       }}
     >
-      1 voto por persona (cookie anti-spam) · Podés editar mientras la jornada no empiece
+      1 voto por persona (cookie anti-spam) · Puedes editar mientras la jornada no empiece
     </p>
   );
 }

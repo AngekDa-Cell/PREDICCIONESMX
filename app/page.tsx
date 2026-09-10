@@ -111,8 +111,8 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-3">
           <QuickLink
             href="/votacion"
-            label="Ver todos"
-            sub={`${counts.upcoming} próximos`}
+            label="Llenar quiniela"
+            sub={`${counts.upcoming} partidos`}
           />
           <QuickLink
             href="/resultados"
@@ -133,7 +133,7 @@ export default function HomePage() {
               href="/votacion"
               style={{ color: "var(--tint-blue)", fontWeight: 600, fontSize: "0.75rem" }}
             >
-              Ver todos →
+              Llenar quiniela →
             </Link>
           </div>
 

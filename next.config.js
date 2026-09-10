@@ -53,11 +53,6 @@ const nextConfig = {
   output: "standalone", // Required for Docker — produces minimal server.js
   // [A.6] Ocultar X-Powered-By (filtra stack info).
   poweredByHeader: false,
-  // [A.2] Excluir .env* del bundle standalone — la imagen NO debe contener
-  // secretos como VOTES_TOKEN_SALT. Las env se pasan via --env-file al run.
-  outputFileTracingExcludes: {
-    "*": [".env*", "**/.env*", "**/.env.*"],
-  },
   // Headers de seguridad en TODAS las rutas
   async headers() {
     return [
@@ -68,6 +63,12 @@ const nextConfig = {
     ];
   },
   experimental: {
+    // [A.2] Excluir .env* del bundle standalone — la imagen NO debe contener
+    // secretos como VOTES_TOKEN_SALT. Las env se pasan via --env-file al run.
+    // Next 14.2 espera esta opción dentro de experimental; en raíz provoca warning.
+    outputFileTracingExcludes: {
+      "*": [".env*", "**/.env*", "**/.env.*"],
+    },
     serverActions: {
       allowedOrigins: ["quinielas.lol", "localhost"],
     },

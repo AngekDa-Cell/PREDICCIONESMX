@@ -644,7 +644,7 @@ export function QuinielaForm({
           paddingBottom: 8,
         }}
       >
-        1 boleto por persona (cookie anti-spam) · Editá mientras la jornada no empiece
+        1 boleto por persona (cookie anti-spam) · Puedes editar mientras la jornada no empiece
       </p>
     </div>
   );
