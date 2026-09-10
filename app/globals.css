@@ -1,0 +1,486 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Cinépolis-inspired dark mode
+   Source: Extracción literal de cinepolis.com/mx (CSS, 2026-07-04)
+   Tipografía: Montserrat (la que usan ellos)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── Backgrounds (deep navy + black, Cinépolis palette) ─── */
+  --bg-base:        #040612;            /* background principal */
+  --bg-elevated:    #13213F;            /* cards / surfaces */
+  --bg-elevated-2:  #05102A;            /* deep blue (gradient end) */
+  --bg-elevated-3:  #1C3466;            /* hover state */
+  --bg-grouped:     #040612;
+  --bg-overlay:     rgba(5, 16, 42, 0.72);
+
+  /* ─── Surfaces (translucent for blur) ─── */
+  --surface-thin:   rgba(19, 33, 63, 0.60);
+  --surface-thick:  rgba(19, 33, 63, 0.85);
+  --surface-tint:   rgba(71, 129, 255, 0.12);
+
+  /* ─── Separators ─── */
+  --separator:      rgba(71, 129, 255, 0.15);
+  --separator-opaque: #2B4D99;
+  --hairline:       rgba(71, 129, 255, 0.10);
+
+  /* ─── Text ─── */
+  --label-primary:    #FFFFFF;
+  --label-secondary:  #C7CDD6;
+  --label-tertiary:   #808695;
+  --label-quaternary: rgba(199, 205, 214, 0.40);
+
+  /* ─── Brand tints (Cinépolis) ─── */
+  --tint-blue:    #4781ff;
+  --tint-blue-2:  #4780ff;
+  --tint-blue-deep: #08285B;
+  --tint-green:   #0eb211;
+  --tint-red:     #e51212;
+  --tint-orange:  #FF9F0A;
+  --tint-yellow:  #FFD60A;
+  --tint-purple:  #8034c9;
+  --tint-pink:    #FF375F;
+  --tint-teal:    #00B5D9;
+  --tint-indigo:  #5E5CE6;
+
+  /* ─── Tints (low-opacity backgrounds) ─── */
+  --tint-blue-bg:    rgba(71, 129, 255, 0.15);
+  --tint-green-bg:   rgba(14, 178, 17, 0.15);
+  --tint-red-bg:     rgba(229, 18, 18, 0.15);
+  --tint-orange-bg:  rgba(255, 159, 10, 0.15);
+  --tint-purple-bg:  rgba(128, 52, 201, 0.15);
+  --tint-yellow-bg:  rgba(255, 214, 10, 0.15);
+
+  /* ─── Cinépolis hero gradient (literal del CSS extraído) ─── */
+  --gradient-hero: radial-gradient(106.21% 106.21% at 35.59% -4.61%, #4780ff 0, #8034c9 56%, #05102a 90%);
+  --gradient-cta:  linear-gradient(135deg, #4781ff 0%, #8034c9 100%);
+  --gradient-text: linear-gradient(135deg, #4781ff, #8034c9);
+
+  /* ─── Corners ─── */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  /* ─── Spacing scale (4pt grid) ─── */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 40px;
+  --s-9: 48px;
+
+  /* ─── Shadows ─── */
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.40);
+  --shadow-md:  0 4px 16px rgba(5, 16, 42, 0.60);
+  --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.70);
+  --shadow-tint-blue:  0 8px 24px rgba(71, 129, 255, 0.30);
+  --shadow-tint-green: 0 8px 24px rgba(14, 178, 17, 0.30);
+  --shadow-glow:        0 0 32px rgba(71, 129, 255, 0.20);
+
+  /* ─── Motion ─── */
+  --dur-fast:    200ms;
+  --dur-med:     320ms;
+  --dur-slow:    420ms;
+  --ease-ios:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html, body {
+  color: var(--label-primary);
+  background: var(--bg-base);
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  letter-spacing: -0.01em;
+}
+
+/* Safe areas (iPhone notch / bottom bar) */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+html {
+  scroll-padding-top: 5rem;
+  scroll-behavior: smooth;
+}
+
+/* Tighter typography on mobile (avoid 9px illegible) */
+@media (max-width: 640px) {
+  html, body { letter-spacing: -0.005em; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRIMITIVES (iOS-style components)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ─── Grouped list (iOS Settings style) ─── */
+  .ios-list-group {
+    @apply rounded-[14px] overflow-hidden;
+    background: var(--bg-elevated);
+  }
+  .ios-list-row {
+    @apply flex items-center gap-3 px-4 py-3 transition-colors;
+    background: var(--bg-elevated);
+  }
+  .ios-list-row + .ios-list-row {
+    border-top: 0.5px solid var(--separator);
+  }
+  .ios-list-row-hover {
+    @apply active:bg-white/5;
+  }
+
+  /* ─── Card (Cinépolis: rounded 12-16px, blue tinted border) ─── */
+  .ios-card {
+    @apply rounded-[16px] p-4 transition-all;
+    background: var(--bg-elevated);
+    border: 1px solid var(--hairline);
+  }
+  .ios-card-hover {
+    @apply hover:bg-[var(--bg-elevated-3)] active:scale-[0.98];
+    transition: transform var(--dur-fast) var(--ease-ios),
+                background-color var(--dur-fast) var(--ease-ios),
+                border-color var(--dur-fast) var(--ease-ios);
+  }
+  .ios-card-hover:hover { border-color: var(--tint-blue); }
+
+  /* ─── Glass / blur surface ─── */
+  .ios-glass {
+    background: var(--surface-thick);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  /* ─── Pills / badges (iOS tint style) ─── */
+  .ios-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md
+           text-[11px] font-semibold tracking-tight whitespace-nowrap;
+  }
+  .ios-badge-blue   { @apply ios-badge; background: var(--tint-blue-bg);   color: var(--tint-blue); }
+  .ios-badge-green  { @apply ios-badge; background: var(--tint-green-bg);  color: var(--tint-green); }
+  .ios-badge-red    { @apply ios-badge; background: var(--tint-red-bg);    color: var(--tint-red); }
+  .ios-badge-orange { @apply ios-badge; background: var(--tint-orange-bg); color: var(--tint-orange); }
+  .ios-badge-yellow { @apply ios-badge; background: var(--tint-yellow-bg); color: var(--tint-yellow); }
+  .ios-badge-purple { @apply ios-badge; background: var(--tint-purple-bg); color: var(--tint-purple); }
+  .ios-badge-neutral{ @apply ios-badge; background: rgba(142,142,147,0.18); color: var(--label-secondary); }
+
+  /* ─── Typography helpers ─── */
+  .ios-title-1 { @apply text-[34px] font-bold tracking-tight leading-[1.1]; }
+  .ios-title-2 { @apply text-[24px] font-bold tracking-tight leading-[1.15]; }
+  .ios-title-3 { @apply text-[20px] font-semibold tracking-tight leading-[1.2]; }
+  .ios-headline{ @apply text-[17px] font-semibold tracking-tight; }
+  .ios-body    { @apply text-[17px] tracking-tight; }
+  .ios-callout { @apply text-[15px] tracking-tight; }
+  .ios-subhead { @apply text-[14px] tracking-tight; }
+  .ios-footnote{ @apply text-[12px] tracking-tight; }
+  .ios-caption { @apply text-[11px] tracking-tight; }
+  .ios-secondary { color: var(--label-secondary); }
+  .ios-tertiary  { color: var(--label-tertiary); }
+
+  .ios-num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* ─── Buttons (iOS filled / plain) ─── */
+  .ios-btn {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-[12px] px-4 py-2.5
+           text-[15px] font-semibold
+           transition-all duration-150 ease-out
+           active:scale-[0.97];
+  }
+  .ios-btn-filled {
+    @apply ios-btn text-white;
+    background: var(--tint-blue);
+  }
+  .ios-btn-filled:hover { filter: brightness(1.1); }
+  .ios-btn-plain {
+    @apply ios-btn;
+    color: var(--tint-blue);
+  }
+  .ios-btn-ghost {
+    @apply ios-btn;
+    background: var(--bg-elevated-2);
+    color: var(--label-primary);
+  }
+
+  /* ─── Probability bar container ─── */
+  .ios-bar-track {
+    @apply h-1.5 w-full rounded-full overflow-hidden;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* ─── Navbar / tabbar ─── */
+  .ios-navbar {
+    @apply sticky top-0 z-40;
+    background: var(--surface-thick);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 0.5px solid var(--separator);
+  }
+  .ios-tabbar {
+    @apply fixed bottom-0 left-0 right-0 z-40;
+    background: var(--surface-thick);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-top: 0.5px solid var(--separator);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* ─── Section header (grouped table) ─── */
+  .ios-section-header {
+    @apply text-[13px] font-normal uppercase tracking-tight px-4 pt-6 pb-2;
+    color: var(--label-secondary);
+  }
+  .ios-section-footer {
+    @apply text-[12px] px-4 pt-2;
+    color: var(--label-tertiary);
+  }
+
+  /* ─── Divider ─── */
+  .ios-hairline { border-color: var(--separator); }
+  .ios-hairline-b { border-bottom: 0.5px solid var(--separator); }
+  .ios-hairline-t { border-top: 0.5px solid var(--separator); }
+
+  /* ─── Container ─── */
+  .ios-container {
+    @apply mx-auto w-full px-4 sm:px-6;
+    max-width: 980px;
+  }
+
+  /* ─── Team crest (circular avatar) ─── */
+  .ios-crest {
+    @apply flex items-center justify-center font-black italic shrink-0;
+    border-radius: 50%;
+    color: #fff;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  /* iOS spring animation */
+  .ios-spring {
+    transition-timing-function: var(--ease-spring);
+    transition-duration: var(--dur-base);
+  }
+
+  /* Tap target (44pt minimum) */
+  .ios-tap {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Hide scrollbar but allow scroll */
+  .ios-no-scrollbar::-webkit-scrollbar { display: none; }
+  .ios-no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes ios-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes ios-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ios-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes ios-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-ios-fade    { animation: ios-fade-in 0.3s var(--ease-ios) both; }
+.animate-ios-up      { animation: ios-slide-up 0.4s var(--ease-spring) both; }
+.animate-ios-scale   { animation: ios-scale-in 0.3s var(--ease-spring) both; }
+.animate-ios-pulse   { animation: ios-pulse 2s ease-in-out infinite; }
+
+/* Stagger children by index (for grids) */
+.ios-stagger > * { animation: ios-slide-up 0.4s var(--ease-spring) both; }
+.ios-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.ios-stagger > *:nth-child(2) { animation-delay: 30ms; }
+.ios-stagger > *:nth-child(3) { animation-delay: 60ms; }
+.ios-stagger > *:nth-child(4) { animation-delay: 90ms; }
+.ios-stagger > *:nth-child(5) { animation-delay: 120ms; }
+.ios-stagger > *:nth-child(6) { animation-delay: 150ms; }
+.ios-stagger > *:nth-child(7) { animation-delay: 180ms; }
+.ios-stagger > *:nth-child(8) { animation-delay: 210ms; }
+.ios-stagger > *:nth-child(9) { animation-delay: 240ms; }
+.ios-stagger > *:nth-child(n+10) { animation-delay: 270ms; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.20);
+}
+
+/* Selection */
+::selection {
+  background: var(--tint-blue);
+  color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CINÉPOLIS UTILITIES (.cp-*)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Layout container Cinépolis */
+  .cp-container {
+    @apply max-w-screen-md mx-auto px-4;
+  }
+
+  /* Hero Cinépolis (radial gradient + tilt) */
+  .cp-hero {
+    background: var(--gradient-hero);
+    border-radius: var(--radius-xl);
+    position: relative;
+    overflow: hidden;
+  }
+  .cp-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* CTA button (gradient primary) */
+  .cp-cta {
+    background: var(--gradient-cta);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    transition: all var(--dur-fast) var(--ease-ios);
+    box-shadow: 0 4px 12px rgba(71, 129, 255, 0.30);
+  }
+  .cp-cta:hover { transform: translateY(-1px); filter: brightness(1.05); }
+  .cp-cta:active { transform: scale(0.97); }
+
+  .cp-cta-secondary {
+    background: var(--bg-elevated);
+    color: var(--tint-blue);
+    border: 1px solid var(--tint-blue);
+    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+
+  /* Gradiente text (para pick %) */
+  .cp-text-gradient {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Card stat con glow */
+  .cp-stat-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    padding: 14px 10px;
+    text-align: center;
+    transition: all var(--dur-fast) var(--ease-ios);
+  }
+  .cp-stat-card:hover {
+    border-color: var(--tint-blue);
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Pill / tag pequeño */
+  .cp-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Hairline divider (Cinépolis style) */
+  .cp-hairline {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--separator) 20%, var(--separator) 80%, transparent);
+  }
+}
+
+/* ═══ Override Navigation defaults to dark navy + gradient logo ═══ */
+.cp-nav-link {
+  position: relative;
+  transition: color var(--dur-fast) var(--ease-ios);
+}
+.cp-nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--gradient-cta);
+  transition: width var(--dur-med) var(--ease-ios);
+  border-radius: 2px;
+}
+.cp-nav-link.active::after,
+.cp-nav-link:hover::after {
+  width: 70%;
+}
+
+/* ═══ Animate-up helper (replace ios-up) ═══ */
+@keyframes cp-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cp-animate-up {
+  animation: cp-fade-up 0.4s var(--ease-ios);
+}

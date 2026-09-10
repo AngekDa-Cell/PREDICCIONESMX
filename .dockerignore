@@ -1,4 +1,4 @@
-# .dockerignore — PREDICCIONESMX (creado 2026-09-09)
+# .dockerignore — PREDICCIONESMX (multi-stage Python + Next.js)
 # Cosas que NO se copian al contexto de docker build.
 
 # Git
@@ -9,7 +9,9 @@
 # Secretos (jamás a la imagen)
 .secrets/
 .env
+.env.*
 *.env.local
+*.env.production
 *.github_token
 *.bak
 *.broken
@@ -34,11 +36,17 @@ data/backtest_*
 # Modelos entrenados (binarios, se regeneran)
 models/
 
-# Docs no runtime
-docs/
-ARCHITECTURE.md
-README.md
-cinepolis_preview.html
+# Node / Next.js (se re-instalan dentro del Dockerfile)
+node_modules/
+.next/
+.next-cache/
+out/
+build/
+dist/
+*.tsbuildinfo
+.next-env.d.ts
+.npm/
+.pnpm-store/
 
 # Python cache
 __pycache__/
@@ -67,3 +75,14 @@ tests/
 deploy/
 dokploy*.yml
 docker-compose*.yml
+DEPLOY_STATUS.md
+
+# Docs no runtime
+docs/
+ARCHITECTURE.md
+README.md
+cinepolis_preview.html
+
+# Backups de config
+*.bak
+*.broken

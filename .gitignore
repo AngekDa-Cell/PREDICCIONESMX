@@ -1,20 +1,32 @@
-# Secretos y configuración local
+# Secretos y configuración local (Python + Node)
 .env
+.env.*
+.env.local
+.env.production
+.env.development
+.env.runtime.production
 *.env.local
 .secrets/
 *.github_token
+*.bak
+*.broken
 
-# Base de datos (recursivo: incluye data/, data/backups/, data/votos/, etc.)
+# Base de datos (SQLite)
 data/**/*.db
 data/**/*.db-wal
 data/**/*.db-shm
 data/**/*.sqlite
 data/**/*.sqlite3
-
-# Logs
-data/*.log
-logs/
-*.log
+data/raw/*.json
+data/raw/*.csv
+data/processed/
+data/historical/
+data/backups/
+data/logs/
+data/agent_reports/
+data/calibration_dataset.csv
+data/platt_coefficients.json*
+data/backtest_*
 
 # Modelos entrenados (binarios grandes)
 models/*.pkl
@@ -22,37 +34,49 @@ models/*.joblib
 models/*.h5
 models/*.pt
 
-# Datos crudos (pueden regenerarse)
-data/raw/*.json
-data/raw/*.csv
+# Node / Next.js
+node_modules/
+.pnp
+.pnp.js
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Logs
+*.log
 
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
 .venv/
 venv/
 env/
 
-# IDE
+# IDE / OS
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
 .DS_Store
 Thumbs.db
-# Estado/agentes locales (no parte del proyecto)
-data/backups/state/
-data/calibration_dataset.csv
-data/platt_coefficients.json.prev
-data/platt_coefficients.json.bak
-*.bak-pre-telegram-*
 
-# No trackear cambios de permisos en scripts (solo se commitea código)
-
-# Tareas del sistema (documentos que Ángel entrega al agente; no parte del proyecto)
+# Tareas del sistema (no parte del proyecto)
 tareas/
+
+# Tests (corren en CI)
+tests/
+
+# Deploy (se montan aparte, no parte del repo runtime)
+deploy/
+dokploy*.yml
+docker-compose*.yml
+DEPLOY_STATUS.md
