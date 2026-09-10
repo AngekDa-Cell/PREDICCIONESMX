@@ -49,6 +49,10 @@ RUN mkdir -p /workspace/proyectos/data/backups \
               /workspace/proyectos/data/logs \
     && chown -R app:app /workspace/proyectos/data
 
+# --- Crontab del app (path fijo que entrypoint.sh espera: /etc/crontab.app) ---
+COPY --chown=root:root crontab.txt /etc/crontab.app
+RUN chmod 0644 /etc/crontab.app
+
 # --- entrypoint ---
 COPY --chown=app:app entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

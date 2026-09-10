@@ -41,5 +41,8 @@ echo "📋 Crontab activo:"
 cat /etc/crontab.app | sed 's/^/   /'
 
 # --- Arrancar supercronic en foreground (PID 1 lo hereda Dokploy) ---
+# -no-reap: supercronic como PID 1 falla su fork-exec interno de reaping
+# ("Failed to fork exec: no such file or directory"). Dokploy ya tiene su
+# propio reaper, así que no perdemos nada.
 echo "⏰ Iniciando supercronic..."
-exec supercronic /etc/crontab.app
+exec supercronic -no-reap /etc/crontab.app
