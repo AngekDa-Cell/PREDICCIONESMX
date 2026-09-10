@@ -568,6 +568,59 @@ class CoachForm(Base):
 
 
 # =============================================================
+# 20. ANALYST PREDICTIONS (output del ensemble numérico)
+# =============================================================
+# [PREDICCIONESMX 2026-09-10] Tabla faltante en schema v2 — agregada tras el
+# merge del front Next.js. populate_analyst_predictions.py espera este schema.
+# Mantener sincronizada con el INSERT en src/predict/populate_analyst_predictions.py.
+
+
+class AnalystPrediction(Base):
+    """Predicción numérica del ensemble para un fixture (output de populate_analyst_predictions.py)."""
+
+    __tablename__ = "analyst_predictions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    fixture_id: Mapped[int] = mapped_column(
+        ForeignKey("fixtures.id"), nullable=False, unique=True, index=True
+    )
+    home_team: Mapped[str | None] = mapped_column(String(180), nullable=True)
+    away_team: Mapped[str | None] = mapped_column(String(180), nullable=True)
+    season: Mapped[str | None] = mapped_column(String(80), nullable=True, index=True)
+    match_date: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+
+    # Ensemble principal (xgboost meta-learner + heur)
+    home_win: Mapped[float | None] = mapped_column(Float, nullable=True)
+    draw: Mapped[float | None] = mapped_column(Float, nullable=True)
+    away_win: Mapped[float | None] = mapped_column(Float, nullable=True)
+    confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    # Dixon-Coles complementario
+    home_win_dc: Mapped[float | None] = mapped_column(Float, nullable=True)
+    draw_dc: Mapped[float | None] = mapped_column(Float, nullable=True)
+    away_win_dc: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    # Score más probable
+    predicted_home_goals: Mapped[float | None] = mapped_column(Float, nullable=True)
+    predicted_away_goals: Mapped[float | None] = mapped_column(Float, nullable=True)
+    most_likely_score: Mapped[str | None] = mapped_column(String(10), nullable=True)
+
+    # Texto
+    key_factors: Mapped[str | None] = mapped_column(Text, nullable=True)
+    contrarian_view: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    # Metadata
+    derby_flag: Mapped[bool] = mapped_column(Boolean, default=False)
+    derby_name: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    features_used: Mapped[str | None] = mapped_column(Text, nullable=True)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    is_backtest: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, nullable=False
+    )
+
+
+# =============================================================
 # Engine / Session
 # =============================================================
 
