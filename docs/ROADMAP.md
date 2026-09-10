@@ -1,21 +1,17 @@
 # Roadmap — Predictions_MX
 
 > Plan de mejora continua del sistema de predicción.
-> Última actualización: 2026-07-19 (Fase B.1 — Platt scaling + recalibrador auto + fix pipeline C1b)
+> Última actualización: 2026-09-10 (merge frontend Next.js + Dokploy + sistema quinielas + recalibración Platt)
 
 ---
 
 ## 📊 Estado actual
 
-**Métricas live (julio 2026, n=994 OOS, Fase B.1 con Platt scaling):**
-- ✅ Accuracy: **51.1%** (Platt OOS, +18pp vs 33.3% baseline)
+**Métricas live (septiembre 2026, n=994 OOS, Fase B.1 con Platt scaling):**
+- ✅ Accuracy: **51.1%** (Platt OOS, +17.8pp vs 33.3% baseline)
 - ✅ Brier Score: **0.2009** (3-class, normalizado por n*k)
 - ✅ Calibration: excelente (prob=0.50 → actual 58%, prob=0.60 → actual 74%)
 - ✅ Log Loss: 1.0158
-
-**Métricas Fase B.0 (backtest 2025, 340 partidos, ensemble sin Platt):**
-- Accuracy: 52.65% (vs 33.3% baseline)
-- Brier Score: 0.5959
 
 **Métricas Fase B.0 (backtest 2024-2025, 680 partidos con xG + attendance heur):**
 - Accuracy: **52.21%** (+3.97pp vs baseline sin xG)
@@ -37,6 +33,15 @@
 - **15 heurísticas** (Fase 9 extendida)
 - Narrativas manuales JSON
 
+**Frontend + Sistema quinielas:**
+- ✅ Next.js 14 App Router EN este repo (no separado)
+- ✅ 10+ rutas funcionales
+- ✅ Sistema quinielas crowdsourced (3 APIs, 2 páginas)
+- ✅ Deploy Dokploy + healthcheck + Traefik
+
+**Tests:**
+- ✅ **257 tests Python** pasando (~30s)
+
 **Experimentos NO adoptados:**
 - Stacking XGBoost (walk-forward 5 folds: Δ acc -0.65pp, Δ Brier -0.0031)
 - A/B pesos elo-heavy (Fase B.0, n=300: Δ acc -0.67pp) — baseline mantiene
@@ -46,154 +51,183 @@
 
 ## ✅ Completado
 
-### Fase 1: Schema + Migración + Scrape
-- [x] Schema v2 (19 tablas)
-- [x] Migración de v1 a v2
-- [x] SportMonks scraping (250K+ records)
-- [x] Venue enrichment (44/45 con altitud)
+### Fases 1-9 — Backend de predicción
 
-### Fase 2: Modelos base
-- [x] Dixon-Coles Poisson
-- [x] Elo Rating dinámico
-- [x] **11 features engineered** (base, ahora 15 con Fase 9 extendida)
-- [x] **11 heurísticas** (base, ahora 15 con Fase 9 extendida)
-- [x] Narrativas editables
-- [x] Bitácora del analista
+- [x] **Fase 1**: Schema v2 (19 tablas) + migración v1→v2 + scrape SportMonks (250K+ records) + venue enrichment
+- [x] **Fase 2**: Modelos base (Dixon-Coles, Elo, 11 features, 11 heurísticas, narrativas, bitácora)
+- [x] **Fase 3**: Calibraciones MX (altitud, rest days, fixture congestion, forma exponencial)
+- [x] **Fase 4**: Documentación técnica (RESEARCH_SYNTHESIS, METHODOLOGY, FEATURES, BACKTESTING, src/predict/README)
+- [x] **Fase 5**: Backtesting riguroso (680 partidos, métricas desagregadas por derby/confianza/temporada)
+- [x] **Fase 6**: Threshold mínimo confianza, backtest por equipo, diagnóstico drift Elo, Elo shrinkage global 0.7
+- [x] **Fase 7**: Composite momentum (Feature #12, Heurística #12), weather Open-Meteo (1510 fixtures, 93.4% cobertura)
+- [x] **Fase 8**: xG Proxy (Ridge log-link), ensemble rebalanceado (+3.97pp acc)
+- [x] **Fase 9**: Referee bias (2,109 árbitros, Feature #14), attendance ESPN (1,515/1,854 fixtures, Heurística #15 invertida)
 
-### Fase 3: Calibración con datos MX
-- [x] Altitud MX calibrada (regresión 1529 partidos)
-- [x] Rest days calibrados
-- [x] Fixture congestion calibrado
-- [x] Forma ponderada exponencialmente
+### Fase A — Frontend Next.js + Sistema de quinielas
 
-### Fase 4: Documentación
-- [x] RESEARCH_SYNTHESIS.md (papers revisados)
-- [x] METHODOLOGY.md (cómo funciona)
-- [x] FEATURES.md (catálogo)
-- [x] BACKTESTING_RESULTS.md (resultados empíricos)
-- [x] src/predict/README.md (quick start)
+- [x] **Fase A.0**: Stack Next.js 14 + better-sqlite3 + Tailwind (Prisma descartado por incompatibilidad Alpine)
+- [x] **Fase A.1**: 10+ rutas funcionales (home Cinépolis-style, partido, equipo, calendario, historial, resultados, efectividad, análisis, equipos)
+- [x] **Fase A.2**: Sistema de quinielas crowdsourced:
+  - [x] API `/api/quiniela` (POST batch + GET picks)
+  - [x] API `/api/votes/[token]` (POST/GET voto individual partido)
+  - [x] API `/api/health` (healthcheck Traefik)
+  - [x] Página `/votacion` (llenar quiniela completa de jornada)
+  - [x] Página `/voto/[token]` (voto partido individual vía link compartible)
+  - [x] Tokens opacos 8 chars base32 (sha256 truncated, anti-enumeración con SECRET_SALT)
+  - [x] Client hash: sha256(cookie + ip_prefix + ua_fingerprint)[:32]
+  - [x] Cookies HttpOnly + SameSite=Lax + 180d (votante_id) + 365d (votante_quinc_v1)
+  - [x] Validación regex anti-SQLi `^\d{1,10}$` en todos los IDs de URL
+  - [x] BD secundaria `votes_mx.db` (RW, journal_mode WAL, autocheckpoint)
+- [x] **Fase A.3**: Market odds MVP sintético (cuotas reales: scraping TBD)
 
-### Fase 5: Backtesting riguroso
-- [x] Backtest 2024-2025 (680 partidos)
-- [x] Métricas: accuracy, Brier, Log Loss, calibration
-- [x] Subgrupos: derby, confianza, fase de temporada
-- [x] Detección de anomalías
+### Fase B — Calibración Platt + Recalibración Auto (2026-07-18/19)
+
+- [x] **Fase B.0**: A/B pesos ensemble (5 configs n=300 → baseline mantiene, Δ acc dentro de ruido)
+- [x] **Fase B.1**: Platt scaling 1-vs-rest aplicado (commit `1c96410`)
+  - [x] Coefs: home (1.88, +0.42), draw (-0.31, -1.43), away (1.62, +0.39)
+  - [x] OOS Brier: 0.2009 (n=994, leave-one-season-out)
+- [x] **Fase B.1.bis**: Recalibrador automático semanal (commit `bf6f539`)
+  - [x] `scripts/recalibrate_platt.sh` (185 LOC, bash puro)
+  - [x] Cron `0 9 * * 1 UTC` (lunes, antes del pipeline diario)
+  - [x] Rollback automático si Δ Brier empeora >1pp
+- [x] **Fase B.2**: Platt vs Isotonic (commit `66fe4b3`) → Platt gana en Brier OOS en 3/3 temporadas
+
+### Fase C — Deploy Dokploy (2026-09-09/10)
+
+- [x] **Fase C0**: Deploy-ready state (commit `2c91269`)
+  - [x] Multi-stage Dockerfile (Node 24.16.0 builder + Python 3.12-slim runtime)
+  - [x] `entrypoint.sh` (wait-for-DB + supercronic + `node server.js` PID 1)
+  - [x] `crontab.txt` (3 cron jobs)
+  - [x] `requirements.txt` consolidado (pinned 2026-09-09)
+  - [x] `.dockerignore`
+  - [x] `deploy/DOKPLOY.md` + `docs/DEPLOY_DOKPLOY.md`
+- [x] **Fase C1**: App desplegada en Dokploy
+  - [x] appId `McpkBWGE8WuNEkG0rFWIL`
+  - [x] Bind mount `/srv/predicciones-mx/data → /workspace/proyectos/data` (permisos 1000:1000)
+  - [x] Env vars: SM_TOKEN, TG_TOKEN, TZ=MX, DATABASE_URL, SKIP_DB_CHECK=1
+- [x] **Fase C1b**: Healthcheck HTTP `/api/health` en :3000 (commit `0eef307`)
+  - [x] Traefik entrypoint `websecure` con cert wildcard `*.barberia.date`
+  - [x] `predicciones.barberia.date` LIVE con HTTPS 200 OK en `/`, `/api/health`, `/version`
+- [x] **Fase C2**: Bugfixes deploy
+  - [x] `crontab.txt` → `/etc/crontab.app` (faltaba en COPY)
+  - [x] `supercronic -no-reap` (PID 1 reaper fix)
+  - [x] `SKIP_DB_CHECK=1` para deploy inicial sin BD
+  - [x] `chown -R 1000:1000` bind-mount (user `app` es uid 1000)
+  - [x] Lazy init `votesDb` + glibc builder (better-sqlite3 compat)
+- [x] **Fase C3**: Seguridad
+  - [x] Sanitize LLM prompt errors (commit `84c8b61`)
+  - [x] Parametrize SQL queries (commit `84c8b61`)
+
+### Fase 10 — Multi-agente debate (Fase 10.3, experimental)
+
+- [x] **Fase 10.1 — Piloto Bull vs Bear** (2026-06-27) → modo simulate, GO_CONDITIONAL
+- [x] **Fase 10.2 — Validación con LLM real** (parcial, n=4)
+  - [x] Debate 75% acc vs Numérico 50% → **+25pp** (acumulado)
+  - [x] Caso destacado: Querétaro-América (debate acertó, numérico falló)
+- [x] **Fase 10.3 — Sistema completo 5-agentes** (EN PROGRESO)
+  - [x] Agente Contextual (`src/agents/contextual.py`) — web_search narrativas
+  - [x] Agente Data Auditor (`src/agents/data_auditor.py`) — valida integridad
+  - [x] Judge v2 DWC-MAD (`src/agents/judge.py`) — soporta 5 agentes
+  - [x] `apply_qualitative_adjustment` del Contextual sobre probs finales
+  - [x] Penalización del Data Auditor (abort → confidence *= 0.5)
+  - [x] Auditor local validado en Tigres-Puebla (score 1.0, recommendation proceed)
+- [ ] **Fase 10.4 — Auto-mejora ongoing** (pendiente)
+- [ ] **Fase 10.5 — Validación estadística n=10** (Batches 3-5 pendientes, actual n=4)
 
 ---
 
-## 🚧 En progreso (Fase 9)
+## 🔄 En progreso
 
-### Mejoras completadas (Fases 6–8)
-- [x] **Recalibración Platt scaling** — corregir overconfidence en >70% ✅
-- [x] **Threshold mínimo de confianza** — no reportar si conf < 50% ✅ (+10pp accuracy)
-- [x] **Backtest por equipo** — Cruz Azul y Pumas visitantes los más sobreestimados ✅
-- [x] **Diagnóstico de drift Elo** — 16/18 equipos sobreestimados ✅
-- [x] **Elo shrinkage global** — factor 0.7 calibrado con grid search ✅
-- [x] **Elo shrinkage por equipo/localía** — experimental ✅
-- [x] **Momentum compuesto** — combinar exponential form + recent form + trend + consistency ✅
-- [x] **Weather desde Open-Meteo** — 1510 fixtures ingestados (93.4% cobertura) ✅
-- [x] **xG Proxy (Fase 8)** — Ridge log-link, ensemble rebalanceado (+3.97pp acc) ✅
-- [x] **Referee bias (Fase 9)** — 2,109 árbitros ingestados, feature + heurística #14 ✅ (Δ acc=0, valor cualitativo)
-- [x] **Tests unitarios** — 186 tests pasando (~166s) ✅
+### Mejoras activas
 
-### Pendiente Fase 9
-- [x] **Attendance scraping** — ESPN API `mex.1/scoreboard?weeks=1-60` → 1,515/1,854 fixtures (81.7% global, 99.9% backtest 2024-2025) ✅
-  - [x] Feature `get_attendance_ratio` agregada al feature set
-  - [x] Heurística #15 attendance integrada (con hallazgo inverted: lleno favorece visitante)
-  - [x] Backtest comparativo CON vs SIN heur: +0.29pp accuracy 2025 ✅
-  - [x] Grid search pesos heur (9% baseline, 14/19/24%): empeoran, baseline óptimo ✅
-- [ ] **Value bet detection automático** — comparar con cuotas de mercado cuando estén disponibles
-- [x] **Stacking XGBoost** — meta-learner experimentado y validado (walk-forward 5 folds: Δ acc -0.65pp, Δ Brier -0.0031) ✅ **NO ADOPTADO** — ensemble lineal sigue óptimo con dataset actual
-  - [x] XGBoost regularizado implementado (n_est=30, depth=2, reg_lambda=2)
-  - [x] Logistic Regression fallback
-  - [x] Walk-forward validation 5 folds
-  - [x] Re-evaluar en ~2-3 temporadas (>2000 partidos)
-
-### 🌐 Pendiente externo (no Liga MX)
-
-- [ ] **quinielas.lol frontend** — Next.js para visualizar predicciones (PEDIDO 2026-06-27, esperando clarificación de Ángel sobre deploy/arquitectura)
+- [ ] **Recency weighting en fit Platt** (Fase B.2) — peso 1.0 temp reciente, 0.7 media, 0.4 antigua. Esperado: -0.5pp Brier en n recientes.
+- [ ] **Multi-agente debate con Platt** — agentes deben usar probs calibradas (no raw ensemble).
+- [ ] **Validación estadística Fase 10.2** — completar Batches 3-5 (n=10) para validar +25pp con significancia.
 
 ---
 
-## 🔮 Por hacer (Fase 10+)
+## 🔮 Por hacer
 
-### Fase 10: Ensemble avanzado
+### Fase D — Multimodal + NLP/LLMs (2026-Q4)
 
-#### Stacking
-- [ ] XGBoost sobre features del modelo
-- [ ] Stacking: Poisson + XGBoost + heurísticas
-- [ ] Voting ensemble con weights dinámicos
+**Objetivo:** integrar features textuales (noticias, declaraciones, lesiones reportadas) al ensemble, cumplir con la visión del proyecto SPLMYOP.
 
-#### Referee profundo (Fase 9 ✅ base, falta profundidad)
+#### D.1 — Embeddings de noticias
+
+- [ ] Pipeline de ingesta de noticias (ESPN, medios MX, RSS de equipos)
+- [ ] Embeddings con LLM (`text-embedding-3-small` o similar) o modelo local (Sentence-BERT multilingual)
+- [ ] Agregación por partido (sum/max/mean de embeddings relevantes)
+- [ ] Feature nueva: `news_sentiment_home`, `news_sentiment_away`, `news_volume_diff`
+
+#### D.2 — NLP features para el ensemble
+
+- [ ] Clasificación de menciones (lesión, sanción, declaraciones DT, cambio táctico)
+- [ ] Extracción de entidades (jugadores, equipos, eventos)
+- [ ] Feature nueva: `injury_mention_count_home`, `coach_pressure_mentions`
+- [ ] Integración con Feature Engineering existente (28 → ~35 features)
+
+#### D.3 — API robusta
+
+- [ ] Autenticación (API keys o JWT) en endpoints `/api/*`
+- [ ] Rate limiting (Upstash, Redis, o en memoria)
+- [ ] Monitoreo (Sentry, OpenTelemetry, métricas Prometheus)
+- [ ] Documentación OpenAPI auto-generada
+
+#### D.4 — CI/CD
+
+- [ ] GitHub Actions: tests Python + lint TypeScript en cada PR
+- [ ] Build automático de imagen Docker
+- [ ] Deploy continuo a Dokploy (branch main → staging)
+- [ ] Smoke tests post-deploy (curl `/api/health`, verificar predicciones)
+
+#### D.5 — Predicción live / half-time (paper Springer 2024)
+
+- [ ] Real-time features (goles al medio tiempo)
+- [ ] Modelo dinámico con actualización en vivo
+- [ ] WebSocket para frontend
+
+#### D.6 — Tracking data (paper arXiv 2024)
+
+- [ ] Evaluar fuentes (StatsBomb open data, Opta partnership)
+- [ ] Passing networks por partido (clustering, betweenness, eigenvector centrality)
+- [ ] Combinar con match stats en ensemble
+
+### Referee profundo (Fase 9 base ✅, falta profundidad)
+
 - [x] Ingerir referee ID ✅
 - [x] Calcular bias_score por árbitro ✅
 - [x] Ajuste por referee conocido ✅
 - [ ] Cards/fouls/penales por árbitro (cruzar con fixture_events)
 - [ ] Player-level referee interaction (quién pitó a quién)
 
-#### Passing networks (paper arXiv 2024)
-- [ ] Construir passing networks por partido
-- [ ] Métricas: clustering, betweenness, eigenvector centrality
-- [ ] Combinar con match stats en ensemble
+### Player embeddings / GNN / Temporal fusion / Bayesian hierarchical
 
-#### Half-time scoring (paper Springer 2024)
-- [ ] Real-time features (goles al medio tiempo)
-- [ ] Modelo dinámico con actualización
-- [ ] Live tracking
+- [ ] Vector representation de jugadores
+- [ ] Graph neural networks sobre passing networks
+- [ ] Transformer para series temporales de partidos
+- [ ] Bayesian hierarchical models para team strength con incertidumbre
+- [ ] Causal inference para identificar causas reales vs correlación
 
-### Fase 10: UX y deployment
+### Reportes Telegram mejorados
 
-#### Reportes Telegram
-- [ ] Auto-reporte diario de partidos próximos
+- [ ] Auto-reporte diario de partidos próximos ✅ (Fase 11...)
 - [ ] Auto-update después de cada partido (bitácora)
 - [ ] Notificación cuando modelo detecta anomalía
 - [ ] Comparison con cuotas de mercado (cuando estén disponibles)
-
-#### Web interface
-- [ ] Dashboard con partidos del día
-- [ ] Histórico de predicciones
-- [ ] Accuracy tracker visual
 
 ---
 
 ## 📊 Métricas meta
 
-| Métrica | Meta Fase 6 | Meta Fase 8 | Meta Fase 10 |
-|---|---|---|---|
-| Accuracy | >55% | >58% | >60% |
-| Brier Score | <0.55 | <0.50 | <0.48 |
-| Calibration delta | <0.05 | <0.03 | <0.02 |
-| Log Loss | <0.95 | <0.90 | <0.85 |
+| Métrica | Meta Fase 6 | Meta Fase 8 | **Actual Fase B.1** | Meta Fase D |
+|---|---|---|---|---|
+| Accuracy | >55% | >58% | **51.1%** | >60% |
+| Brier Score | <0.55 | <0.50 | **0.2009** | <0.48 |
+| Calibration delta | <0.05 | <0.03 | <0.02 ✅ | <0.02 |
+| Log Loss | <0.95 | <0.90 | **1.0158** | <0.85 |
+| Tests | 50 | 100 | **257** | 350 |
 
 **Nota:** Accuracy de 60% en fútbol es **excelente** (estado del arte). Más allá es muy difícil sin información privilegiada.
-
----
-
-## 💡 Ideas en investigación
-
-1. **Player embeddings** — vector representation de jugadores
-2. **Graph neural networks** — sobre passing networks
-3. **Temporal fusion** — transformer para series temporales de partidos
-4. **Bayesian hierarchical models** — para team strength con incertidumbre
-5. **Causal inference** — para identificar causas reales vs correlación
-
----
-
-## 🎯 Prioridades inmediatas (próximas 2 semanas)
-
-1. ~~**Recalibrar Platt scaling** (auto)~~ ✅ COMPLETADO Fase B.1 (commit bf6f539, cron lunes 09:00 UTC)
-2. ~~**Ingerir attendance + referee** desde SportMonks~~ ✅ COMPLETADO Fases 9-10.5
-3. ~~**Backtesting por equipo** (identificar dónde falla)~~ ✅ COMPLETADO Fase 9
-4. **Value bet detection** (cuando tengamos cuotas reales) — ⏳ pendiente, MVP sintético activo
-5. ~~**Weather ingestion** desde Open-Meteo~~ ✅ COMPLETADO Fase 9 (93.4% cobertura)
-
-### Próximas (Fase B.2-C-D)
-
-6. **Recency weighting en fit Platt** — más peso a temporadas recientes para atacar drift
-7. **CLV tracker** — comparar probs calibradas vs odds mercado (cuando scrape real)
-8. **Drift detection automático** (Fase C) — alerta si accuracy live cae >5pp vs OOS
-9. **Autotrain schedule** (Fase C) — re-entrenar ensemble con últimos N meses
-10. **Tracking data + reports semanales** (Fase D)
 
 ---
 
@@ -204,6 +238,8 @@ Lo que **NO** vamos a hacer:
 - ❌ Pretender accuracy >65% (sería propaganda)
 - ❌ Ignorar el factor suerte en fútbol
 - ❌ Confiar ciegamente en el modelo sin revisión humana
+- ❌ Rastrear usuarios con IPs/UA crudos (usamos fingerprints)
+- ❌ Exponer endpoints sin validación anti-SQLi
 
 ---
 
@@ -214,76 +250,73 @@ Lo que **NO** vamos a hacer:
 - FiveThirtyEight Soccer Predictions — Elo methodology
 - MDPI 2025 review — features más usados
 - PLOS One 2025 — psychology of sports
+- Constantinou & Fenton (2018) — pi-football Bayesian networks
+- arXiv 2024 — Sports multimodal models survey
+- DWC-MAD (2025) — Dynamic Weighted Consensus Multi-Agent Debate
 
 ---
 
-## 🌐 Proyecto paralelo: Frontend quinielas.lol (PENDIENTE)
+## 🚧 Fase C — Deploy Dokploy (2026-09-09/10)
 
-**Pedido por Ángel 2026-06-27.** **No es parte de Fase 10** — es proyecto separado (visualización vs backend).
-
-### Stack
-
-- Next.js 14 (App Router) + Prisma + Tailwind + SQLite read-only
-- Solo métodos GET
-- BD: `predictions_mx.db` ya poblada
-
-### Estado del sitio
-
-- `quinielas.lol` → 144.126.133.221
-- Puerto 80: empty reply (nginx caído)
-- Puerto 443: TLS error (cert roto)
-- **Requiere fix de nginx + certbot**
-
-### Plan
-
-- **Q1**: Setup base (Next.js + home/partido) — ✅ **COMPLETADO 2026-06-27**
-- **Q2**: Equipo/calendario/modo oscuro — 🟡 **Pendiente** (4 páginas básicas funcionales)
-- **Q3**: Deploy (nginx + certbot + container) — ✅ **COMPLETADO 2026-06-27** (https://quinielas.lol LIVE con cert Let's Encrypt)
-- **Q4**: Integración con multi-agente — 🟡 **Pendiente**
-
-### Preguntas resueltas (2026-06-27)
-
-1. **¿Reactivar containers viejos?** NO. Ángel confirmó que `quiniela-frontend`/`quiniela-backend` viejos fueron dados de baja permanente. Container nuevo: `quiniela-frontend-new`.
-2. **¿Dónde corre?** Container separado en red `back-predicciones_quiniela-net` (172.18.0.2).
-3. **¿Arreglo nginx + certbot?** ✅ Hecho por Ángel: `certbot --nginx -d quinielas.lol -d www.quinielas.lol`.
-4. **¿Prisma o better-sqlite3?** better-sqlite3 (Prisma incompatible con Alpine por libssl).
-5. **¿Features adicionales?** Pendiente para Q2+ (modo oscuro, comparador, value bet).
-
-### Estado del deploy (2026-06-27 22:40)
-
-🟢 **LIVE en producción:**
-- HTTPS con cert Let's Encrypt válido (hasta Sep 25)
-- HTTP 200, sirviendo HTML real con partidos de Liga MX
-- Container `quiniela-frontend-new` (Node 24.16.0-alpine)
-- BD bind mount read-only desde `/opt/openclaw/volumes/Predictions_MX/workspace/proyectos/data`
-- 4 rutas funcionales: `/`, `/partido/[id]`, `/equipo/[id]`, `/calendario`
-- 6 headers de seguridad + validación regex contra SQL injection
-
-Ver `memory/predictions_mx_frontend.md` para detalle completo.
-
----
-
-## 🚧 Fase 10: Sistema Multi-Agente de Debate (2026-06-27)
-
-**Decisión**: Ángel aprobó Opción C (sistema completo) el 2026-06-27.
+**Decisión:** migrar de "OpenClaw cron + VPS manual" a "Dokploy Application long-running + supercronic dentro del container".
 
 ### Motivación
 
-Papers recientes (Du et al. 2023, TradingAgents 2024, DWC-MAD 2025) muestran que multi-agent debate puede mejorar razonamiento y reducir alucinaciones. Costo LLM无所谓 (Ángel tiene plan MiniMax ilimitado).
-
-**⚠️ Restricción de concurrencia (Ángel 2026-06-27):** Plan MiniMax permite **3-4 agentes concurrentes**. Arquitectura ajustada:
-- Fase 10.1: 3 agentes en paralelo (Bull, Bear, Numérico) + Juez
-- Fase 10.2: 4 agentes en paralelo (Bull, Bear, Contextual, Auditor) + Juez
+- OpenClaw cron retryeaba en overload (~40K tokens/retry sin valor).
+- Deploy manual con nginx + certbot era frágil.
+- Sin healthcheck estandarizado → Traefik no sabía cuándo restart.
+- Multi-stage Dockerfile unifica front + pipeline en una sola imagen.
 
 ### Arquitectura
 
-3-4 agentes + 1 juez + 1 orquestador (dependiendo de la fase):
+```
+Dokploy panel (puerto 3000 interno)
+    └─ Traefik (entrypoint websecure, cert wildcard *.barberia.date)
+         └─ predicciones.barberia.date → predicciones-mx-app-XXXXX :3000
+              ├─ node server.js (PID 1, Next.js standalone)
+              └─ supercronic /etc/crontab.app (background)
+                   ├─ 0 11 * * *  python scripts/full_pipeline.py
+                   ├─ 0 4  * * *  bash scripts/backup_db.sh
+                   └─ 0 9  * * 1  bash scripts/recalibrate_platt.sh
+```
+
+### Bind mounts (Dokploy)
+
+- `/srv/predicciones-mx/data` → `/workspace/proyectos/data` (RW, uid 1000)
+  - `predictions_mx.db` (BD principal)
+  - `votes_mx.db` (BD de votos)
+  - `backups/`, `logs/`
+
+### Endpoints live
+
+- 🟢 `https://predicciones.barberia.date/` — home dashboard
+- 🟢 `https://predicciones.barberia.date/api/health` — healthcheck
+- 🟢 `https://predicciones.barberia.date/version` — versión
+- 🟢 `https://predicciones.barberia.date/partido/[id]` — partido
+- 🟢 `https://predicciones.barberia.date/equipo/[id]` — equipo
+- 🟢 `https://predicciones.barberia.date/calendario` — calendario
+- 🟢 `https://predicciones.barberia.date/resultados` — track record
+- 🟢 `https://predicciones.barberia.date/votacion` — llenar quiniela
+- 🟢 `https://predicciones.barberia.date/voto/[token]` — voto individual
+- 🟢 `https://predicciones.barberia.date/analisis`, `/efectividad`, `/equipos`, `/historial`
+
+Ver [`docs/DEPLOY_DOKPLOY.md`](./DEPLOY_DOKPLOY.md) y [`deploy/DOKPLOY.md`](../deploy/DOKPLOY.md) para procedimiento.
+
+---
+
+## 🚧 Fase 10 — Sistema Multi-Agente de Debate (2026-06-27 en adelante)
+
+**Decisión**: Ángel aprobó Opción C (sistema completo) el 2026-06-27.
+
+### Arquitectura (Fase 10.3 — sistema completo)
+
+5 agentes + 1 juez + 1 orquestador:
 - 🐂 **Bull-Local** — argumentos a favor del local
 - 🐻 **Bear-Visitante** — argumentos a favor del visitante
-- 📊 **Numérico** — Predictions_MX ensemble actual (yo)
-- 🌐 **Contextual** — noticias recientes vía web_search (F10.2)
-- 🔍 **Auditor Datos** — valida integridad antes de predecir (F10.2)
-- ⚖️ **Juez** — pondera con Dynamic Weighted Consensus
+- 📊 **Numérico** — Predictions_MX ensemble actual (ground truth cuantitativo)
+- 🌐 **Contextual** — noticias recientes vía web_search (lesiones, alineaciones)
+- 🔍 **Auditor Datos** — valida integridad antes de predecir (modo local sin LLM + modo LLM)
+- ⚖️ **Juez** — pondera con Dynamic Weighted Consensus v2 (soporta 5 agentes, numérico base 0.45)
 
 ### Restricciones duras
 
@@ -291,105 +324,36 @@ Papers recientes (Du et al. 2023, TradingAgents 2024, DWC-MAD 2025) muestran que
 2. **Agentes NO pueden modificar VPS** — sin permisos `exec`/`write`/`gateway`
 3. **Agentes REPORTAN bugs/datos legacy**, no los corrigen
 4. **Auto-mejorable** — loop detección → reporte → fix (con OK de Ángel en casos complejos)
-5. **Profesional** — logging estructurado, métricas, reportes
+5. **Restricción concurrencia**: 3-4 agentes paralelos (plan MiniMax)
 
-### Plan de implementación
+### Resultados Fase 10.2 validación lote (n=4, 2026-06-27)
 
-- [x] **Fase 10.1 — Piloto Bull vs Bear** (1-2 días) — ✅ **COMPLETADO 2026-06-27** (modo simulate)
-  - [x] Escribir prompts Bull-Local y Bear-Visitante ✅ `src/agents/prompts.py`
-  - [x] Orquestador con DWC-MAD ✅ `src/agents/orchestrator.py` + `judge.py`
-  - [x] Backtest 2025 (340 partidos, 0.49s) ✅ `data/multi_agent_pilot.json`
-  - [x] Documentar resultados ✅ decisión: **GO_CONDITIONAL**
-- [x] **Fase 10.2 — Validación con LLM real (parcial)** — ✅ IMPLEMENTADA 2026-06-27, validación lote en curso
-  - [x] Implementar `orchestrate_live()` con `sessions_spawn` paralelo ✅ `orchestrator_live.py`
-  - [x] Feature block inyectado a prompts ✅ `feature_block.py` (8 features)
-  - [x] Parseo robusto de JSON desde outputs ✅ `extract_json_from_text()` con regex
-  - [x] **14 tests nuevos** en `test_orchestrator_live.py` (5.46s)
-  - [x] Demo v2 (Tigres-Puebla con features) ✅ `data/multi_agent_live_demo_v2.json`
-  - [x] **Batch 1 (2 partidos)**: Debate 2/2 vs Num 1/2 → +50pp ✅
-  - [x] **Batch 2 (2 partidos)**: Debate 1/2 vs Num 1/2 → 0pp ✅
-  - [x] Acumulado 4 partidos: **Debate 75% vs Num 50% → +25pp** ✅
-  - [x] **Bug seguridad detectado**: Bear_b1_p2 ejecutó queries SQLite (heredó workspace). Mitigado con restricciones explícitas en prompt.
-  - [x] Workaround `sandbox: require` falló (no hay sandboxed runtime target configurado)
-  - [ ] **Pendiente**: Batch 3-5 (6 partidos más → total 10) para validar significancia estadística
-- [x] **Fase 10.3 — Sistema completo 5-agentes** — 🟡 EN PROGRESO 2026-06-27
-  - [x] **Agente Contextual** ✅ `src/agents/contextual.py` — busca narrativas via web_search/web_fetch
-  - [x] **Agente Data Auditor** ✅ `src/agents/data_auditor.py` — valida integridad, modo local sin LLM + modo LLM
-  - [x] **Judge v2 (DWC-MAD)** ✅ `src/agents/judge.py` — soporta 5 agentes con pesos ajustados (numérico 0.45 base)
-  - [x] **Aplicar qualitative_adjustment** del Contextual sobre probs finales
-  - [x] **Aplicar penalización** del Data Auditor (abort → confidence *= 0.5)
-  - [x] **2 tests nuevos** (5 agentes + auditor abort penalty). Total: **42 tests pasando** (5.55s)
-  - [x] Auditor local validado en Tigres-Puebla (score 1.0, recommendation proceed)
-  - [ ] **Pendiente**: Lanzar debate completo con 5 agentes en partidos reales (Batch 3)
-  - [ ] **Pendiente (requiere OK Ángel)**: Configurar `agents.defaults.sandbox` para `sandbox: require` real
-- [ ] **Fase 10.4 — Auto-mejora ongoing**
-  - [ ] Loop detección → reporte → fix
-  - [ ] Backlog priorizado
-  - [ ] Reportes semanales
-
-### Resultados Fase 10.2 validación lote (4 partidos, 2026-06-27)
-
-**Setup:**
-- 2 batches × 2 partidos = 4 partidos con sub-agentes LLM reales en paralelo
-- 9 partidos pre-seleccionados con variedad (derby, home_fav, away_fav, picks difíciles, random)
-- Tiempo por sub-agente: 24-45s (paralelo)
-- Restricciones explícitas en prompt (`⚠️ NO SQL`, `⚠️ NO archivos`)
-
-**Métricas:**
 | | Numérico | Debate | Δ |
 |---|---|---|---|
 | Accuracy | 50% (2/4) | **75% (3/4)** | **+25pp** |
 | Brier | 0.44 | 0.46 | +0.02 |
 
 **Casos destacados:**
-- ✅ **Querétaro-América (away_win)**: debate acertó, numérico falló. Bear detectó 5 features (forma, H2H 4-1, brecha plantilla 5x, split visitante invicto, Jardine consolidado) → juez cambió pick a away_win.
-- ❌ **Pumas-SanLuis (away_win)**: ambos fallaron. Bull/Bear opuestos → numérico pesó 0.70 → juez heredó error del numérico.
+- ✅ **Querétaro-América (away_win)**: debate acertó, numérico falló. Bear detectó 5 features (forma, H2H 4-1, brecha plantilla, split visitante invicto, Jardine consolidado) → juez cambió pick.
+- ❌ **Pumas-SanLuis (away_win)**: ambos fallaron. Bull/Bear opuestos → numérico pesó 0.70 → juez heredó error.
 
-**Conclusión preliminar:** Debate agrega valor cuando Bull o Bear detectan info contextual que el numérico no captura. Pierde valor cuando discrepan totalmente y heredan error.
+**Conclusión:** Debate agrega valor cuando Bull o Bear detectan info contextual que el numérico no captura. Pierde valor cuando discrepan totalmente y heredan error.
 
-### Resultados Fase 10.1 piloto (2026-06-27)
+### Plan inmediato
 
-**Setup:**
-- 3 archivos: permissions.py, prompts.py, judge.py (DWC-MAD), simulator.py, orchestrator.py
-- 24 tests pasando (4.49s)
-- Modo simulate (sin LLM) + modo live (Fase 10.2)
+- [ ] Completar Batches 3-5 (n=10 acumulado) para significancia estadística
+- [ ] Integrar Platt scaling en probs de Numérico (ahora usa raw ensemble)
+- [ ] `sandbox: require` real (workaround falló) → requiere OK Ángel
 
-**Métricas backtest 2025 (340 partidos):**
-- Ensemble numérico (baseline): 49.12% acc, Brier 0.6314
-- Debate multi-agente + Juez: 49.12% acc (Δ 0pp), Brier 0.6335 (Δ +0.0021)
-- 0 issues, 0 errores
+### Archivos clave
 
-**Decisión:** GO_CONDITIONAL → promover a Fase 10.2 con LLM real.
-
-**Razonamiento:** El simulador heurístico (Bull/Bear con sesgo ±0.08) NO aporta señal nueva vs baseline. El algoritmo DWC-MAD funciona correctamente (no degrada), pero el valor del debate solo se puede validar con sub-agentes LLM que generen argumentos cualitativos reales.
-
-### Tests (Fase 10.1)
-
-- [x] `tests/test_multi_agent.py` — 24 tests pasando (4.49s):
-  - Permisos respetados (7 tests)
-  - Judge DWC-MAD básico + ajustes (5 tests)
-  - AgentReport parsing + clamping (4 tests)
-  - Simulator estructura (3 tests)
-  - Orchestrator single + métricas (2 tests)
-  - Prompts placeholders + DWC mention (3 tests)
-
-### Archivos a crear
-
-```
-proyectos/src/agents/
-├── orchestrator.py
-├── bull_local.py
-├── bear_visitante.py
-├── contextual.py
-├── data_auditor.py
-├── judge.py
-└── permissions.py
-
-proyectos/data/
-├── agent_reports/YYYY-MM-DD/
-├── agent_metrics.json
-└── backlog/improvements.md
-```
+- `src/agents/orchestrator.py` — orquestador 3-agentes (Bull, Bear, Numérico) + juez
+- `src/agents/orchestrator_live.py` — orquestador con LLM real (paralelo)
+- `src/agents/judge.py` — DWC-MAD v2 (5-agentes)
+- `src/agents/contextual.py` — agente noticias
+- `src/agents/data_auditor.py` — validador integridad
+- `src/agents/prompts.py` — templates prompts
+- `src/agents/feature_block.py` — 8 features inyectadas a prompts
 
 ### Métricas a trackear
 
@@ -398,109 +362,61 @@ proyectos/data/
 - `agent_accuracy_by_role`, `numerico_vs_consensus_diff`
 - `confidence_calibration`
 
-### Documentación detallada
-
-Ver `memory/predictions_mx_multi_agent.md` para:
-- Arquitectura completa
-- Permisos por agente (CRÍTICO)
-- Algoritmo juez (DWC-MAD)
-- Riesgos identificados (groupthink, latencia)
-- Papers de respaldo
-- Plan de tests
-
-### Riesgos identificados
-
-- **Groupthink**: instancias del mismo modelo comparten priors → mitigar con prompts opuestos
-- **Latencia**: 6 agentes = minutos → paralelizar + timeouts
-- **No convergencia**: debate en loop → máximo 3 rondas + juez final
-- **Falsos positivos**: agentes reportan bugs que no son → yo valido antes de actuar
-
-
 ---
 
-## ✅ Fase B — Calibración Platt + Recalibración Auto (2026-07-18/19)
+## 🌐 Proyecto integrado: Frontend Next.js + Sistema de Quinielas (Live)
 
-**Motivación:** El ensemble base (xg+Elo+DC+heur) tiene bias sistemático — overvalora local/visitante y undervalora draws. Platt scaling ajusta las probabilidades sin cambiar los picks base.
+**Antes:** proyecto paralelo, repo separado, "pendiente Q1+Q2".  
+**Ahora:** **EN este repo, LIVE en producción**, 10+ rutas funcionales.
 
-### B.0 — A/B pesos ensemble (NO concluyente)
+### Stack
 
-Probadas 5 configs en n=300 apples-to-apples:
-- baseline (xg=0.55, elo=0.225, dc=0.135, heur=0.09): 50.17% acc, 0.6106 Brier
-- v1 elo-heavy (xg=0.40, elo=0.40, dc=0.10, heur=0.10): 49.50% acc, 0.6074 Brier
-- v2 (xg=0.40, elo=0.45, dc=0.05, heur=0.10): 49.16% acc, **0.6052** Brier
-- v3, v4: en rango
+- Next.js 14.2.5 (App Router) + better-sqlite3 + Tailwind + TypeScript 5.5
+- BD: `predictions_mx.db` (read-only bind) + `votes_mx.db` (RW)
+- Cookies HttpOnly + tokens opacos + validación regex anti-SQLi
 
-**Decisión:** mantener baseline. Δ acc dentro de ruido (n=300). v1 mejora Brier pero pierde accuracy. **Re-evaluar con n>500 si hay tiempo.**
+### Rutas funcionales (10+)
 
-### B.1 — Platt scaling aplicado (commit 1c96410)
+| Ruta | Descripción |
+|---|---|
+| `/` | Dashboard Cinépolis-style (hero gradient, stat cards, partido destacado, próximos 5) |
+| `/analisis` | Análisis agregado del modelo |
+| `/calendario` | Calendario por jornada |
+| `/efectividad` | Métricas de efectividad histórica |
+| `/equipos` | Índice completo de equipos |
+| `/equipo/[id]` | Detalle de equipo (próximos, recientes, stats) |
+| `/historial` | Historial de predicciones |
+| `/partido/[id]` | Detalle de partido individual |
+| `/resultados` | Track record con accuracy y Brier live |
+| `/votacion` | Llenar quiniela batch por jornada |
+| `/voto/[token]` | Voto individual partido (link compartible) |
 
-Ajustado (A,B) por clase vía `scipy.optimize L-BFGS-B` sobre n=1000 partidos (2023/24 a 2026/27 parcial).
+### API endpoints (3)
 
-**Coefs:**
-- home: A=1.88, B=+0.42 (overconfianza en local → comprime)
-- draw: A=-0.31, B=-1.43 (overvalora draws → baja fuerte)
-- away: A=1.62, B=+0.39 (overconfianza en visitante → comprime)
+| Endpoint | Método | Descripción |
+|---|---|---|
+| `/api/health` | GET | Healthcheck Traefik/Dokploy |
+| `/api/quiniela` | POST/GET | Batch por jornada |
+| `/api/votes/[token]` | POST/GET | Individual partido |
 
-**OOS Brier (n=994, leave-one-season-out, normalizado /3):**
+Ver [`docs/ARCHITECTURE_FRONTEND.md`](./ARCHITECTURE_FRONTEND.md) y [`docs/QUINIELAS_SYSTEM.md`](./QUINIELAS_SYSTEM.md) para detalle.
 
-| Métrica | Pre Platt | Post Platt | Δ |
-|---|---|---|---|
-| Accuracy | 50.6% | **51.1%** | +0.50pp |
-| Brier /3 | 0.2042 | **0.2009** | -0.33pp |
-| Log Loss | 1.0203 | **1.0158** | -0.0045 |
+### Estado del deploy (2026-09-10)
 
-Por temporada:
-- 2023/24: acc +1.26pp, Brier -0.11pp
-- 2024/25: acc +0.29pp, Brier **-0.53pp**
-- 2025/26: acc -0.59pp, Brier **-0.35pp**
+🟢 **LIVE en producción:**
+- HTTPS con cert wildcard `*.barberia.date`
+- HTTP 200 en `/`, `/api/health`, `/version`
+- Container Dokploy `predicciones-mx-app-McpkBWGE8WuNEkG0rFWIL`
+- BD bind mount con permisos `1000:1000`
+- 10+ rutas funcionales
+- Sistema quinielas crowdsourced (votos + crowd summary)
+- Validación regex contra SQL injection en TODOS los IDs
+- Healthcheck cada 60s vía Traefik
 
-**Trade-off conocido:** leve desacople score↔probs. El `most_likely_score` sigue desde matriz Poisson DC (consistencia score↔score, requerido por Ángel 2026-06-28). Las probs 1X2 vienen del ensemble calibrado (Fase B.1).
+### Próximas mejoras frontend
 
-### B.1.bis — Recalibrador automático (commit bf6f539)
-
-`scripts/recalibrate_platt.sh` (185 LOC, bash puro) — mismo patrón que `backup_db.sh`.
-
-**Cron:** `0 9 * * 1 UTC` (lunes, antes del pipeline diario).
-
-**Flujo:**
-1. Build dataset (800 partidos, ~40s)
-2. Fit Platt (target=ens, ~5s)
-3. Eval OOS leave-one-season-out
-4. Si Δ Brier empeora >1pp → rollback automático
-5. Si OK → activa nuevos coefs atómico + Telegram notification
-
-**Trigger próximo:** lunes 26 jul 09:00 UTC.
-
-### B.2 — Platt vs Isotonic (commit 66fe4b3)
-
-Implementé `scripts/fit_isotonic.py` (Isotonic 1-vs-rest por clase) para comparar con Platt.
-
-**OOS (n=800, normalizado /3):**
-
-| | Pre | **Platt** | Isotonic | Ganador |
-|---|---|---|---|---|
-| Brier /3 | 0.2064 | **0.2042** | 0.2060 | Platt |
-| Acc OOS | 50.5% | **50.9%** | 50.6% | Platt (marginal) |
-
-**Platt gana en las 3 temporadas OOS.** Razones:
-- Isotonic 1-vs-rest no impone complementariedad entre clases.
-- n≈800 moderado → Isotonic vulnerable a overfit incluso OOS.
-- Draw minoritario (~25%) → Isotonic sobreajusta colas.
-
-**Acción:** Platt como calibrador oficial. Isotonic archivado en `data/isotonic_coefficients.json` (no activado).
-
-### 🐛 Bugfix Pipeline: C1b Refresh Resultados (commit 49e4aea)
-
-**Bug:** `step_refresh_fixtures_sportmonks` solo buscaba fixtures NUEVOS. Nunca actualizaba `home_score/away_score/state` de partidos ya finalizados. Resultado: BD quedaba stale indefinidamente, `reconcile_outcomes.py` no evaluaba nada nuevo.
-
-**Fix:** nuevo `scripts/refresh_fixtures_results.py` (66 LOC, idempotente) integrado como quick win **C1b** en `full_pipeline.py`, antes de C2 (reconciliación).
-
-**Bug adicional descubierto:** SportMonks v3 rechaza `include=scores,state,participants` con comas → 404 silencioso. Solución: una llamada por `include` (state / scores / lineups / statistics).
-
-**Resultado inmediato (post-fix):** 4 fixtures actualizados (León-Atlas, ASL-CA, Juárez-Puebla, Pumas-Pachuca). 5 predicciones reconciliadas. Accuracy live 90d mejoró de 40% → 50%.
-
-### Pendiente Fase B.2+
-
-1. **Recency weighting en fit** — peso 1.0 para temp reciente, 0.7 para media, 0.4 para antigua. Esperado: -0.5pp Brier en n recientes.
-2. **Multi-agente debate con Platt** — Fase 10 agentes deben usar probs calibradas (no raw ensemble).
-3. **Re-fit Platt con temp 2026/27 parcial** — cuando haya n>30 partidos finalizados.
+- [ ] Modo oscuro (ya está parcialmente con variables CSS)
+- [ ] Comparador de modelos en `/analisis`
+- [ ] Value bet detection cuando odds reales disponibles
+- [ ] PWA / offline support
+- [ ] Tests E2E (Playwright)
