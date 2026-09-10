@@ -17,9 +17,9 @@ if [ -n "${DATABASE_URL:-}" ]; then
     DB_PATH=$(echo "$DATABASE_URL" | sed -E 's|^sqlite:(///)|/|; s|^sqlite://(/)|\1|')
 fi
 
-# --- Esperar a la BD si no existe ---
+# --- Esperar a la BD si no existe (salteable con SKIP_DB_CHECK=1) ---
 WAIT_SECONDS=60
-if [ -n "$DB_PATH" ] && [ ! -f "$DB_PATH" ]; then
+if [ -n "$DB_PATH" ] && [ "${SKIP_DB_CHECK:-0}" != "1" ] && [ ! -f "$DB_PATH" ]; then
     echo "⏳ Esperando BD en $DB_PATH (max ${WAIT_SECONDS}s)..."
     for i in $(seq 1 $WAIT_SECONDS); do
         if [ -f "$DB_PATH" ]; then
