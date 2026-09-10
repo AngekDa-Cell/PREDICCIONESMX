@@ -2,13 +2,17 @@
 //
 // Separado de `client.ts` (que es readonly para la BD principal).
 // Esta conexión abre la BD de votos en modo read+write.
+//
+// [PREDICCIONESMX 2026-09-10] Lazy init (igual que client.ts): no abrimos la BD
+// al importar el módulo. Esto evita que `next build` y rutas que solo leen la
+// BD principal fallen si la BD de votos no está lista o no se usa.
 
 import Database from "better-sqlite3";
 
 const VOTES_DB_PATH =
-  process.env.VOTOS_DATABASE_PATH ||
+  process.env.VOTES_DATABASE_PATH ||
   process.env.VOTES_DB_PATH ||
-  "/data/votos_mx.db";
+  "/workspace/proyectos/data/votes_mx.db";
 
 const globalForVotesDb = global as unknown as {
   votesDb: Database.Database | undefined;
@@ -55,8 +59,21 @@ function createVotesDb(): Database.Database {
   return db;
 }
 
-export const votesDb: Database.Database = globalForVotesDb.votesDb ?? createVotesDb();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForVotesDb.votesDb = votesDb;
+function getVotesDb(): Database.Database {
+  if (!globalForVotesDb.votesDb) {
+    globalForVotesDb.votesDb = createVotesDb();
+  }
+  return globalForVotesDb.votesDb;
 }
+
+// Proxy lazy — no abre la BD hasta el primer uso real.
+export const votesDb: Database.Database = new Proxy(
+  {} as Database.Database,
+  {
+    get(_target, prop, _receiver) {
+      const real = getVotesDb();
+      const value = (real as any)[prop];
+      return typeof value === "function" ? value.bind(real) : value;
+    },
+  }
+);

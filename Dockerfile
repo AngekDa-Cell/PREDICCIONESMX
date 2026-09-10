@@ -7,8 +7,10 @@
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 1: builder — compila Next.js standalone
+# Usamos node:24.16.0 (Debian/glibc, NO -alpine) para que better-sqlite3
+# compile contra glibc y matchee el runtime (Debian slim).
 # ─────────────────────────────────────────────────────────────────────────────
-FROM node:24.16.0-alpine AS builder
+FROM node:24.16.0-bookworm-slim AS builder
 
 WORKDIR /build
 
@@ -32,7 +34,9 @@ RUN touch /tmp/dummy.db && npx next build
 # ─────────────────────────────────────────────────────────────────────────────
 FROM python:3.12-slim AS runtime
 
-# --- Sistema: tzdata, sqlite3, bash, curl (supercronic), libc6-compat (Node alpine bin) ---
+# --- Sistema: tzdata, sqlite3, bash, curl (supercronic), ca-certificates (Node download),
+#     xz-utils (descomprimir node .tar.xz) ---
+# libc6 ya viene en Debian (glibc). Node x64 linux prebuilt es glibc-based, no necesita compat.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         curl \
@@ -40,7 +44,7 @@ RUN apt-get update \
         sqlite3 \
         tzdata \
         bash \
-        libc6-compat \
+        xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # --- TZ por defecto ---
@@ -75,15 +79,14 @@ RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r /workspace/proyectos/requirements.txt
 
 # --- Código Python del proyecto ---
+# (data/ y tests/ se excluyen del .dockerignore: data es bind-mount runtime, tests corren en CI)
 COPY --chown=app:app src/ /workspace/proyectos/src/
 COPY --chown=app:app scripts/ /workspace/proyectos/scripts/
-COPY --chown=app:app data/ /workspace/proyectos/data/
-COPY --chown=app:app tests/ /workspace/proyectos/tests/
 
 # --- Next.js standalone output (del builder) ---
 COPY --from=builder --chown=app:app /build/.next/standalone /workspace/proyectos/
 COPY --from=builder --chown=app:app /build/.next/static /workspace/proyectos/.next/static
-COPY --from=builder --chown=app:app /build/public /workspace/proyectos/public 2>/dev/null || true
+COPY --from=builder --chown=app:app /build/public /workspace/proyectos/public/
 
 # --- Sanitizar: nada de .env* en la imagen ---
 RUN rm -f /workspace/proyectos/.env /workspace/proyectos/.env.* \
