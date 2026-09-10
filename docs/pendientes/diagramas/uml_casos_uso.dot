@@ -1,0 +1,40 @@
+digraph UML_CasosUso {
+  rankdir=LR;
+  node [fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  // Actores
+  node [shape=plaintext];
+  Usuario [label=<<B>Usuario</B><br/>(votante)>];
+  Cron [label=<<B>Cron Diario</B><br/>(11 UTC)>];
+  Admin [label=<<B>Admin</B><br/>(Ángel)>];
+  SportMonks [label=<<B>SportMonks API</B>>, shape=cylinder, style=filled, fillcolor=lightblue];
+
+  // Sistema
+  node [shape=ellipse, style=filled, fillcolor=lightyellow];
+  subgraph cluster_sistema {
+    label="Sistema QuinielaTech";
+    style=filled;
+    color=lightgrey;
+
+    ConsultarPronostico [label="Consultar\npronóstico"];
+    Votar [label="Votar\npredicción"];
+    IngerirDatos [label="Ingerir\ndatos"];
+    CalcularPrediccion [label="Calcular\npredicción"];
+    EjecutarDebate [label="Ejecutar\ndebate multiagente"];
+    PublicarResultado [label="Publicar\nresultado"];
+    RespaldarBD [label="Respaldar\nBD"];
+    Recalibrar [label="Recalibrar\nPlatt scaling"];
+  }
+
+  // Relaciones
+  Usuario -> ConsultarPronostico;
+  Usuario -> Votar;
+  Cron -> IngerirDatos;
+  IngerirDatos -> CalcularPrediccion;
+  CalcularPrediccion -> EjecutarDebate;
+  EjecutarDebate -> PublicarResultado;
+  Cron -> RespaldarBD;
+  Admin -> Recalibrar;
+  SportMonks -> IngerirDatos [style=dashed, label="REST API"];
+}

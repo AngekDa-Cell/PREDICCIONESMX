@@ -1,0 +1,40 @@
+digraph UML_Clases {
+  rankdir=LR;
+  node [shape=record, fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9];
+
+  subgraph cluster_models {
+    label="Modelo: src/";
+    style=filled;
+    color=lightgrey;
+
+    Fixture [
+      label="{Fixture|+ id: int\l+ team_home_id: int\l+ team_away_id: int\l+ date: datetime\l+ status: str\l+ goals_home: int\l+ goals_away: int\l|+ to_dict()\l}"
+    ];
+    Team [
+      label="{Team|+ id: int\l+ name: str\l+ league_id: int\l+ elo_rating: float\l}"
+    ];
+    MatchPrediction [
+      label="{MatchPrediction|+ id: int\l+ fixture_id: int\l+ p_home: float\l+ p_draw: float\l+ p_away: float\l+ expected_goals: float\l+ model_version: str\l}"
+    ];
+    AgentDebate [
+      label="{AgentDebate|+ id: int\l+ prediction_id: int\l+ agent_name: str\l+ stance: str\l+ confidence: float\l+ rationale: text\l}"
+    ];
+
+    Team -> Fixture [label="home/away"];
+    Fixture -> MatchPrediction [label="1..*"];
+    MatchPrediction -> AgentDebate [label="1..*"];
+  }
+
+  subgraph cluster_api {
+    label="Capa API";
+    style=filled;
+    color=lightyellow;
+
+    SportMonksClient [
+      label="{SportMonksClient|+ base_url: str\l+ token: str\l|+ get_fixtures()\l+ get_teams()\l+ get_odds()\l}"
+    ];
+  }
+
+  SportMonksClient -> Fixture [label="ingesta", style=dashed];
+}
