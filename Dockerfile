@@ -57,6 +57,9 @@ RUN chmod 0644 /etc/crontab.app
 COPY --chown=app:app entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# --- Healthcheck HTTP del container (Dokploy / Traefik / monitoring) ---
+EXPOSE 8080
+
 # --- Healthcheck mínimo: verifica que supercronic siga corriendo ---
 HEALTHCHECK --interval=60s --timeout=5s --start-period=30s --retries=3 \
     CMD pgrep -f supercronic >/dev/null || exit 1

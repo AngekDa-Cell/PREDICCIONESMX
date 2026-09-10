@@ -40,6 +40,18 @@ fi
 echo "📋 Crontab activo:"
 cat /etc/crontab.app | sed 's/^/   /'
 
+# --- Healthcheck HTTP server en background (huérfano tras exec, lo mantiene Dokploy mientras el container vive) ---
+# HEALTH_PORT default 8080; sirve /health y /version para Dokploy / Traefik / monitoring externo.
+if [ -f /workspace/proyectos/src/health_server.py ]; then
+    python3 -m src.health_server &
+    HEALTH_PID=$!
+    echo "🏥 Healthcheck PID: ${HEALTH_PID} (port=${HEALTH_PORT:-8080})"
+    disown ${HEALTH_PID} 2>/dev/null || true
+    sleep 1
+else
+    echo "⚠️  src/health_server.py no encontrado, sin healthcheck HTTP"
+fi
+
 # --- Arrancar supercronic en foreground (PID 1 lo hereda Dokploy) ---
 # -no-reap: supercronic como PID 1 falla su fork-exec interno de reaping
 # ("Failed to fork exec: no such file or directory"). Dokploy ya tiene su
