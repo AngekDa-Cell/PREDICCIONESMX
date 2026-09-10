@@ -103,7 +103,9 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # --- Estructura de runtime ---
 RUN mkdir -p /workspace/proyectos/data/backups \
               /workspace/proyectos/data/logs \
-    && chown -R app:app /workspace/proyectos/data
+              /workspace/proyectos/logs \
+    && chown -R app:app /workspace/proyectos/data /workspace/proyectos/logs \
+    && chown app:app /workspace/proyectos
 
 # --- Puertos ---
 EXPOSE 3000
