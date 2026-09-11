@@ -62,6 +62,13 @@ if ! kill -0 "$SUPERCRONIC_PID" 2>/dev/null; then
     exit 1
 fi
 
+# --- Limpiar HOSTNAME antes de iniciar Next.js ---
+# Docker Swarm inyecta HOSTNAME=<container-id>, lo que hace que Next.js
+# resuelva ese hostname a la IP del container (10.0.1.x) en lugar de 0.0.0.0.
+# Resultado: el server solo escucha en esa IP, y los healthchecks locales
+# (127.0.0.1) fallan. Unset deja el fallback "0.0.0.0" del server.js.
+unset HOSTNAME
+
 # --- exec node server.js (PID 1, foreground) — Next.js front ---
 # Next.js standalone produce server.js en /workspace/proyectos/server.js
 echo "🎨 Iniciando Next.js (PID 1)..."
