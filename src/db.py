@@ -619,6 +619,15 @@ class AnalystPrediction(Base):
         DateTime, default=datetime.utcnow, nullable=False
     )
 
+    # Outcome reconciliation (migración v3 — 2026-09-10, scripts/migrate_add_outcome_columns.py)
+    actual_home_goals: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    actual_away_goals: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    outcome_hit: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    score_hit: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    bts_hit: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    ou_2_5_hit: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    result_recorded_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
 
 # =============================================================
 # Engine / Session

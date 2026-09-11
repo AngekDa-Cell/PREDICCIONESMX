@@ -110,70 +110,36 @@ def step_ingest_injuries(conn, dry_run):
 
 
 def step_refresh_fixtures_sportmonks(conn, dry_run):
-    """2. Re-chequear fixtures próximos desde SportMonks."""
+    """2. Refrescar + INGESTAR fixtures próximos desde SportMonks.
+
+    FIX 2026-09-10 (bug histórico): antes solo ENCONTRABA IDs nuevos pero no
+    los INSERTaba. Ahora llama a scripts/ingest_fixtures_sportmonks.py que
+    hace UPSERT de fixtures + FKs (leagues, seasons, venues, teams).
+    """
     if dry_run:
         return run_step("2/10 Refrescar fixtures SportMonks", ["echo", "dry-run"], dry_run=True)
 
     print(f"\n{'=' * 70}")
-    print("▶ 2/10 Refrescar fixtures SportMonks próximos 60 días")
+    print("▶ 2/10 Refrescar + ingestar fixtures SportMonks próximos 60 días")
     print('=' * 70)
 
-    try:
-        from src.config import SportMonksConfig
-        from src.sportmonks_client import SportMonksClient
-
-        cfg = SportMonksConfig.from_env()
-        client = SportMonksClient(cfg)
-
-        start_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        end_date = (datetime.now(timezone.utc) + timedelta(days=60)).strftime("%Y-%m-%d")
-
-        url = f"https://api.sportmonks.com/v3/football/fixtures/between/{start_date}/{end_date}"
-        params = {
-            "api_token": cfg.api_token,
-            "leagues": LEAGUE_ID,
-            "per_page": 50,
-        }
-
-        new_fixtures = []
-        page = 1
-        while True:
-            params["page"] = page
-            import requests
-            r = requests.get(url, params=params, timeout=15)
-            r.raise_for_status()
-            data = r.json().get("data", [])
-            if not data:
-                break
-
-            for fx in data:
-                # Chequear si ya existe
-                existing = conn.execute(
-                    "SELECT 1 FROM fixtures WHERE id = ?", (fx["id"],)
-                ).fetchone()
-                if not existing:
-                    new_fixtures.append(fx["id"])
-
-            if len(data) < 50:
-                break
-            page += 1
-
-        print(f"   📥 Encontrados {len(new_fixtures)} fixtures nuevos")
-        print(f"   (SportMonks devolvió datos para liga MX en próximos 60 días)")
-        client.close()
-
-        return {
-            "name": "2/10 Refrescar fixtures SportMonks",
-            "status": "ok",
-            "new_fixtures_found": len(new_fixtures),
-            "new_fixture_ids": new_fixtures[:20],
-        }
-    except Exception as e:
+    # Delegar a scripts/ingest_fixtures_sportmonks.py (idempotente, con UPSERT)
+    result = run_step(
+        "2/10 Ingesta fixtures SportMonks (incluye FK upserts)",
+        ["python3", "scripts/ingest_fixtures_sportmonks.py", "--days", "60", "--leagues", "743,749"],
+        timeout=300,
+    )
+    if result["status"] != "ok":
         return {
             "name": "2/10 Refrescar fixtures SportMonks",
             "status": "error",
-            "error": str(e),
+            "error": result.get("output_tail", ""),
         }
+    return {
+        "name": "2/10 Refrescar fixtures SportMonks",
+        "status": "ok",
+        "delegated_to": "ingest_fixtures_sportmonks.py",
+    }
 
 
 def step_ingest_lineups(conn, dry_run, limit=20):
