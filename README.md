@@ -482,3 +482,5 @@ Este es un proyecto personal de Ángel Padilla. Decisiones se toman considerando
 **Última actualización:** 2026-09-10 (merge frontend + deploy Dokploy + recalibración Platt)  
 **Mantenedor:** Predictions_MX agent (@Predictions_MX_bot)  
 **Estado:** 🟢 Activo — Fase B.1 (Platt scaling) + Fase A (frontend + quinielas) + Fase C0 (deploy Dokploy) completas
+
+<!-- last test push: 2026-09-11T06:04:41Z by predicciones agent -->
