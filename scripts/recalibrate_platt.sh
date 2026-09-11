@@ -86,11 +86,19 @@ except Exception:
         return 1
     fi
 
-    python3 - <<PYEOF
-import json, urllib.request, urllib.error
-message = """$message"""
-token = "$bot_token"
-chat_id = "$CHAT_ID"
+    # [SECURITY FIX 2026-09-10] Mismo patrón que backup_db.sh: env vars en
+    # lugar de heredoc interpolation. Evita command injection si $message
+    # contiene backticks o $(...). <<'PYEOF' desactiva bash expansion dentro
+    # del bloque.
+    TELEGRAM_BOT_TOKEN_VALUE="$bot_token" \
+    TELEGRAM_CHAT_ID_VALUE="$CHAT_ID" \
+    TELEGRAM_MESSAGE_VALUE="$message" \
+    python3 - <<'PYEOF'
+import os, json, urllib.request, urllib.error
+token = os.environ["TELEGRAM_BOT_TOKEN_VALUE"]
+chat_id = os.environ["TELEGRAM_CHAT_ID_VALUE"]
+message = os.environ["TELEGRAM_MESSAGE_VALUE"]
+
 url = f"https://api.telegram.org/bot{token}/sendMessage"
 payload = {
     "chat_id": chat_id,

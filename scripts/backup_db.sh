@@ -76,11 +76,22 @@ except Exception:
         return 1
     fi
 
-    python3 <<PYEOF
-import json, urllib.request, urllib.error, sys
-message = """$message"""
-token = "$bot_token"
-chat_id = "$CHAT_ID"
+    # [SECURITY FIX 2026-09-10] Pasar valores vía env vars, NO heredoc interpolation.
+    # El patrón anterior interpolaba $message dentro del código python,
+    # exponiendo a command injection si message contenía backticks o $(...)
+    # (bash los interpretaba ANTES de pasar a python). Ahora:
+    # - <<'PYEOF' (quoted) desactiva toda expansion de variables en el heredoc.
+    # - Valores sensibles llegan por env vars (literal, sin re-interpretacion).
+    TELEGRAM_BOT_TOKEN_VALUE="$bot_token" \
+    TELEGRAM_CHAT_ID_VALUE="$CHAT_ID" \
+    TELEGRAM_MESSAGE_VALUE="$message" \
+    python3 <<'PYEOF'
+import os, json, urllib.request, urllib.error, sys
+
+token = os.environ["TELEGRAM_BOT_TOKEN_VALUE"]
+chat_id = os.environ["TELEGRAM_CHAT_ID_VALUE"]
+message = os.environ["TELEGRAM_MESSAGE_VALUE"]
+
 url = f"https://api.telegram.org/bot{token}/sendMessage"
 payload = {
     "chat_id": chat_id,
