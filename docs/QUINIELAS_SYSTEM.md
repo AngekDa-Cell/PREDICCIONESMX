@@ -197,12 +197,16 @@ GET /voto/ABC23XYZ
 ### Configuración del salt
 
 ```typescript
+// lib/votes/token.ts (versión actual — fail-closed en prod)
 function getSalt(): string {
-  return process.env.VOTES_TOKEN_SALT || "quinielas-lol-default-salt";
+  const s = process.env.VOTES_TOKEN_SALT;
+  const isProd = process.env.NODE_ENV === "production";
+  if (!s && isProd) throw new Error("VOTES_TOKEN_SALT requerido en prod");
+  return s || "quinielas-lol-default-salt"; // fallback solo dev
 }
 ```
 
-⚠️ **IMPORTANTE:** cambiar `VOTES_TOKEN_SALT` en producción (Dokploy secret). Si no, todos los tokens son predecibles.
+⚠️ **IMPORTANTE:** `VOTES_TOKEN_SALT` es **obligatorio en producción** (Dokploy secret). El código actual (2026-09-10) **falla explícitamente** si la env falta o usa el default público en `NODE_ENV=production`. Sin esto, todos los tokens son adivinables offline en segundos.
 
 ---
 

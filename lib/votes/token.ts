@@ -30,7 +30,38 @@ function base32(bytes: Buffer): string {
 }
 
 function getSalt(): string {
-  return process.env.VOTES_TOKEN_SALT || "quinielas-lol-default-salt";
+  const s = process.env.VOTES_TOKEN_SALT;
+  // [SECURITY FIX 2026-09-10] El default "quinielas-lol-default-salt" es
+  // público (está en el repo). Si alguien lo deja en prod, todos los tokens
+  // son adivinables offline en segundos. Forzamos a fallar explícitamente:
+  // - En producción: error duro al primer uso (al primer GET/POST de /api/votes).
+  // - En dev: warning en consola, pero usa el default para no romper DX.
+  const isProd = process.env.NODE_ENV === "production";
+  const DEFAULT_SALT = "quinielas-lol-default-salt";
+  if (!s) {
+    if (isProd) {
+      throw new Error(
+        "[votes] VOTES_TOKEN_SALT no configurado. " +
+          "Establecer en Dokploy (appId McpkBWGE8WuNEkG0rFWIL) o .env local.",
+      );
+    }
+    console.warn(
+      "[votes] VOTES_TOKEN_SALT no configurado — usando default inseguro (solo dev).",
+    );
+    return DEFAULT_SALT;
+  }
+  if (s === DEFAULT_SALT) {
+    if (isProd) {
+      throw new Error(
+        "[votes] VOTES_TOKEN_SALT tiene el default público. " +
+          "Cambiar a un valor aleatorio ≥32 chars antes de producción.",
+      );
+    }
+    console.warn(
+      "[votes] VOTES_TOKEN_SALT es el default público (solo dev).",
+    );
+  }
+  return s;
 }
 
 /**
